@@ -2,9 +2,19 @@
   "scriptFile": "__init__.py",
   "bindings": [
     {
-      "type": "warmupTrigger",
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
       "direction": "in",
-      "name": "warmupContext"
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
     }
   ]
 }
