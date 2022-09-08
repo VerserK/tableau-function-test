@@ -11,4 +11,4 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     response = requests.post('https://tableauauto.azurewebsites.net/testsend')
     print(response.text)
-    return func.HttpResponse()
+    return func.HttpResponse(response.text)
