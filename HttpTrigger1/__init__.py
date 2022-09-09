@@ -7,8 +7,8 @@ from . import mailnotiWithSQL
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    import requests
-
-    response = requests.post('https://tableauauto.azurewebsites.net/testsend')
-    print(response.text)
-    return func.HttpResponse(response.text, status_code=200)
+    server = 'https://tableauauto.azurewebsites.net/testsend'
+    headers = {"Content-Type": "application/json",
+               "Accept":"application/json"}
+    res = requests.get(server, headers=headers)
+    return func.HttpResponse(res, status_code=200)
