@@ -29,25 +29,30 @@ import os
 from azure.storage.blob import BlobServiceClient, __version__
 import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
-import urllib
+import urllib.request, json
 
 #configure sql server
-server = 'tableauauto.database.windows.net'
-database =  'tableauauto_db'
-username = 'boon'
-password = 'DEE@DA123'
-driver = '{ODBC Driver 17 for SQL Server}'
-dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+# server = 'tableauauto.database.windows.net'
+# database =  'tableauauto_db'
+# username = 'boon'
+# password = 'DEE@DA123'
+# driver = '{ODBC Driver 17 for SQL Server}'
+# dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
 
-params = urllib.parse.quote_plus(dsn)
-engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-connection = engine.connect()
-metadata = sa.MetaData()
-mailnoti = sa.Table('mailTestnoti', metadata, autoload=True, autoload_with=engine)
-query = sa.select([mailnoti])
-ResultProxy = connection.execute(query)
-ResultSet = ResultProxy.fetchall()
+# params = urllib.parse.quote_plus(dsn)
+# engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
+# connection = engine.connect()
+# metadata = sa.MetaData()
+# mailnoti = sa.Table('mailTestnoti', metadata, autoload=True, autoload_with=engine)
+# query = sa.select([mailnoti])
+# ResultProxy = connection.execute(query)
+# ResultSet = ResultProxy.fetchall()
 # print(ResultSet[:3])
+
+#### JSON Query Test ####
+with urllib.request.urlopen("https://tableauauto.azurewebsites.net/myfile.json") as url:
+    data = json.load(url)
+    data = pd.DataFrame.from_dict(data)
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
@@ -383,7 +388,7 @@ def run():
   sheet = service.spreadsheets()
   result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
   values = result.get('values', [])
-  df = pd.DataFrame(ResultSet)
+  df = pd.DataFrame(data)
   df.drop(df[df.Enable != 'x'].index, inplace=True)
   groups = df.groupby('MailGroup')
   for name, group in groups:
