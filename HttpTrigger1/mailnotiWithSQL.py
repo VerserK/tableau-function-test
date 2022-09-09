@@ -51,8 +51,8 @@ import urllib.request, json
 
 #### JSON Query Test ####
 with urllib.request.urlopen("https://tableauauto.azurewebsites.net/myfile.json") as url:
-    data = json.load(url)
-    data = pd.DataFrame.from_dict(data)
+    ResultProxy = json.load(url)
+    ResultSet = pd.DataFrame.from_dict(ResultProxy)
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
@@ -388,7 +388,7 @@ def run():
   sheet = service.spreadsheets()
   result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
   values = result.get('values', [])
-  df = pd.DataFrame(data)
+  df = pd.DataFrame(ResultSet)
   df.drop(df[df.Enable != 'x'].index, inplace=True)
   groups = df.groupby('MailGroup')
   for name, group in groups:
