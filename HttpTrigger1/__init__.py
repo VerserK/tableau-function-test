@@ -6,4 +6,4 @@ from . import mailnotiWithSQL
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    return func.HttpResponse(mailnotiWithSQL.run(),status_code = 200)
+    return func.HttpResponse(mailnotiWithSQL.run(),quit(),status_code = 200)
