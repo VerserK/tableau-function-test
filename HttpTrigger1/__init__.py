@@ -1,9 +1,10 @@
 import logging
-
+import sys
 import azure.functions as func
 from . import mailnotiWithSQL
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    return func.HttpResponse(mailnotiWithSQL.run(),quit(),status_code = 200)
+    mailnotiWithSQL.run()
+    return func.HttpResponse(sys.exit(0),status_code = 200)
