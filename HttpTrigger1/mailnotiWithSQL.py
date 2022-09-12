@@ -410,7 +410,7 @@ def run():
         bcc = row['bcc']
         iwidth = row['ImageWidth']
         Subject = row['Subject']
-        if row['from'] == '':
+        if row['from'] == 'NULL':
           m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
         else:
           m_from = row['from']
@@ -465,4 +465,4 @@ def run():
     if valid:
       msg = create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
       send_message('me',msg)
-      os._exit(0)
+  quit()
