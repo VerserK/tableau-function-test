@@ -465,4 +465,3 @@ def run():
     if valid:
       msg = create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
       send_message('me',msg)
-    exit()
