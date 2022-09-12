@@ -6,7 +6,7 @@ from . import mailnotiWithSQL
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    enable = req.params.get('enable')
+    enable = req.params.get('Enable')
     if not enable:
         try:
             req_body = req.get_json()
