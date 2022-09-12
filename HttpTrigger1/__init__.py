@@ -6,5 +6,12 @@ from . import mailnotiWithSQL
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    mailnotiWithSQL.run()
-    return func.HttpResponse(status_code = 200)
+    try:
+        mailnotiWithSQL.run()
+        sys.exit("Age less than 18")
+        return func.HttpResponse(
+                "This HTTP triggered function executed successfully.",
+                status_code=200
+            )
+    except:
+        logging.info("  error!", sys.exc_info()[0], "occurred.")
