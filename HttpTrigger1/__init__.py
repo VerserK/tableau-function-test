@@ -6,17 +6,17 @@ from . import mailnotiWithSQL
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    name = req.params.get('name')
-    if not name:
+    enable = req.params.get('enable')
+    if not enable:
         try:
             req_body = req.get_json()
         except ValueError:
             pass
         else:
-            name = req_body.get('name')
+            enable = req_body.get('enable')
 
-    if name:
-        return func.HttpResponse(f"Hello {name}!")
+    if enable:
+        return func.HttpResponse(f"Hello {enable}!")
     else:
         return func.HttpResponse(
              "Please pass a name on the query string or in the request body",
