@@ -12,7 +12,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     FilterName = req.params.get('FilterName')
     FilterValue = req.params.get('FilterValue')
     Time = req.params.get('Time')
-    Message = req.get('Message')
+    Message = req.params.get('Message')
     if not DashboardName:
         try:
             req_body = req.get_json()
@@ -22,7 +22,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             DashboardName = req_body.get('DashboardName')
 
     if DashboardName:
-        return func.HttpResponse(f"Hello, {DashboardName}.")
+        return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
