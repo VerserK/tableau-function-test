@@ -16,8 +16,5 @@
       "direction": "out",
       "name": "$return"
     }
-    {
-      "functionTimeout": "00:01:00"
-    }
   ]
 }
