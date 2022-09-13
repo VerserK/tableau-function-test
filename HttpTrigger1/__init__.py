@@ -15,4 +15,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=200
             )
     except:
-        logging.info("  error!", sys.exc_info()[0], "occurred.")
+        return func.HttpResponse(
+                "Error",
+                status_code=400
+            )
