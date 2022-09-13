@@ -1,4 +1,5 @@
 {
+  "functionTimeout": "00:01:00",
   "version": "2.0",
   "logging": {
     "applicationInsights": {
@@ -11,6 +12,5 @@
   "extensionBundle": {
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[3.*, 4.0.0)"
-  },
-  "functionTimeout": "00:01:00"
+  }
 }
