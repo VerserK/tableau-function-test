@@ -410,7 +410,7 @@ def run():
         bcc = row['bcc']
         iwidth = row['ImageWidth']
         Subject = row['Subject']
-        if row['from'] == 'NULL':
+        if row['from'] == 'null':
           m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
         else:
           m_from = row['from']
