@@ -13,7 +13,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         except ValueError:
             pass
         else:
-            DashboardName = req_body.get('name')
+            DashboardName = req_body.get('DashboardName')
 
     if DashboardName:
         return func.HttpResponse(f"Hello, {DashboardName}. This HTTP triggered function executed successfully.")
