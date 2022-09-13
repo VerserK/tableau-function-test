@@ -22,7 +22,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             DashboardName = req_body.get('DashboardName')
 
     if DashboardName:
-        return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}This HTTP triggered function executed successfully.")
+        return func.HttpResponse(f"Hello, {DashboardName}.")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
