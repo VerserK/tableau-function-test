@@ -1,6 +1,7 @@
 import logging
 
 import azure.functions as func
+from . import linenotitest
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -22,6 +23,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             DashboardName = req_body.get('DashboardName')
 
     if DashboardName:
+        linenotitest.run()
         #return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
         return [DashboardName,ViewId,Token,FilterName,FilterValue,Time,Message]
     else:

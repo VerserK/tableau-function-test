@@ -59,22 +59,21 @@ def run():
 
     service = build('sheets', 'v4', credentials=creds)
 
-    RANGE_NAME = 'LineNotify!A:F'
+    # RANGE_NAME = 'LineNotify!A:F'
     test = urljson.main()
+    print(test)
 
-    # Call the Sheets API
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
-    values = result.get('values', [])
-    #Convert to Pandas Dataframe
-    df = pd.DataFrame(values[1:], columns=values[0])
-    df.columns = ['DashboardName','ViewId','Token','FilterName','FilterValue','Message']
-    print(df)
+    # # Call the Sheets API
+    # sheet = service.spreadsheets()
+    # result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
+    # values = result.get('values', [])
+    # #Convert to Pandas Dataframe
+    # df = pd.DataFrame(values[1:], columns=values[0])
+    # df.columns = ['DashboardName','ViewId','Token','FilterName','FilterValue','Message']
+    # print(df)
 
-    #today = datetime.now() + timedelta(hours = 7) + timedelta(minutes=-10)
-    #base = datetime(today.year , today.month , today.day , today.hour , today.minute , 0 , 0)
-    for index, row in df.iterrows():
-        if row['DashboardName'] != '':
-            tbn.GetImage(row['DashboardName'],row['ViewId'],row['FilterName'],row['FilterValue'],row['Token'],row['Message'])
-    
-run()
+    # #today = datetime.now() + timedelta(hours = 7) + timedelta(minutes=-10)
+    # #base = datetime(today.year , today.month , today.day , today.hour , today.minute , 0 , 0)
+    # for index, row in df.iterrows():
+    #     if row['DashboardName'] != '':
+    #         tbn.GetImage(row['DashboardName'],row['ViewId'],row['FilterName'],row['FilterValue'],row['Token'],row['Message'])
