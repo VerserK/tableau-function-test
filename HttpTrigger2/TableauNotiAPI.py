@@ -43,7 +43,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
         payload = {'message':message}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
-        print(resp)
+        # print(resp)
     else:
         view_id,site_id,headers,server = GetViewId(dashboard)
         if Id != '':
@@ -57,7 +57,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                 print(url)
             #url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_สายงาน=สายงานวางแผนและควบคุม/CFO'
             res = requests.get(url, headers=headers, json = {})
-            print(view_id)
+            # print(view_id)
             #Send to Line
             LineUrl = 'https://notify-api.line.me/api/notify'
             #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
@@ -65,4 +65,4 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             payload = {'message':message}
             file = {'imageFile':res.content}
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
-            print(resp)
+            # print(resp)
