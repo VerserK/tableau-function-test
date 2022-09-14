@@ -86,4 +86,3 @@ def run(DashboardName):
     # service = build('sheets', 'v4', credentials=creds)
 
     # # RANGE_NAME = 'LineNotify!A:F'
-    print(test)
