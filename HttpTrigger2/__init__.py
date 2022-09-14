@@ -34,9 +34,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             DashboardName = req_body.get('DashboardName')
 
     if DashboardName:
-        run()
+        run({DashboardName})
         #return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
-        return [{DashboardName}]
+        # return [{DashboardName}]
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
