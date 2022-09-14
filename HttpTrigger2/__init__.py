@@ -1,7 +1,7 @@
 import logging
 
 import azure.functions as func
-from __future__ import print_function
+# from __future__ import print_function
 import pickle
 import pandas as pd
 from googleapiclient.discovery import build
