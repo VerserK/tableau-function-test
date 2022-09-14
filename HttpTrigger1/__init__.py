@@ -10,21 +10,21 @@ from datetime import datetime,timedelta
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
-    Enable = req.params.get('Enable')
-    MailGroup = req.params.get('MailGroup')
-    type = req.params.get('type')
-    ID_Json = req.params.get('ID')
-    ImageWidth = req.params.get('ImageWidth')
-    filterName = req.params.get('filterName')
-    filterValue = req.params.get('filterValue')
-    imageName = req.params.get('imageName')
-    CRON_Json = req.params.get('CRON')
-    from_value = req.params.get('from')
-    to = req.params.get('to')
-    cc = req.params.get('cc')
-    bcc = req.params.get('bcc')
-    Subject = req.params.get('Subject')
-    Content = req.params.get('Content')
+    Enable = [req.params.get('Enable')]
+    MailGroup = [req.params.get('MailGroup')]
+    type = [req.params.get('type')]
+    ID_Json = [req.params.get('ID')]
+    ImageWidth = [req.params.get('ImageWidth')]
+    filterName = [req.params.get('filterName')]
+    filterValue = [req.params.get('filterValue')]
+    imageName = [req.params.get('imageName')]
+    CRON_Json = [req.params.get('CRON')]
+    from_value = [req.params.get('from')]
+    to = [req.params.get('to')]
+    cc = [req.params.get('cc')]
+    bcc = [req.params.get('bcc')]
+    Subject = [req.params.get('Subject')]
+    Content = [req.params.get('Content')]
     
     if not Enable:
         try:
@@ -36,21 +36,21 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     #Convert to Pandas Dataframe
     df = pd.DataFrame({
-    'Enable' : [Enable],
-    'MailGroup' : [MailGroup],
-    'type' : [type],
-    'ID' : [ID_Json],
-    'ImageWidth' : [ImageWidth],
-    'filterName' : [filterName],
-    'filterValue' : [filterValue],
-    'imageName' : [imageName],
-    'CRON' : [CRON_Json],
-    'from' : [from_value],
-    'to' : [to],
-    'cc' : [cc],
-    'bcc' : [bcc],
-    'Subject' : [Subject],
-    'Content' : [Content]
+    'Enable' : Enable,
+    'MailGroup' : MailGroup,
+    'type' : type,
+    'ID' : ID_Json,
+    'ImageWidth' : ImageWidth,
+    'filterName' : filterName,
+    'filterValue' : filterValue,
+    'imageName' : imageName,
+    'CRON' : CRON_Json,
+    'from' : from_value,
+    'to' : to,
+    'cc' : cc,
+    'bcc' : bcc,
+    'Subject' : Subject,
+    'Content' : Content
     })
     df.drop(df[df.Enable != 'x'].index, inplace=True)
     print(df)
