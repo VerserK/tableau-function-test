@@ -49,7 +49,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         if Id != '':
             view_id = Id
         if view_id != '':
-            if filterName == '':
+            if filterName is None:
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?maxAge=1'+'&resolution=high'
             else:
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_'+filterName+'='+filterValue+'&maxAge=1'+'&resolution=high&sort=ส่วน:asc'
