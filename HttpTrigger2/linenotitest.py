@@ -16,7 +16,7 @@ from croniter import croniter
 import os
 import tempfile
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
-import __init__ as urljson
+from . import __init__ as urljson
 
 def run():
     # If modifying these scopes, delete the file token.pickle.
