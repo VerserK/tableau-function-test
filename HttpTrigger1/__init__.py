@@ -2,7 +2,7 @@ from distutils import bcppcompiler, ccompiler
 import logging
 import pandas as pd
 import azure.functions as func
-from mailnotiWithSQL import tableau_get_xls,tableau_get_img,gfileGETfolder,gfileGET,create_message_with_attachment,send_message
+from . import mailnotiWithSQL
 from datetime import datetime,timedelta
 
 
@@ -79,19 +79,19 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 m_from = row['from']
             if row['ID'] != '':
                 if row['type'] == 'file':
-                    file = gfileGET(row['ID'])
+                    file = mailnotiWithSQL.gfileGET(row['ID'])
                 if row['type'] == 'dashboard':
                     if row['imageName'] == '':
-                        file = tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        file = tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
-                        file = tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
+                        file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        file = tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
+                        file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
                 if row['type'] == 'folder':
-                    file_list.extend(gfileGETfolder(row['ID']))
+                    file_list.extend(mailnotiWithSQL.gfileGETfolder(row['ID']))
                 else:
                     file_list.append(file)
             txt_list = row['Content'].split('(nl)')
@@ -126,8 +126,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     continue
                 massageMonth = massageMonth + textmonth + todayStr
     if valid:
-        msg = create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
-        send_message('me',msg)
+        msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
+        mailnotiWithSQL.send_message('me',msg)
     if Enable:
         return func.HttpResponse(f"Hello, {Enable}.")
         # return func.HttpResponse[{DashboardName}]
