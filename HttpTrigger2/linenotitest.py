@@ -16,7 +16,7 @@ from croniter import croniter
 import os
 import tempfile
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
-from . import __init__
+import __init__ as JS
 
 def run():
     # If modifying these scopes, delete the file token.pickle.
@@ -60,7 +60,7 @@ def run():
     service = build('sheets', 'v4', credentials=creds)
 
     # RANGE_NAME = 'LineNotify!A:F'
-    test = __init__.main()
+    test = JS.main()
     print(test)
 
     # # Call the Sheets API
