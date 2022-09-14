@@ -129,7 +129,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     #     msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
     #     mailnotiWithSQL.send_message('me',msg)
     if Enable:
-        return func.HttpResponse(f"Hello, {Enable}.")
+        return func.HttpResponse(f"Hello, {Enable}.{df}")
         # return func.HttpResponse[{DashboardName}]
     else:
         return func.HttpResponse(
