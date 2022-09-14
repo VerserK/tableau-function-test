@@ -16,7 +16,7 @@ from croniter import croniter
 import os
 import tempfile
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
-from . import __init__ as urljson
+from . import __init__
 
 def run():
     # If modifying these scopes, delete the file token.pickle.
@@ -60,7 +60,7 @@ def run():
     service = build('sheets', 'v4', credentials=creds)
 
     # RANGE_NAME = 'LineNotify!A:F'
-    test = urljson.main()
+    test = __init__.main()
     print(test)
 
     # # Call the Sheets API
