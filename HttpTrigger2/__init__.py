@@ -25,7 +25,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if DashboardName:
         linenotitest.run()
         #return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
-        return [DashboardName,ViewId,Token,FilterName,FilterValue,Time,Message]
+        return [{DashboardName}]
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
