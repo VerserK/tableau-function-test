@@ -38,7 +38,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Token' : [Token],
     'FilterName' : [FilterName],
     'FilterValue' : [FilterValue],
-    'Time' : [Time],
     'Message' : [Message]
     })
     df.columns = ['DashboardName','ViewId','Token','FilterName','FilterValue','Message']
