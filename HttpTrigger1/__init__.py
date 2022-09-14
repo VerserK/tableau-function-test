@@ -19,12 +19,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     filterValue = [req.params.get('filterValue')]
     imageName = [req.params.get('imageName')]
     CRON_Json = [req.params.get('CRON')]
-    from_value = [req.params.get('from')]
-    to = [req.params.get('to')]
-    cc = [req.params.get('cc')]
-    bcc = [req.params.get('bcc')]
-    Subject = [req.params.get('Subject')]
-    Content = [req.params.get('Content')]
+    from_value = req.params.get('from')
+    to = req.params.get('to')
+    cc = req.params.get('cc')
+    bcc = req.params.get('bcc')
+    Subject = req.params.get('Subject')
+    Content = req.params.get('Content')
     
     if not Enable:
         try:
