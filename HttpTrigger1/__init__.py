@@ -25,7 +25,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     bcc = req.params.get('bcc')
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
-    
+    Enable = [Enable]
     if not Enable:
         try:
             req_body = req.get_json()
