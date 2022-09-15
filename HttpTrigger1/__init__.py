@@ -25,7 +25,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     bcc = req.params.get('bcc')
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
-    Enable = [Enable]
+    Enable_list = Enable.split(",")
     if not Enable:
         try:
             req_body = req.get_json()
@@ -36,7 +36,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     #Convert to Pandas Dataframe
     df = pd.DataFrame({
-    'Enable' : 'Enable',
+    'Enable' : Enable_list,
     'MailGroup' : MailGroup,
     'type' : type,
     'ID' : ID_Json,
