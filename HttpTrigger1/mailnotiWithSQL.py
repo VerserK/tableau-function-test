@@ -31,29 +31,6 @@ import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
 import urllib.request, json
 
-#configure sql server
-# server = 'tableauauto.database.windows.net'
-# database =  'tableauauto_db'
-# username = 'boon'
-# password = 'DEE@DA123'
-# driver = '{ODBC Driver 17 for SQL Server}'
-# dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
-
-# params = urllib.parse.quote_plus(dsn)
-# engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-# connection = engine.connect()
-# metadata = sa.MetaData()
-# mailnoti = sa.Table('mailTestnoti', metadata, autoload=True, autoload_with=engine)
-# query = sa.select([mailnoti])
-# ResultProxy = connection.execute(query)
-# ResultSet = ResultProxy.fetchall()
-# print(ResultSet[:3])
-
-#### JSON Query Test ####
-with urllib.request.urlopen("https://tableauauto.azurewebsites.net/myfile.json") as url:
-    ResultProxy = json.load(url)
-    ResultSet = pd.DataFrame.from_dict(ResultProxy)
-
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
