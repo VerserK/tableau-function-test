@@ -52,7 +52,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Subject' : Subject,
     'Content' : Content
     })
-    df.drop(df[df.Enable != 'x'].index, inplace=True)
+    df.drop(df[df.Enable_list != 'x'].index, inplace=True)
     print(df)
     # groups = df.groupby('MailGroup')
     # for name, group in groups:
@@ -129,7 +129,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     #     msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
     #     mailnotiWithSQL.send_message('me',msg)
     if Enable:
-        return func.HttpResponse(f"Hello, {Enable}.{df}")
+        return func.HttpResponse(f"Hello, {Enable_list}.{df}")
         # return func.HttpResponse[{DashboardName}]
     else:
         return func.HttpResponse(
