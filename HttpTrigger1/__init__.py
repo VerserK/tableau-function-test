@@ -36,7 +36,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     #Convert to Pandas Dataframe
     df = pd.DataFrame({
-    'Enable' : Enable,
+    'Enable' : 'Enable',
     'MailGroup' : MailGroup,
     'type' : type,
     'ID' : ID_Json,
