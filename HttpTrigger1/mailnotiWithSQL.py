@@ -27,9 +27,6 @@ from apiclient import errors
 from requests.exceptions import ReadTimeout
 import os
 from azure.storage.blob import BlobServiceClient, __version__
-import sqlalchemy as sa
-from sqlalchemy import create_engine, MetaData, select,Table
-import urllib.request, json
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
