@@ -11,14 +11,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
     Enable = req.params.get('Enable')
-    MailGroup = [req.params.get('MailGroup')]
-    type = [req.params.get('type')]
-    ID_Json = [req.params.get('ID')]
-    ImageWidth = [req.params.get('ImageWidth')]
-    filterName = [req.params.get('filterName')]
-    filterValue = [req.params.get('filterValue')]
-    imageName = [req.params.get('imageName')]
-    CRON_Json = [req.params.get('CRON')]
+    MailGroup = req.params.get('MailGroup')
+    type = req.params.get('type')
+    ID_Json = req.params.get('ID')
+    ImageWidth = req.params.get('ImageWidth')
+    filterName = req.params.get('filterName')
+    filterValue = req.params.get('filterValue')
+    imageName = req.params.get('imageName')
+    CRON_Json = req.params.get('CRON')
     from_value = req.params.get('from')
     to = req.params.get('to')
     cc = req.params.get('cc')
@@ -26,6 +26,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
     Enable_list = Enable.split(",")
+    MailGroup_list = MailGroup.split(",")
+    type_list = type.split(",")
+    ID_Json_list = ID_Json.split(",")
+    ImageWidth_list = ImageWidth.split(",")
+    filterName_list = filterName.split(",")
+    filterValue_list = filterValue.split(",")
+    imageName_list = imageName.split(",")
+    CRON_Json_list = CRON_Json.split(",")
     if not Enable:
         try:
             req_body = req.get_json()
@@ -37,14 +45,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     #Convert to Pandas Dataframe
     df = pd.DataFrame({
     'Enable' : Enable_list,
-    'MailGroup' : MailGroup,
-    'type' : type,
-    'ID' : ID_Json,
-    'ImageWidth' : ImageWidth,
-    'filterName' : filterName,
-    'filterValue' : filterValue,
-    'imageName' : imageName,
-    'CRON' : CRON_Json,
+    'MailGroup' : MailGroup_list,
+    'type' : type_list,
+    'ID' : ID_Json_list,
+    'ImageWidth' : ImageWidth_list,
+    'filterName' : filterName_list,
+    'filterValue' : filterValue_list,
+    'imageName' : imageName_list,
+    'CRON' : CRON_Json_list,
     'from' : from_value,
     'to' : to,
     'cc' : cc,
