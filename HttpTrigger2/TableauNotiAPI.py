@@ -12,7 +12,7 @@ def GetViewId(dashboard):
                "Accept":"application/json"}
     payload = { "credentials": {
                         		"personalAccessTokenName": "MailNotify",
-                        		"personalAccessTokenSecret": "YoDlRmOITVq+clw0l2ldpw==:3ZJ14rt5oTRempSJELT10C9HBSDawgsB",
+                        		"personalAccessTokenSecret": "spVlY5UoTiyqiN35jkpD5Q==:Ot21M39dqA5T8ZlpbaX9LclGsNMtdZ7q",
                         		"site": {
                         			"contentUrl": "skctableau"
                         		}
