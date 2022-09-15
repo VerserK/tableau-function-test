@@ -10,7 +10,7 @@ from datetime import datetime,timedelta
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
-    Enable = [req.params.get('Enable')]
+    Enable = req.params.get('Enable')
     MailGroup = [req.params.get('MailGroup')]
     type = [req.params.get('type')]
     ID_Json = [req.params.get('ID')]
