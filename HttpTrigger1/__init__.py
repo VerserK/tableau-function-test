@@ -52,7 +52,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Subject' : Subject,
     'Content' : Content
     })
-    df.drop(df[df.Enable_list != 'x'].index, inplace=True)
+    df.drop(df[df.Enable != 'x'].index, inplace=True)
     print(df)
     # groups = df.groupby('MailGroup')
     # for name, group in groups:
