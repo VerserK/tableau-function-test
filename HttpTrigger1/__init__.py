@@ -25,39 +25,39 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     bcc = req.params.get('bcc')
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
-    if Enable is None:
+    if Enable =='':
         Enable_list = ''
     else:
         Enable_list = Enable.split(",")
-    if MailGroup is None:
+    if MailGroup =='':
         MailGroup_list = ''
     else:
         MailGroup_list = MailGroup.split(",")
-    if type is None:
+    if type =='':
         type_list = ''
     else:
         type_list = type.split(",")
-    if ID_Json is None:
+    if ID_Json =='':
         ID_Json_list = ''
     else:
         ID_Json_list = ID_Json.split(",")
-    if ImageWidth is None:
+    if ImageWidth =='':
         ImageWidth_list = ''
     else:
         ImageWidth_list = ImageWidth.split(",")
-    if filterName is None:
+    if filterName =='':
         filterName_list=''
     else:
         filterName_list = filterName.split(",")
-    if filterValue is None:
+    if filterValue =='':
         filterValue_list = ''
     else:
         filterValue_list = filterValue.split(",")
-    if imageName is None:
+    if imageName =='':
         imageName_list = ''
     else:
         imageName_list = imageName.split(",")
-    if CRON_Json is None:
+    if CRON_Json =='':
         CRON_Json_list = ''
     else:
         CRON_Json_list = CRON_Json.split(",")
