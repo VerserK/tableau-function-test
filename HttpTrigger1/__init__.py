@@ -108,7 +108,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             bcc = row['bcc']
             iwidth = row['ImageWidth']
             Subject = row['Subject']
-            if row['from'] is None:
+            if row['from'] =='':
                 m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
             else:
                 m_from = row['from']
