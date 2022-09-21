@@ -69,6 +69,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         CRON_Json_list = ''
     else:
         CRON_Json_list = CRON_Json.split(",")
+    
+    if from_value is None:
+        from_value_list = ''
 
     if not Enable:
         try:
@@ -89,7 +92,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'filterValue' : filterValue_list,
     'imageName' : imageName_list,
     'CRON' : CRON_Json_list,
-    'from' : str(from_value),
+    'from' : from_value_list,
     'to' : to,
     'cc' : cc,
     'bcc' : bcc,
