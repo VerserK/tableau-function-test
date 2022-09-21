@@ -89,7 +89,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'filterValue' : filterValue_list,
     'imageName' : imageName_list,
     'CRON' : CRON_Json_list,
-    'from' : from_value,
+    'from' : str(from_value),
     'to' : to,
     'cc' : cc,
     'bcc' : bcc,
