@@ -72,6 +72,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     if from_value is None:
         from_value_list = ''
+    else:
+        from_value_list = from_value
 
     if not Enable:
         try:
