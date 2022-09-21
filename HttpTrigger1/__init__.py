@@ -25,42 +25,51 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     bcc = req.params.get('bcc')
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
-    if Enable =='':
+    if Enable is None:
         Enable_list = ''
     else:
         Enable_list = Enable.split(",")
-    if MailGroup =='':
+
+    if MailGroup is None:
         MailGroup_list = ''
     else:
         MailGroup_list = MailGroup.split(",")
-    if type =='':
+
+    if type is None:
         type_list = ''
     else:
         type_list = type.split(",")
-    if ID_Json =='':
+
+    if ID_Json is None:
         ID_Json_list = ''
     else:
         ID_Json_list = ID_Json.split(",")
-    if ImageWidth =='':
+
+    if ImageWidth is None:
         ImageWidth_list = ''
     else:
         ImageWidth_list = ImageWidth.split(",")
-    if filterName =='':
+
+    if filterName is None:
         filterName_list=''
     else:
         filterName_list = filterName.split(",")
-    if filterValue =='':
+
+    if filterValue is None:
         filterValue_list = ''
     else:
         filterValue_list = filterValue.split(",")
-    if imageName =='':
+
+    if imageName is None:
         imageName_list = ''
     else:
         imageName_list = imageName.split(",")
-    if CRON_Json =='':
+
+    if CRON_Json is None:
         CRON_Json_list = ''
     else:
         CRON_Json_list = CRON_Json.split(",")
+
     if not Enable:
         try:
             req_body = req.get_json()
