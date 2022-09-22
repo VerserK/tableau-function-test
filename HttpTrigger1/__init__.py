@@ -122,6 +122,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             bcc = row['bcc']
             iwidth = row['ImageWidth']
             Subject = row['Subject']
+            today = datetime.today()
+            todayStr = today.strftime("%d %B %Y")
+            Subject = Subject.replace('(date)',todayStr)
+            today = datetime.today() - timedelta(days=1)
+            todayStr = today.strftime("%d %B %Y")
+            Subject = Subject.replace('(-date)',todayStr)
+            today = datetime.today()
+            todayStr = today.strftime("%B %Y")
+            Subject = Subject.replace('(month)',todayStr)
             if row['from'] =='':
                 m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
             else:
@@ -150,32 +159,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             today = datetime.today()
             todayStr = today.strftime("%d %B %Y")
             txt_date = message.split('(date)')
-            massageDate = ''
-            for textdate in txt_date:
-                if txt_date.index(textdate) == len(txt_date)-1:
-                    massageDate = massageDate + textdate
-                    continue
-                massageDate = massageDate + textdate + todayStr
+            today = datetime.today()
+            todayStr = today.strftime("%d %B %Y")
+            message = message.replace('(date)',todayStr)
             today = datetime.today() - timedelta(days=1)
             todayStr = today.strftime("%d %B %Y")
-            txt_date1 = massageDate.split('(-date)')
-            massageDate1 = ''
-            for textdate1 in txt_date1:
-                if txt_date1.index(textdate1) == len(txt_date1)-1:
-                    massageDate1 = massageDate1 + textdate1
-                    continue
-                massageDate1 = massageDate1 + textdate1 + todayStr
+            message = message.replace('(-date)',todayStr)
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
-            txt_month = massageDate1.split('(month)')
-            massageMonth = ''
-            for textmonth in txt_month:
-                if txt_month.index(textmonth) == len(txt_month)-1:
-                    massageMonth = massageMonth + textmonth
-                    continue
-                massageMonth = massageMonth + textmonth + todayStr
+            message = message.replace('(month)',todayStr)
     if valid:
-        msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,massageMonth,file_list,iwidth)
+        msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,message,file_list,iwidth)
         mailnotiWithSQL.send_message('me',msg)
     if Enable:
         return func.HttpResponse(f"Hello, {Enable_list}.{df}")
