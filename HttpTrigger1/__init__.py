@@ -158,9 +158,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 message = message + text + '\n'
             today = datetime.today()
             todayStr = today.strftime("%d %B %Y")
-            message = message.replace('(date)')
-            today = datetime.today()
-            todayStr = today.strftime("%d %B %Y")
             message = message.replace('(date)',todayStr)
             today = datetime.today() - timedelta(days=1)
             todayStr = today.strftime("%d %B %Y")

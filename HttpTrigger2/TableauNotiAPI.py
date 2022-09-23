@@ -5,6 +5,7 @@ Created on Tue Jan 12 13:52:56 2021
 """
 import requests
 from datetime import datetime,timedelta
+import ast
 
 def GetViewId(dashboard):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
@@ -43,9 +44,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
         payload = {'message':message}
-        today = datetime.today()
-        todayStr = today.strftime("%d %B %Y")
-        payload = payload.replace('(date)')
+        payload = str(payload)
         today = datetime.today()
         todayStr = today.strftime("%d %B %Y")
         payload = payload.replace('(date)',todayStr)
@@ -55,6 +54,8 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         payload = payload.replace('(month)',todayStr)
+        payload = ast.literal_eval(payload)
+        print(payload)
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
         print(resp)
     else:
@@ -74,9 +75,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
             LineHeaders = {'Authorization':'Bearer '+ LineToken}
             payload = {'message':message}
-            today = datetime.today()
-            todayStr = today.strftime("%d %B %Y")
-            payload = payload.replace('(date)')
+            payload = str(payload)
             today = datetime.today()
             todayStr = today.strftime("%d %B %Y")
             payload = payload.replace('(date)',todayStr)
@@ -86,6 +85,8 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
             payload = payload.replace('(month)',todayStr)
+            payload = ast.literal_eval(payload)
             file = {'imageFile':res.content}
+            print(payload)
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
             print(resp)
