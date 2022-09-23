@@ -4,6 +4,7 @@ Created on Tue Jan 12 13:52:56 2021
 @author: methee.s
 """
 import requests
+from datetime import datetime,timedelta
 
 def GetViewId(dashboard):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
@@ -41,6 +42,18 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         LineUrl = 'https://notify-api.line.me/api/notify'
         #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
+        today = datetime.today()
+        todayStr = today.strftime("%d %B %Y")
+        message = message.split('(date)')
+        today = datetime.today()
+        todayStr = today.strftime("%d %B %Y")
+        message = message.replace('(date)',todayStr)
+        today = datetime.today() - timedelta(days=1)
+        todayStr = today.strftime("%d %B %Y")
+        message = message.replace('(-date)',todayStr)
+        today = datetime.today()
+        todayStr = today.strftime("%B %Y")
+        message = message.replace('(month)',todayStr)
         payload = {'message':message}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
         print(resp)
@@ -60,6 +73,18 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             LineUrl = 'https://notify-api.line.me/api/notify'
             #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
             LineHeaders = {'Authorization':'Bearer '+ LineToken}
+            today = datetime.today()
+            todayStr = today.strftime("%d %B %Y")
+            message = message.split('(date)')
+            today = datetime.today()
+            todayStr = today.strftime("%d %B %Y")
+            message = message.replace('(date)',todayStr)
+            today = datetime.today() - timedelta(days=1)
+            todayStr = today.strftime("%d %B %Y")
+            message = message.replace('(-date)',todayStr)
+            today = datetime.today()
+            todayStr = today.strftime("%B %Y")
+            message = message.replace('(month)',todayStr)
             payload = {'message':message}
             file = {'imageFile':res.content}
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
