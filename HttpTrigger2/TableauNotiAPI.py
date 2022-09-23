@@ -42,19 +42,19 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         LineUrl = 'https://notify-api.line.me/api/notify'
         #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
+        payload = {'message':message}
         today = datetime.today()
         todayStr = today.strftime("%d %B %Y")
-        message = message.replace('(date)')
+        payload = payload.replace('(date)')
         today = datetime.today()
         todayStr = today.strftime("%d %B %Y")
-        message = message.replace('(date)',todayStr)
+        payload = payload.replace('(date)',todayStr)
         today = datetime.today() - timedelta(days=1)
         todayStr = today.strftime("%d %B %Y")
-        message = message.replace('(-date)',todayStr)
+        payload = payload.replace('(-date)',todayStr)
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
-        message = message.replace('(month)',todayStr)
-        payload = {'message':message}
+        payload = payload.replace('(month)',todayStr)
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
         print(resp)
     else:
@@ -73,19 +73,19 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             LineUrl = 'https://notify-api.line.me/api/notify'
             #LineToken = 'QDd6ExB9L9onVWb2sze4DfStpiKHB6DXTVCpV2teXEk'
             LineHeaders = {'Authorization':'Bearer '+ LineToken}
+            payload = {'message':message}
             today = datetime.today()
             todayStr = today.strftime("%d %B %Y")
-            message = message.split('(date)')
+            payload = payload.replace('(date)')
             today = datetime.today()
             todayStr = today.strftime("%d %B %Y")
-            message = message.replace('(date)',todayStr)
+            payload = payload.replace('(date)',todayStr)
             today = datetime.today() - timedelta(days=1)
             todayStr = today.strftime("%d %B %Y")
-            message = message.replace('(-date)',todayStr)
+            payload = payload.replace('(-date)',todayStr)
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
-            message = message.replace('(month)',todayStr)
-            payload = {'message':message}
+            payload = payload.replace('(month)',todayStr)
             file = {'imageFile':res.content}
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
             print(resp)
