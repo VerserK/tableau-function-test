@@ -44,7 +44,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
         today = datetime.today()
         todayStr = today.strftime("%d %B %Y")
-        message = message.split('(date)')
+        message = message.replace('(date)')
         today = datetime.today()
         todayStr = today.strftime("%d %B %Y")
         message = message.replace('(date)',todayStr)
