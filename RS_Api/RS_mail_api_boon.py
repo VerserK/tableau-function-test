@@ -11,7 +11,6 @@ from pandas import Series as Sr
 from sys import exit
 import sqlalchemy as sa
 from sqlalchemy.sql import text as sa_text
-import pyodbc, os
 import pandas as pd
 import urllib
 
@@ -73,13 +72,11 @@ def run():
     Data = Data[['workbook', 'owner', 'project', 'tags', 'location', 'id', 'name',
     'contentUrl', 'createdAt', 'updatedAt', 'viewUrlName']]
 
-    params = urllib.parse.quote_plus(dsn)
-    engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
+    # params = urllib.parse.quote_plus(dsn)
+    # engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     conn = engine.connect()
     #Import
-    df = pd.DataFrame(Data)
-    print(df)
-    df.to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
+    Data.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     print("Add Sql successfully")
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
