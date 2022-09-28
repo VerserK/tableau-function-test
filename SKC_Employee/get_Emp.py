@@ -7,10 +7,10 @@ from sqlalchemy.sql import text as sa_text
 
 def run():
     # ### DWH Connection ###
-    server = '172.31.8.25'
+    server = 'tableauauto.database.windows.net'
     database = 'HR Data'
     username = 'boon'
-    password = 'Boon@DA123'
+    password = 'DEE@DA123'
     driver = '{ODBC Driver 17 for SQL Server}'
     dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
     table = 'allemployee'
