@@ -78,9 +78,9 @@ def run():
     #Import
     Data.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     print("Add Sql successfully")
-    ###### Line Noti Message #####
-    LineUrl = 'https://notify-api.line.me/api/notify'
-    LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
-    LineHeaders = {'Authorization':'Bearer '+ LineToken}
-    payload = {'message':'Add Api Tableau to Azure SQL Server successfully'}
-    resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+    # ###### Line Noti Message #####
+    # LineUrl = 'https://notify-api.line.me/api/notify'
+    # LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
+    # LineHeaders = {'Authorization':'Bearer '+ LineToken}
+    # payload = {'message':'Add Api Tableau to Azure SQL Server successfully'}
+    # resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
