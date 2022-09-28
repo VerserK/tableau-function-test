@@ -64,9 +64,9 @@ def run():
     # df1 = df1[["eid","titleTH","nameTH","lastnameTH","nameEN","lastnameEN","email","jobNameTH","bu5nameTh","bu6nameTh","bu8nameTh"]]
     df1.columns = ['eid','titleTH','nameTH','lastnameTH','titleEN','nameEN','lastnameEN','email','jobNameTH','Division','Department','Section']
     df1.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
-    ###### Line Noti Message #####
-    LineUrl = 'https://notify-api.line.me/api/notify'
-    LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
-    LineHeaders = {'Authorization':'Bearer '+ LineToken}
-    payload = {'message':'succeeds uploading SKC Employees'}
-    resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+    # ###### Line Noti Message #####
+    # LineUrl = 'https://notify-api.line.me/api/notify'
+    # LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
+    # LineHeaders = {'Authorization':'Bearer '+ LineToken}
+    # payload = {'message':'succeeds uploading SKC Employees'}
+    # resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
