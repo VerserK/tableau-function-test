@@ -8,7 +8,7 @@ from sqlalchemy.sql import text as sa_text
 def run():
     # ### DWH Connection ###
     server = 'tableauauto.database.windows.net'
-    database = 'HR Data'
+    database = 'tableauauto_db'
     username = 'boon'
     password = 'DEE@DA123'
     driver = '{ODBC Driver 17 for SQL Server}'
