@@ -223,7 +223,7 @@ def create_message_with_attachment(sender, to, cc, bcc, subject, message_text, f
     if text.startswith('(im='):
       new_text = text.split('=')[1]
       new_text = new_text[:-1]
-      html_text = html_text + '<div><img src="cid:' + new_text + '" width=' + iwidth + '><br></div>'
+      html_text = html_text + '<div><img src="cid:' + new_text + '" width=' + str(iwidth) + '><br></div>'
     else:
       html_text = html_text + '<div><p>' + text + '</p></div>'
 
