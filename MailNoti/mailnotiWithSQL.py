@@ -406,6 +406,15 @@ def run():
         bcc = row['bcc']
         iwidth = row['ImageWidth']
         Subject = row['Subject']
+        today = datetime.today()
+        todayStr = today.strftime("%d %B %Y")
+        Subject = Subject.replace('(date)',todayStr)
+        today = datetime.today() - timedelta(days=1)
+        todayStr = today.strftime("%d %B %Y")
+        Subject = Subject.replace('(-date)',todayStr)
+        today = datetime.today()
+        todayStr = today.strftime("%B %Y")
+        Subject = Subject.replace('(month)',todayStr)
         if row['from'] == '':
           m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
         else:
