@@ -33,8 +33,8 @@ def run():
     # url = 'https://p701apsi01-la01skc.azurewebsites.net/skcapi/empid/16132'
     response = requests.get(url, headers=hed)
     df1 = pd.DataFrame.from_dict(response.json())
-    df1 = df1[["eid","titleTH","nameTH","lastnameTH","titleEN","nameEN","lastnameEN","email","jobNameTH","bU5ID","bU6ID","bU8ID"]]
-    df1.columns = ['eid','titleTH','nameTH','lastnameTH','titleEN','nameEN','lastnameEN','email','jobNameTH','bu5id','bu6id','bu8id']
+    df1 = df1[["eid","titleTH","nameTH","lastnameTH","titleEN","nameEN","lastnameEN","position_ID","position_NameTH","position_NameEN","email","jobNameTH","bU5ID","bU6ID","bU8ID"]]
+    df1.columns = ['eid','titleTH','nameTH','lastnameTH','titleEN','nameEN','lastnameEN','position_ID','position_NameTH','position_NameEN','email','jobNameTH','bu5id','bu6id','bu8id']
 
     url = 'https://p701apsi01-la01skc.azurewebsites.net/skcapi/bu5master'
     response = requests.get(url, headers=hed)
@@ -62,7 +62,7 @@ def run():
     df1 = df1.reset_index()
     df1.drop('bu8id', axis=1, inplace=True)
     # df1 = df1[["eid","titleTH","nameTH","lastnameTH","nameEN","lastnameEN","email","jobNameTH","bu5nameTh","bu6nameTh","bu8nameTh"]]
-    df1.columns = ['eid','titleTH','nameTH','lastnameTH','titleEN','nameEN','lastnameEN','email','jobNameTH','Division','Department','Section']
+    df1.columns = ['eid','titleTH','nameTH','lastnameTH','titleEN','nameEN','lastnameEN','position_ID','position_NameTH','position_NameEN','email','jobNameTH','Division','Department','Section']
     df1.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
     # ###### Line Noti Message #####
     # LineUrl = 'https://notify-api.line.me/api/notify'
