@@ -11,7 +11,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from datetime import datetime, timedelta
-import TableauNotiAPI as tbn
+from . import TableauNotiAPI as tbn
 from croniter import croniter
 import os
 import tempfile
