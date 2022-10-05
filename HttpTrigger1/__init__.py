@@ -4,7 +4,7 @@ import pandas as pd
 import azure.functions as func
 from . import mailnotiWithSQL
 from datetime import datetime,timedelta
-from dateutil.relativedelta import *
+
 
 
 
@@ -169,7 +169,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
             message = message.replace('(month)',todayStr)
-            today = datetime.today() - relativedelta(months=1)
+            today = datetime.today() - timedelta(days=30)
             todayStr = today.strftime("%B %Y")
             message = message.replace('(-month)',todayStr)
     if valid:

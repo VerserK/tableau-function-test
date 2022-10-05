@@ -30,7 +30,6 @@ from azure.storage.blob import BlobServiceClient, __version__
 import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
 import urllib
-from dateutil.relativedelta import *
 
 #configure sql server
 server = 'tableauauto.database.windows.net'
@@ -453,7 +452,7 @@ def run():
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         message = message.replace('(month)',todayStr)
-        today = datetime.today() - relativedelta(months=1)
+        today = datetime.today() - timedelta(days=30)
         todayStr = today.strftime("%B %Y")
         message = message.replace('(-month)',todayStr)
     if valid:
