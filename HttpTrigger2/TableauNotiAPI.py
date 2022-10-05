@@ -5,7 +5,7 @@ Created on Tue Jan 12 13:52:56 2021
 """
 import requests
 from datetime import datetime,timedelta
-from dateutil import relativedelta
+from dateutil.relativedelta import *
 import ast
 
 def GetViewId(dashboard):
