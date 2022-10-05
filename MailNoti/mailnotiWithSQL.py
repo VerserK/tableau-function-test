@@ -415,7 +415,7 @@ def run():
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         Subject = Subject.replace('(month)',todayStr)
-        today = datetime.today() - relativedelta(months=1)
+        today = datetime.today() - timedelta(days=30)
         todayStr = today.strftime("%B %Y")
         Subject = Subject.replace('(-month)',todayStr)
         if row['from'] == '':
