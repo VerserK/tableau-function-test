@@ -88,6 +88,9 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
             payload = payload.replace('(month)',todayStr)
+            today = datetime.today() - timedelta(days=30)
+            todayStr = today.strftime("%B %Y")
+            payload = payload.replace('(-month)',todayStr)
             payload = ast.literal_eval(payload)
             file = {'imageFile':res.content}
             print(payload)
