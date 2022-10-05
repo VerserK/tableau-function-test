@@ -5,6 +5,7 @@ Created on Tue Jan 12 13:52:56 2021
 """
 import requests
 from datetime import datetime,timedelta
+from dateutil.relativedelta import *
 import ast
 
 def GetViewId(dashboard):
@@ -54,6 +55,9 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         payload = payload.replace('(month)',todayStr)
+        today = datetime.today() - relativedelta(months=1)
+        todayStr = today.strftime("%B %Y")
+        payload = payload.replace('(-month)',todayStr)
         payload = ast.literal_eval(payload)
         print(payload)
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)

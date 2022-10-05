@@ -30,6 +30,7 @@ from azure.storage.blob import BlobServiceClient, __version__
 import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
 import urllib
+from dateutil.relativedelta import *
 
 #configure sql server
 server = 'tableauauto.database.windows.net'
@@ -415,6 +416,9 @@ def run():
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         Subject = Subject.replace('(month)',todayStr)
+        today = datetime.today() - relativedelta(months=1)
+        todayStr = today.strftime("%B %Y")
+        Subject = Subject.replace('(-month)',todayStr)
         if row['from'] == '':
           m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
         else:
@@ -449,6 +453,9 @@ def run():
         today = datetime.today()
         todayStr = today.strftime("%B %Y")
         message = message.replace('(month)',todayStr)
+        today = datetime.today() - relativedelta(months=1)
+        todayStr = today.strftime("%B %Y")
+        message = message.replace('(-month)',todayStr)
     if valid:
       msg = create_message_with_attachment(m_from,to,cc,bcc,Subject,message,file_list,iwidth)
       send_message('me',msg)

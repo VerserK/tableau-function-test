@@ -4,6 +4,7 @@ import pandas as pd
 import azure.functions as func
 from . import mailnotiWithSQL
 from datetime import datetime,timedelta
+from dateutil.relativedelta import *
 
 
 
@@ -131,6 +132,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
             Subject = Subject.replace('(month)',todayStr)
+            today = datetime.today() - relativedelta(months=1)
+            todayStr = today.strftime("%B %Y")
+            Subject = Subject.replace('(-month)',todayStr)
             if row['from'] =='':
                 m_from = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
             else:
@@ -165,6 +169,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             today = datetime.today()
             todayStr = today.strftime("%B %Y")
             message = message.replace('(month)',todayStr)
+            today = datetime.today() - relativedelta(months=1)
+            todayStr = today.strftime("%B %Y")
+            message = message.replace('(-month)',todayStr)
     if valid:
         msg = mailnotiWithSQL.create_message_with_attachment(m_from,to,cc,bcc,Subject,message,file_list,iwidth)
         mailnotiWithSQL.send_message('me',msg)
