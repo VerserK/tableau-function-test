@@ -46,8 +46,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             tbn.GetImage(row['DashboardName'],row['ViewId'],row['FilterName'],row['FilterValue'],row['Token'],row['Message'])
 
     if DashboardName:
-        return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
+        # return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
         # return func.HttpResponse[{DashboardName}]
+        return func.HttpResponse("<script>alert('Sent Line Successfully !');</script>")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
