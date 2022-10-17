@@ -1,4 +1,3 @@
-from distutils import bcppcompiler, ccompiler
 import logging
 import pandas as pd
 import azure.functions as func
