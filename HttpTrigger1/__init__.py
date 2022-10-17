@@ -5,8 +5,6 @@ from . import mailnotiWithSQL
 from datetime import datetime,timedelta
 
 
-
-
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
