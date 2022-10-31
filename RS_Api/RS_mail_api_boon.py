@@ -52,8 +52,6 @@ def run():
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
-    engine.execute(sa_text('''INSERT INTO idviewer (id,name) VALUES ('','MESSAGE')''').execution_options(autocommit=True))
-
     df = pd.DataFrame()
     res = tableau_get_view_id(df,1)
     resp =  res.json()
