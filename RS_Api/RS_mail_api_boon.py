@@ -52,6 +52,8 @@ def run():
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
+    engine.execute(sa_text('''INSERT INTO idviewer (name) VALUES ('MESSAGE')''').execution_options(autocommit=True))
+
     df = pd.DataFrame()
     res = tableau_get_view_id(df,1)
     resp =  res.json()
@@ -78,7 +80,7 @@ def run():
     #Import
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
-    LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
+    LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
     LineHeaders = {'Authorization':'Bearer '+ LineToken}
     #Import
     try:
