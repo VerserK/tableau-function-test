@@ -9,7 +9,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     eid = req.params.get('eid')
 
     if eid:
-        EmergencyNotify_NS.main(eid)
+        # EmergencyNotify_NS.main(eid)
         return func.HttpResponse(f"Hello, {eid}. This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
