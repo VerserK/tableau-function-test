@@ -7,9 +7,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     eid = req.params.get('eid')
-    EmergencyNotify_NS.main(eid)
 
     if eid:
+        EmergencyNotify_NS.main(eid)
         return func.HttpResponse(f"Hello, {eid}. This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
