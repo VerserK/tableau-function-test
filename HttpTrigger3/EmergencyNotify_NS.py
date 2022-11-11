@@ -207,4 +207,3 @@ def main(eid):
       msg = create_message_with_attachment(m_from,to,Subject,message,file_list)
       send_message('me',msg)
 
-main('Skc 15879 ')
