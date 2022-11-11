@@ -201,7 +201,6 @@ def main(eid):
   print('Send to : ',to)
   print(message)
 
-  to = 'pratipa.g@kubota.com'
   file_list = list()
   if valid:
       msg = create_message_with_attachment(m_from,to,Subject,message,file_list)
