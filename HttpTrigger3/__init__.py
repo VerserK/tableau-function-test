@@ -1,22 +1,23 @@
 import logging
 
 import azure.functions as func
-
+from . import EmergencyNotify_NS
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    name = req.params.get('name')
-    if not name:
+    eid = req.params.get('eid')
+    if not eid:
         try:
             req_body = req.get_json()
         except ValueError:
             pass
         else:
-            name = req_body.get('name')
+            eid = req_body.get('eid')
 
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
+    if eid:
+        EmergencyNotify_NS.main(eid)
+        return func.HttpResponse(f"Hello, {eid}. This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
