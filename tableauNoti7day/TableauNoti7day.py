@@ -27,7 +27,6 @@ from apiclient import errors
 from requests.exceptions import ReadTimeout
 import os
 from azure.storage.blob import BlobServiceClient, __version__
-from pymysql import NULL
 from tableau_api_lib import TableauServerConnection
 from tableau_api_lib.utils import querying , flatten_dict_column
 from datetime import datetime, timezone, timedelta
