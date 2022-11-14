@@ -192,9 +192,9 @@ def gmail_send_message(em):
 
 # em=[]
 def run():
-    em=['akarawat.p@kubota.com','chonnikan.r@kubota.com']
-    # for index, row in b2row.iterrows():
-    #     em.append(row['email'])
+    em=[]
+    for index, row in b2row.iterrows():
+        em.append(row['email'])
     gmail_send_message(em)
 
 # print(em)
