@@ -18,11 +18,9 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-import mimetypes
 import os,io,shutil
 import tempfile
 from croniter import croniter
-import socket
 from apiclient import errors
 from requests.exceptions import ReadTimeout
 import os
@@ -36,6 +34,7 @@ import urllib
 from sqlalchemy.sql import text as sa_text
 import numpy as np
 from email.message import EmailMessage
+import time
 
 ### API Connection ###
 server = 'tableauauto.database.windows.net'
@@ -65,6 +64,7 @@ engine1 = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params1)
 conn1 = engine1.connect()
 
 diff83 = datetime.now() - timedelta(days=83)
+diff30 = datetime.now() - timedelta(days=30)
 datetoday = datetime.now()
 
 tableau_server_config = {
@@ -96,11 +96,21 @@ a = df[df['lastLogin'] < diff83]
 a = a.query('email.str.contains("@kubota.com")', engine='python')
 a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and eid.str.len() != 4 ")
 a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
-a['UpdateTime'] = pd.to_datetime(a['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
+a['UpdateTime'] = pd.to_datetime(a['UpdateTime']).dt.date
 b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
-b2row = a[~a['email'].isin(b1['email'])]
+b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
+# b2 = a[a['email'].isin(b1['email'])]
+b2 = a[~a['lastLogin'].isin(b1['lastLogin'])]
+b2.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
+print(b2)
+b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
+b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
+b2row = b2[~b2['email'].isin(b1['email'])]
 b2row.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
 print(b2row)
+b3 = b2row.append(b2)
+print(b3)
+
 
 html = """<!DOCTYPE html>
 <head>
@@ -193,7 +203,7 @@ def gmail_send_message(em):
 # em=[]
 def run():
     em=[]
-    for index, row in b2row.iterrows():
+    for index, row in b3.iterrows():
         em.append(row['email'])
     gmail_send_message(em)
 
