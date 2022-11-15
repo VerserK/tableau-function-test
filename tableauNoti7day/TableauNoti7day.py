@@ -179,6 +179,7 @@ def gmail_send_message(em):
         message.set_content('simple text would go here - This is a fallback for html content')
         message.add_alternative(html, subtype='html')
         message['To'] = em
+        message['cc'] = ['akarawat.p@kubota.com','chonnikan.r@kubota.com']
         message['From'] = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
         message['Subject'] = '‼️ [Tableau] ‼️ แจ้งเตือนการใช้งาน Tableau ที่ไม่มีการเข้าใช้งานใกล้จะครบ 90 วัน'
 
