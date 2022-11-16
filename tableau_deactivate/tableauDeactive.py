@@ -82,13 +82,14 @@ def run():
     df.astype(str).to_sql('tableau_alluser', con=conn1, if_exists = 'append', index=False, schema="dbo")
 
     ### Select User overs 90 days ###
-    a = df[df['lastLogin'] < diff90]
+    a = df[df['lastLogin'] < diff90].copy()
     a = a.query('email.str.contains("@kubota.com")', engine='python')
     a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and eid.str.len() != 4 ")
     a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
     a['UpdateTime'] = pd.to_datetime(a['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
+    print(a)
     engine1.execute(sa_text('''TRUNCATE TABLE tableau_unlicensed''').execution_options(autocommit=True))
-    a.astype(str).to_sql('tableau_unlicensed', con=conn1, if_exists = 'append', index=False, schema="dbo")
+    a.astype(str).to_sql('tableau_unlicensed', con=conn1, if_exists = 'append', index=False, schema="dbo")\
 
     ### Select Creator Logs ###
     CL = a.copy()
@@ -100,7 +101,7 @@ def run():
         if row['siteRole'] == "Creator":
             row['siteRole'] = "Viewer"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
-            res = updateSite(row['id'],row['siteRole'])
+            updateSite(row['id'],row['siteRole'])
 
     ### Select Creator to Viewer ###
     b = a.copy()
@@ -120,7 +121,7 @@ def run():
             row['siteRole'] = "Unlicensed"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
             t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
-            res = updateSite(row['id'],row['siteRole'])
+            updateSite(row['id'],row['siteRole'])
             engine1.execute(t, userid=row['id'])
 
     ### Select Viewer Logs ###
@@ -131,4 +132,4 @@ def run():
         if row['siteRole'] == "Viewer":
             row['siteRole'] = "Unlicensed"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
-            res = updateSite(row['id'],row['siteRole'])
+            updateSite(row['id'],row['siteRole'])
