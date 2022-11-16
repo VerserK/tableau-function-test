@@ -28,8 +28,8 @@ def tableau_get_view_id(df,page):
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotify",
-        		"personalAccessTokenSecret": "spVlY5UoTiyqiN35jkpD5Q==:Ot21M39dqA5T8ZlpbaX9LclGsNMtdZ7q",
+        		"personalAccessTokenName": "TestToken",
+        		"personalAccessTokenSecret": "5830C81FQmyACKTsgeyGjQ==:w3WLdOoielNFNbsYkcUO5ejkZruZq9x0",
         		"site": {
         			"contentUrl": "skctableau"
         		}}}
