@@ -66,8 +66,8 @@ def tableau_get_img(view_id,fName,fValue,dbName):
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotify",
-        		"personalAccessTokenSecret": "spVlY5UoTiyqiN35jkpD5Q==:Ot21M39dqA5T8ZlpbaX9LclGsNMtdZ7q",
+        		"personalAccessTokenName": "MailNotifyTrigger",
+        		"personalAccessTokenSecret": "kl9U94TdTUSyT8Mtc1reMA==:KnreUU6MyzPbXKE3guUvSquUU00qpp3s",
         		"site": {
         			"contentUrl": "skctableau"
         		}
