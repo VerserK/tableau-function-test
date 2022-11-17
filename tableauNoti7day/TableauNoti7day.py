@@ -36,110 +36,34 @@ import numpy as np
 from email.message import EmailMessage
 import time
 
-### API Connection ###
-server = 'tableauauto.database.windows.net'
-database = 'tableauauto_db'
-username = 'boon'
-password = 'DEE@DA123'
-driver = '{ODBC Driver 17 for SQL Server}'
-dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
-table = 'allemployee'
-
-params = urllib.parse.quote_plus(dsn)
-engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-conn = engine.connect()
-
-df1 = pd.read_sql("SELECT [eid],[email],[position_ID],[position_NameTH] FROM "+table, conn)
-
-### Dev01 Connection ###
-server1 = 'dwhsqldev01.database.windows.net'
-database1 = 'Tableau Data'
-username1 = 'boon'
-password1 = 'DEE@DA123'
-driver1 = '{ODBC Driver 17 for SQL Server}'
-dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';PORT=1433;DATABASE='+database1+';UID='+username1+';PWD='+ password1
-
-params1 = urllib.parse.quote_plus(dsn1)
-engine1 = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params1)
-conn1 = engine1.connect()
-
-diff83 = datetime.now() - timedelta(days=83)
-diff30 = datetime.now() - timedelta(days=30)
-datetoday = datetime.now()
-
-tableau_server_config = {
-        'my_env': {
-                'server': 'https://prod-apnortheast-a.online.tableau.com',
-                'api_version': '3.17',
-                'personal_access_token_name': 'TestToken',
-                'personal_access_token_secret': '5830C81FQmyACKTsgeyGjQ==:w3WLdOoielNFNbsYkcUO5ejkZruZq9x0',
-                'site_name': 'skctableau',
-                'site_url': 'skctableau'
-        }
-}
-
-conn = TableauServerConnection(tableau_server_config, env='my_env')
-conn.sign_in()
-
-### Select User On Site to SQL ###
-user_df = querying.get_users_dataframe(conn)
-user_df["lastLogin"] = pd.to_datetime(user_df["lastLogin"]).dt.strftime('%Y-%m-%d')
-user_df["lastLogin"] = pd.to_datetime(user_df["lastLogin"], format='%Y-%m-%d')
-df1['email'] = df1['email'].str.lower()
-df = user_df.merge(df1, left_on='email', right_on='email', how='left')
-df = df.drop_duplicates(subset=['email'])
-df['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
-df['UpdateTime'] = pd.to_datetime(df['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
-
-### Select User overs 87 days ###
-a = df[df['lastLogin'] < diff83]
-a = a.query('email.str.contains("@kubota.com")', engine='python')
-a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and eid.str.len() != 4 ")
-a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
-a['UpdateTime'] = pd.to_datetime(a['UpdateTime']).dt.date
-b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
-b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
-# b2 = a[a['email'].isin(b1['email'])]
-b2 = a[~a['lastLogin'].isin(b1['lastLogin'])]
-b2.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
-print(b2)
-b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
-b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
-b2row = b2[~b2['email'].isin(b1['email'])]
-b2row.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
-print(b2row)
-b3 = b2row.append(b2)
-print(b3)
-
-
-html = """<!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email</title>
-  <body>
-   <p>เรียน ผู้ใช้งาน Tableau</p>
-
-<p>&nbsp;</p>
-
-<p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 83 วัน</p>
-
-<p style="margin-left:40px">ระบบจะทำการ Unlicense ของท่าน <span style="color:#e74c3c">ภายใน 7 วัน</span></p>
-
-<p style="margin-left:40px">หากต้องการใช้งานอย่างต่อเนื่อง กรุณา <a href="https://prod-apnortheast-a.online.tableau.com/#/site/skctableau/explore">Login</a> เพื่อทำการรักษาสิทธิ์</p>
-
-<p style="margin-left:40px"><span style="color:#e74c3c">ในกรณี Unlicense จะถูกตัดสิทธิ์การใช้งาน หากต้องการใช้งานใหม่</span></p>
-
-<p style="margin-left:40px"><span style="color:#e74c3c">กรุณาเปิด Request ผ่านระบบ </span><a href="https://workflow.siamkubota.co.th/">Workflow Management System</a><span style="color:#e74c3c"> &gt; แบบฟอร์มเปิด/ปิด/แก้ไขบัญชีผู้ใช้งาน (IT0004) &gt; Tableau &gt; Tableau Creator / Tableau Viewer</span></p>
-
-<p>&nbsp;</p>
-
-<p>จึงเรียนมาเพื่อทราบ</p>
-  </body>
-</html>
-"""
-
 def gmail_send_message(em):
+    #html contact
+    html = """<!DOCTYPE html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email</title>
+    <body>
+    <p>เรียน ผู้ใช้งาน Tableau</p>
+
+    <p>&nbsp;</p>
+
+    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 83 วัน</p>
+
+    <p style="margin-left:40px">ระบบจะทำการ Unlicense ของท่าน <span style="color:#e74c3c">ภายใน 7 วัน</span></p>
+
+    <p style="margin-left:40px">หากต้องการใช้งานอย่างต่อเนื่อง กรุณา <a href="https://prod-apnortheast-a.online.tableau.com/#/site/skctableau/explore">Login</a> เพื่อทำการรักษาสิทธิ์</p>
+
+    <p style="margin-left:40px"><span style="color:#e74c3c">ในกรณี Unlicense จะถูกตัดสิทธิ์การใช้งาน หากต้องการใช้งานใหม่</span></p>
+
+    <p style="margin-left:40px"><span style="color:#e74c3c">กรุณาเปิด Request ผ่านระบบ </span><a href="https://workflow.siamkubota.co.th/">Workflow Management System</a><span style="color:#e74c3c"> &gt; แบบฟอร์มเปิด/ปิด/แก้ไขบัญชีผู้ใช้งาน (IT0004) &gt; Tableau &gt; Tableau Creator / Tableau Viewer</span></p>
+
+    <p>&nbsp;</p>
+
+    <p>จึงเรียนมาเพื่อทราบ</p>
+    </body>
+    </html>
+    """
     creds = None
     # If modifying these scopes, delete the file token.json.
     SCOPES = ['https://www.googleapis.com/auth/gmail.compose']
@@ -203,6 +127,81 @@ def gmail_send_message(em):
 
 # em=[]
 def run():
+    ### API Connection ###
+    server = 'tableauauto.database.windows.net'
+    database = 'tableauauto_db'
+    username = 'boon'
+    password = 'DEE@DA123'
+    driver = '{ODBC Driver 17 for SQL Server}'
+    dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+    table = 'allemployee'
+
+    params = urllib.parse.quote_plus(dsn)
+    engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
+    conn = engine.connect()
+
+    df1 = pd.read_sql("SELECT [eid],[email],[position_ID],[position_NameTH] FROM "+table, conn)
+
+    ### Dev01 Connection ###
+    server1 = 'dwhsqldev01.database.windows.net'
+    database1 = 'Tableau Data'
+    username1 = 'boon'
+    password1 = 'DEE@DA123'
+    driver1 = '{ODBC Driver 17 for SQL Server}'
+    dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';PORT=1433;DATABASE='+database1+';UID='+username1+';PWD='+ password1
+
+    params1 = urllib.parse.quote_plus(dsn1)
+    engine1 = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params1)
+    conn1 = engine1.connect()
+
+    diff83 = datetime.now() - timedelta(days=83)
+    diff30 = datetime.now() - timedelta(days=30)
+    datetoday = datetime.now()
+
+    tableau_server_config = {
+            'my_env': {
+                    'server': 'https://prod-apnortheast-a.online.tableau.com',
+                    'api_version': '3.17',
+                    'personal_access_token_name': 'TestToken',
+                    'personal_access_token_secret': '5830C81FQmyACKTsgeyGjQ==:w3WLdOoielNFNbsYkcUO5ejkZruZq9x0',
+                    'site_name': 'skctableau',
+                    'site_url': 'skctableau'
+            }
+    }
+
+    conn = TableauServerConnection(tableau_server_config, env='my_env')
+    conn.sign_in()
+
+    ### Select User On Site to SQL ###
+    user_df = querying.get_users_dataframe(conn)
+    user_df["lastLogin"] = pd.to_datetime(user_df["lastLogin"]).dt.strftime('%Y-%m-%d')
+    user_df["lastLogin"] = pd.to_datetime(user_df["lastLogin"], format='%Y-%m-%d')
+    df1['email'] = df1['email'].str.lower()
+    df = user_df.merge(df1, left_on='email', right_on='email', how='left')
+    df = df.drop_duplicates(subset=['email'])
+    df['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
+    df['UpdateTime'] = pd.to_datetime(df['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
+
+    ### Select User overs 87 days ###
+    a = df[df['lastLogin'] < diff83]
+    a = a.query('email.str.contains("@kubota.com")', engine='python')
+    a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and eid.str.len() != 4 ")
+    a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
+    a['UpdateTime'] = pd.to_datetime(a['UpdateTime']).dt.date
+    b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
+    b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
+    # b2 = a[a['email'].isin(b1['email'])]
+    b2 = a[~a['lastLogin'].isin(b1['lastLogin'])]
+    b2.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
+    print(b2)
+    b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
+    b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
+    b2row = b2[~b2['email'].isin(b1['email'])]
+    b2row.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
+    print(b2row)
+    b3 = b2row.append(b2)
+    print(b3)
+
     em=[]
     for index, row in b3.iterrows():
         em.append(row['email'])
