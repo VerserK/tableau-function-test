@@ -59,7 +59,7 @@ def run():
     Data = pd.DataFrame()
     resp = list(resp['views'].values())[0]
 
-    n=2
+    n=0
     while True:
         Data = Data.append(pd.DataFrame(resp))
         n+=1
