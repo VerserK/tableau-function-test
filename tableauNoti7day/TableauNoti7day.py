@@ -190,7 +190,6 @@ def run():
     a['UpdateTime'] = pd.to_datetime(a['UpdateTime']).dt.date
     b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
     b1['UpdateTime'] = pd.to_datetime(b1['UpdateTime'], format='%Y-%m-%d')
-    # b2 = a[a['email'].isin(b1['email'])]
     b2 = a[~a['lastLogin'].isin(b1['lastLogin'])]
     b2.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
     print(b2)
@@ -205,7 +204,10 @@ def run():
     em=[]
     for index, row in b3.iterrows():
         em.append(row['email'])
-    gmail_send_message(em)
+    x = len(em)
+    print(x)
+    if x != 0:
+        gmail_send_message(em)
 
 # print(em)
 # if __name__ == '__main__':
