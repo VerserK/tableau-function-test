@@ -111,8 +111,15 @@ def run():
     b2row = b[~b['email'].isin(b1['email'])]
     b2row.astype(str).to_sql('tableau_creator_toviewer', con=conn1, if_exists = 'append', index=False, schema="dbo")
 
-    ### Select Viewer before Creator ###
+    ### Select Viewer before Creator to Unlicensed and Check Update viewer to creator ###
     VC = b1.copy()
+    VCC = b1.copy()
+    VCC = a[a['email'].isin(b1['email'])]
+    VCC = VCC[VCC['siteRole'] != "Viewer"]
+    for index, row in VCC.iterrows():
+        print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
+        t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
+        engine1.execute(t, userid=row['id'])
     VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"]).dt.strftime('%Y-%m-%d')
     VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"], format='%Y-%m-%d')
     VC = VC[VC['UpdateTime'] < diff90]
