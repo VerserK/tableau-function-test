@@ -18,12 +18,11 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-import os,io,shutil
+import os
 import tempfile
 from croniter import croniter
 from apiclient import errors
 from requests.exceptions import ReadTimeout
-import os
 from azure.storage.blob import BlobServiceClient, __version__
 from tableau_api_lib import TableauServerConnection
 from tableau_api_lib.utils import querying , flatten_dict_column
@@ -34,8 +33,7 @@ import urllib
 from sqlalchemy.sql import text as sa_text
 import numpy as np
 from email.message import EmailMessage
-import time
-
+###Send Email
 def gmail_send_message(em):
     #html contact
     html = """<!DOCTYPE html>
@@ -43,12 +41,17 @@ def gmail_send_message(em):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email</title>
+    <style>
+        .responsive {
+        width: 100%;
+        height: auto;
+        }
+    </style>
+    </head>
     <body>
     <p>เรียน ผู้ใช้งาน Tableau</p>
 
-    <p>&nbsp;</p>
-
-    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 83 วัน</p>
+    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 83 วัน*</p>
 
     <p style="margin-left:40px">ระบบจะทำการ Unlicense ของท่าน <span style="color:#e74c3c">ภายใน 7 วัน</span></p>
 
@@ -58,7 +61,11 @@ def gmail_send_message(em):
 
     <p style="margin-left:40px"><span style="color:#e74c3c">กรุณาเปิด Request ผ่านระบบ </span><a href="https://workflow.siamkubota.co.th/">Workflow Management System</a><span style="color:#e74c3c"> &gt; แบบฟอร์มเปิด/ปิด/แก้ไขบัญชีผู้ใช้งาน (IT0004) &gt; Tableau &gt; Tableau Creator / Tableau Viewer</span></p>
 
+    <img src="https://dwhwebstorage.blob.core.windows.net/test/Tableau%20Online%20(2).png" alt="tableau" class="responsive">
+
     <p>&nbsp;</p>
+
+    <p style="font-weight: bold; color:#e74c3c">*เงื่อนไขการตัดสิทธิ์ใช้งาน ไม่เข้าใช้งานเป็นเวลา 90 วัน</p>
 
     <p>จึงเรียนมาเพื่อทราบ</p>
     </body>
@@ -105,7 +112,7 @@ def gmail_send_message(em):
         message['To'] = em
         message['cc'] = ['chawannut.h@kubota.com','akarawat.p@kubota.com','chonnikan.r@kubota.com']
         message['From'] = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
-        message['Subject'] = '‼️ [Tableau] ‼️ แจ้งเตือนการใช้งาน Tableau ที่ไม่มีการเข้าใช้งานใกล้จะครบ 90 วัน'
+        message['Subject'] = '📍 [Tableau] ด่วน แจ้งเตือนบัญชี Tableau ของท่าน ไม่มีการเข้าใช้งานใกล้จะถึงเงื่อนไขการตัดสิทธิ์ใช้งาน'
 
         # encoded message
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()) \
