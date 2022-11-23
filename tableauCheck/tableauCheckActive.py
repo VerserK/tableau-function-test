@@ -1,13 +1,10 @@
-from pymysql import NULL
 from tableau_api_lib import TableauServerConnection
 from tableau_api_lib.utils import querying , flatten_dict_column
-from datetime import datetime, timezone, timedelta
 import pandas as pd
 import sqlalchemy as sa
 import urllib
 from sqlalchemy.sql import text as sa_text
 import requests
-import numpy as np
 def run():
         ### Dev01 Connection ###
         server1 = 'dwhsqldev01.database.windows.net'
