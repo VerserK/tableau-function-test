@@ -45,6 +45,9 @@ def run():
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
         if ecc.empty:
                 print('DataFrame is empty!')
+                payload = {'message' : '(Tableau Check 7 days noti) No Active Users'}
+                resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+                print(resp.text)
         else:
                 payload=[]
                 for index, row in ecc.iterrows():
@@ -53,3 +56,4 @@ def run():
                 payload = ','.join(payload)
                 print(payload)
                 resp = requests.post(LineUrl, headers=LineHeaders , data = {'message' : msg+payload})
+                print(resp.text)
