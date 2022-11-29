@@ -38,22 +38,28 @@ def run():
         ## Email Check
         ec = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
         ecc = user_df[user_df['email'].isin(ec['email'])]
-        ecc = ecc[~ecc['lastLogin'].isin(user_df['lastLogin'])]
+        ecc1 = ecc[~ecc['lastLogin'].isin(ec['lastLogin'])]
+
         ###### Line Noti Message #####
         LineUrl = 'https://notify-api.line.me/api/notify'
         LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
         LineHeaders = {'Authorization':'Bearer '+ LineToken}
-        if ecc.empty:
+        if ecc1.empty:
                 print('DataFrame is empty!')
                 payload = {'message' : '(Tableau Check 7 days noti) No Active Users'}
                 resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
                 print(resp.text)
         else:
                 payload=[]
-                for index, row in ecc.iterrows():
+                for index, row in ecc1.iterrows():
                         msg = 'Tableau is activate : '
                         payload.insert(index,row['email'])
                 payload = ','.join(payload)
+                msgrow = ' *Number of e-mails returned to active* : '
+                numrow = ecc1['email'].count()
+                converted_num = str(numrow)
                 print(payload)
-                resp = requests.post(LineUrl, headers=LineHeaders , data = {'message' : msg+payload})
+                resp = requests.post(LineUrl, headers=LineHeaders , data = {'message' : msgrow+converted_num})
                 print(resp.text)
+
+run()
