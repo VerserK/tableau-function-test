@@ -34,7 +34,7 @@ from sqlalchemy.sql import text as sa_text
 import numpy as np
 from email.message import EmailMessage
 ###Send Email
-def gmail_send_message(em):
+def gmail_send_message():
     #html contact
     html = """<!DOCTYPE html>
     <head>
