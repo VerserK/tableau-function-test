@@ -76,8 +76,9 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                         avg = ('vf_'+ filterName[i] + '=' + filterValue[i] + '&')
                         txt.insert(i,avg)
                 urlfname = (''.join(txt))
-                url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?{0}maxAge=1'+'&resolution=high&sort=ส่วน:asc'.format(urlfname)
-            #url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_สายงาน=สายงานวางแผนและควบคุม/CFO'
+                url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?{0}maxAge=1'.format(urlfname)+'&resolution=high&sort=ส่วน:asc'
+                print(url)
+            # url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_สายงาน=สายงานวางแผนและควบคุม/CFO'
             res = requests.get(url, headers=headers, json = {})
             print(view_id)
             #Send to Line
@@ -103,3 +104,4 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             print(payload)
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
             print(resp)
+# GetImage('WSbyDealer','fa3815eb-acf6-464f-9635-5bf4b2391a15','Select Date,Product','2022-11-27,DRONE','XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e','testMuti')
