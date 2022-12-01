@@ -77,7 +77,6 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                         txt.insert(i,avg)
                 urlfname = (''.join(txt))
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?{0}maxAge=1'.format(urlfname)+'&resolution=high&sort=ส่วน:asc'
-                print(url)
             # url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_สายงาน=สายงานวางแผนและควบคุม/CFO'
             res = requests.get(url, headers=headers, json = {})
             print(view_id)

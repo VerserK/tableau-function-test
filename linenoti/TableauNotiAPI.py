@@ -69,7 +69,14 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             if filterName is None:
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?maxAge=1'+'&resolution=high'
             else:
-                url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_'+filterName+'='+filterValue+'&maxAge=1'+'&resolution=high&sort=ส่วน:asc'
+                filterName = filterName.split(',')
+                filterValue = filterValue.split(',')
+                txt=[]
+                for i in range(0, len(filterName)):
+                        avg = ('vf_'+ filterName[i] + '=' + filterValue[i] + '&')
+                        txt.insert(i,avg)
+                urlfname = (''.join(txt))
+                url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?{0}maxAge=1'.format(urlfname)+'&resolution=high&sort=ส่วน:asc'
             #url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?vf_สายงาน=สายงานวางแผนและควบคุม/CFO'
             res = requests.get(url, headers=headers, json = {})
             print(view_id)
