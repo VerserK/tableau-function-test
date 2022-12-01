@@ -226,8 +226,13 @@ def run():
             row['siteRole'] = "Unlicensed"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
             t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
+            emailViewtoUnlicense.append(row['email'])
             updateSite(row['id'],row['siteRole'])
             engine1.execute(t, userid=row['id'])
+        x = len(emailViewtoUnlicense)
+    print(x)
+    if x != 0:
+        gmail_send_message(emailViewtoUnlicense)
 
     ### Select Viewer Logs ###
     C1rows = a[~a['email'].isin(b1['email'])]
