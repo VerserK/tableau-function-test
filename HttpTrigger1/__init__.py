@@ -51,12 +51,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if filterName is None:
         filterName_list=''
     else:
-        filterName_list = filterName.split(",")
+        filterName_list = filterName
 
     if filterValue is None:
         filterValue_list = ''
     else:
-        filterValue_list = filterValue.split(",")
+        filterValue_list = filterValue
 
     if imageName is None:
         imageName_list = ''
