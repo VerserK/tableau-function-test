@@ -232,7 +232,7 @@ def run():
     if x != 0:
         gmail_send_message(emailViewtoUnlicense)
 
-    ### Select Viewer Logs ###
+    ### Select Viewer Logs to Unlicensed ###
     C1rows = a[~a['email'].isin(b1['email'])]
     C1rows.astype(str).to_sql('tableau_viewer_logs', con=conn1, if_exists = 'append', index=False, schema="dbo")
     print(C1rows)
