@@ -228,8 +228,7 @@ def run():
             emailViewtoUnlicense.append(row['email'])
             updateSite(row['id'],row['siteRole'])
             engine1.execute(t, userid=row['id'])
-        x = len(emailViewtoUnlicense)
-    print(x)
+    x = len(emailViewtoUnlicense)
     if x != 0:
         gmail_send_message(emailViewtoUnlicense)
 
@@ -245,6 +244,5 @@ def run():
             emailViewtoUnlicense.append(row['email'])
             updateSite(row['id'],row['siteRole'])
     x = len(emailViewtoUnlicense)
-    print(x)
     if x != 0:
         gmail_send_message(emailViewtoUnlicense)
