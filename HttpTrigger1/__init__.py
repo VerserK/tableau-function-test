@@ -45,7 +45,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     else:
         ID_Json_list = ID_Json.split(",")
 
-    if ImageWidth is None:
+    if ImageWidth is None: 
         ImageWidth_list = ''
     else:
         ImageWidth_list = ImageWidth.split(",")
