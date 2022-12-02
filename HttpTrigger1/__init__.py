@@ -23,6 +23,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     bcc = req.params.get('bcc')
     Subject = req.params.get('Subject')
     Content = req.params.get('Content')
+    filterName_list =[]
+    filterValue_list=[]
     if Enable is None:
         Enable_list = ''
     else:
@@ -51,12 +53,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if filterName is None:
         filterName_list=''
     else:
-        filterName_list = filterName
+        filterName_list.append(filterName)
 
     if filterValue is None:
         filterValue_list = ''
     else:
-        filterValue_list = filterValue
+        filterValue_list.append(filterValue)
 
     if imageName is None:
         imageName_list = ''
