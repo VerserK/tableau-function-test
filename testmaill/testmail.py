@@ -91,10 +91,11 @@ def gmail_send_message():
         message = EmailMessage()
         message.set_content('simple text would go here - This is a fallback for html content')
         message.add_alternative(html, subtype='html')
-        message['To'] = 'skc_m.spadmin@pjt.kubota.com'
+        message['To'] = 'skc_m.supportdms@sys.kubota.com'
         message['Cc'] = 'akarawat.p@kubota.com,chawannut.h@kubota.com,piyaphat.n@kubota.com'
         message['From'] = '"SKC, Dashboard"<skc_g.dashboard@kubota.com>'
-        message['Subject'] = '📍 test maill'
+        datetoday = datetime.now()
+        message['Subject'] = '📍 test maill '+str(datetoday)
 
         # encoded message
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()) \
