@@ -56,7 +56,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
             avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
             txt.insert(i,avg)
     urlfname = (''.join(txt))
-    url = server +  '/sites/'+site_id+'/views/fa3815eb-acf6-464f-9635-5bf4b2391a15/image?maxAge=1&resolution=high&{0}'.format(urlfname)
+    url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
     #res = requests.get(url, headers=headers, json = {})
     res = requests.get(url, headers=headers, allow_redirects=True)
     filename = dbName+'-'+fValue+'.xlsx'
@@ -94,7 +94,7 @@ def tableau_get_img(view_id,fName,fValue,dbName):
             avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
             txt.insert(i,avg)
     urlfname = (''.join(txt))
-    url = server +  '/sites/'+site_id+'/views/fa3815eb-acf6-464f-9635-5bf4b2391a15/image?maxAge=1&resolution=high&{0}'.format(urlfname)
+    url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
     res = requests.get(url, headers=headers, json = {})
     filename = dbName+'.jpeg'
     creds_path = os.path.join(tempfile.gettempdir(), filename)
