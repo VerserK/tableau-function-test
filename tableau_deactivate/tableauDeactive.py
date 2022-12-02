@@ -220,17 +220,18 @@ def run():
     VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"]).dt.strftime('%Y-%m-%d')
     VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"], format='%Y-%m-%d')
     VC = VC[VC['UpdateTime'] < diff90]
+    emailCratortoViewertoUnlicensed = []
     for index, row in VC.iterrows():
         if row['siteRole'] == "Viewer":
             row['siteRole'] = "Unlicensed"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
             t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
-            emailViewtoUnlicense.append(row['email'])
+            emailCratortoViewertoUnlicensed.append(row['email'])
             updateSite(row['id'],row['siteRole'])
             engine1.execute(t, userid=row['id'])
-    x = len(emailViewtoUnlicense)
+    x = len(emailCratortoViewertoUnlicensed)
     if x != 0:
-        gmail_send_message(emailViewtoUnlicense)
+        gmail_send_message(emailCratortoViewertoUnlicensed)
 
     ### Select Viewer Logs to Unlicensed ###
     C1rows = a[~a['email'].isin(b1['email'])]
