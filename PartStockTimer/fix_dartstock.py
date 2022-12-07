@@ -20,7 +20,6 @@ import sqlalchemy as sa
 from sqlalchemy import event
 import urllib
 from ftplib import FTP
-import pymssql
 import requests
 import traceback
 from azure.storage.blob import BlobServiceClient, __version__
