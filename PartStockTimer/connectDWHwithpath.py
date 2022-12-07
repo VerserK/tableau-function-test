@@ -18,5 +18,6 @@ import pandas as pd
 # print(df)
 
 # df = pd.read_csv(r"\\178.50.0.170\E\MyName\test.csv")
-df = pd.read_excel(r'\\172.31.1.98\Z\PartsDWH_Log\PartsDWHLog.xlsx',index_col='Table')
-print(df)
+def run():
+    df = pd.read_excel(r'\\172.31.1.98\Z\PartsDWH_Log\PartsDWHLog.xlsx',index_col='Table')
+    print(df)
