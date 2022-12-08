@@ -66,7 +66,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         if Id != '':
             view_id = Id
         if view_id != '':
-            if filterName is None:
+            if filterName == '':
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?maxAge=1'+'&resolution=high'
             else:
                 txt=[]
