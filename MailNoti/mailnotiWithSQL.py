@@ -70,12 +70,13 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
     headers = {"Content-Type": "application/json",
            "Accept":"application/json",
            "X-Tableau-Auth": token}
-    fName = fName.split(',')
-    fValue = fValue.split(',')
     txt=[]
+    fName = fName.split(',')
+    fValue = fValue.split('(filter)')
+    fValue.pop(0)
     for i in range(0, len(fName)):
-            avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
-            txt.insert(i,avg)
+        avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
+        txt.insert(i,avg)
     urlfname = (''.join(txt))
     url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
     #res = requests.get(url, headers=headers, json = {})
@@ -108,12 +109,13 @@ def tableau_get_img(view_id,fName,fValue,dbName):
     headers = {"Content-Type": "application/json",
            "Accept":"application/json",
            "X-Tableau-Auth": token}
-    fName = fName.split(',')
-    fValue = fValue.split(',')
     txt=[]
+    fName = fName.split(',')
+    fValue = fValue.split('(filter)')
+    fValue.pop(0)
     for i in range(0, len(fName)):
-            avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
-            txt.insert(i,avg)
+        avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
+        txt.insert(i,avg)
     urlfname = (''.join(txt))
     url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
     res = requests.get(url, headers=headers, json = {})
