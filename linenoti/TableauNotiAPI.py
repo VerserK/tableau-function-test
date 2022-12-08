@@ -70,11 +70,11 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?maxAge=1'+'&resolution=high'
             else:
                 txt=[]
-                fName = fName.split(',')
-                fValue = fValue.split('(filter)')
-                fValue.pop(0)
-                for i in range(0, len(fName)):
-                    avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
+                filterName = filterName.split(',')
+                filterValue = filterValue.split('(filter)')
+                filterValue.pop(0)
+                for i in range(0, len(filterName)):
+                    avg = ('vf_'+ filterName[i] + '=' + filterValue[i] + '&')
                     txt.insert(i,avg)
                 urlfname = (''.join(txt))
                 url = server +  '/sites/'+site_id+'/views/'+view_id+'/image' + '?{0}maxAge=1'.format(urlfname)+'&resolution=high&sort=ส่วน:asc'
