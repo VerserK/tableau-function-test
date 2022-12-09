@@ -51,3 +51,4 @@ urllib3==1.26.9
 SQLAlchemy==1.4.40
 pyodbc==4.0.34
 pymssql==2.2.7
+pysftp==0.2.9
