@@ -52,6 +52,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
     txt=[]
     if fValue == '' and fName == '':
       url = server +  '/sites/'+site_id+'/views/'+view_id+'/crosstab/excel?maxAge=1&'
+      fValue=''
     else:
       fName = fName.split(',')
       fValue = fValue.split('(filter)')
