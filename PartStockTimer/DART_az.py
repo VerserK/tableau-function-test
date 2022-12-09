@@ -23,38 +23,74 @@ from ftplib import FTP
 import requests
 import traceback
 from azure.storage.blob import BlobServiceClient, __version__
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+import pysftp
+import tempfile
 
-def stamp_log(table,Message):
-    CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=dwhwebstorage;AccountKey=A8aP+xOBBD5ahXo9Ch6CUvzsqkM5oyGn1/R3kcFcNSrZw4aU0nE7SQCBhHQFYif1AEPlZ4/pAoP/+AStKRerPQ==;EndpointSuffix=core.windows.net"
-    CONTAINERNAME = "partsdwh-log"
-    BLOBNAME = "PartsDWHLog.xlsx"
-    LOCALFILENAME = "PartsDWHLog.xlsx" 
+HOSTNAME = 'dwhtestsftp.blob.core.windows.net'
+USERNAME = 'dwhtestsftp.boon'
+PASSWORD = 'bcdhECAOY5j8QyE3QsdcUWkEloU5M2Dv'
 
-    blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
-    container_client = blob_service_client.get_container_client(CONTAINERNAME)
-    blob_client = blob_service_client.get_blob_client(container = CONTAINERNAME, blob=BLOBNAME)
-
-    #READ PRODUCTS FILE
-    f = open(LOCALFILENAME, "wb")
-    f.write(blob_client.download_blob().content_as_bytes())
-    f.close()
-    df = pd.read_excel(r''+LOCALFILENAME)
-    stamp = datetime.today()
-    df.loc[table,['Log timestamp']] = stamp
-    df.loc[table,['Status']] = Message
-    if Message == 'Success':
-        df.loc[table,['last success']] = stamp
-    df.to_excel(r''+LOCALFILENAME)
-    return df
-
-server = '172.31.8.25'
+server = r'SKCDWH01'
 database = 'DART'
 username = 'boon'
 password = 'Boon@DA123'
 driver = '{ODBC Driver 17 for SQL Server}'
         
 dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+
+def stamp_log(table,status):
+    timestamp = str(datetime.today())
+    SPREADSHEET_ID='1Ce5A91xYxhCABtwSFinfy2sIJmh_aeoKlFXvSz1ypH4'
+    RANGE_NAME='Sheet1'
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
+
+    creds = None
     
+    with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+        cred_path = os.path.join(tempfile.gettempdir(), 'google_authorized_user.json')
+        sftp.get('google_authorized_user.json',cred_path)
+        token_path =  os.path.join(tempfile.gettempdir(), 'token.json')
+        sftp.get('token.json',token_path)
+    
+        if os.path.exists(token_path):
+            creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                   cred_path , SCOPES)
+                creds = flow.run_local_server(port=0)
+            with open(token_path, 'w') as token:
+                token.write(creds.to_json())
+                sftp.put(token_path,'token.json')
+
+    service = build('sheets', 'v4', credentials=creds)
+
+    service = service.spreadsheets()
+   
+    sheet = service.values().get(spreadsheetId=SPREADSHEET_ID,
+                                range=RANGE_NAME).execute()
+    values = sheet.get('values', [])
+    logs = pd.DataFrame(values[1:],columns=values[0])
+    logs.index = logs['Table']
+    logs.loc[table,['Table']] = table
+    logs.loc[table,['Log timestamp']] = timestamp
+    logs.loc[table,['Status']] = status
+    logs['last success'] = np.where((logs['Table'].eq(table))&(status == 'Success'),timestamp,logs['last success'])
+    logs['last success'] = np.where((logs['Table'].eq(table))&(status == 'Fail'),'',logs['last success'])
+    logs = [logs.columns.to_list()] + logs.values.tolist()
+
+    response_update = service.values().update(spreadsheetId=SPREADSHEET_ID,
+                        range=RANGE_NAME,valueInputOption='USER_ENTERED',
+                        body=dict(majorDimension='ROWS',
+                        values=logs)).execute()
+    return response_update
+
 def func_LineNotify(Message,LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'):
     url  = "https://notify-api.line.me/api/notify"
     msn = {'message':Message}
@@ -63,28 +99,19 @@ def func_LineNotify(Message,LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF
     response =session.post(url, headers=LINE_HEADERS, data=msn)
     return response 
 
-def uploadCSV(data, filepath,table,FOLDER,dsn):
+def uploadCSV(data, filepath,table,dsn):
 
     mydb = pyodbc.connect(dsn)
     
     cursor = mydb.cursor()
     
     df = data
-
-    CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=dwhwebstorage;AccountKey=A8aP+xOBBD5ahXo9Ch6CUvzsqkM5oyGn1/R3kcFcNSrZw4aU0nE7SQCBhHQFYif1AEPlZ4/pAoP/+AStKRerPQ==;EndpointSuffix=core.windows.net"
-    CONTAINERNAME = "dwhdart"
-    BLOBNAME = "PartField_to_Map.csv"
-    LOCALFILENAME = "PartField_to_Map.csv" 
-
-    blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
-    container_client = blob_service_client.get_container_client(CONTAINERNAME)
-    blob_client = blob_service_client.get_blob_client(container = CONTAINERNAME, blob=BLOBNAME)
-
-    #READ PRODUCTS FILE
-    f = open(LOCALFILENAME, "wb")
-    f.write(blob_client.download_blob().content_as_bytes())
-    f.close()
-    df_cols = pd.read_csv(r''+LOCALFILENAME)
+    
+    with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+        col_path = os.path.join(tempfile.gettempdir(), r'PartField_to_Map.csv')
+        sftp.get(r'PartField_to_Map.csv',col_path)
+    
+    df_cols = pd.read_csv(os.path.join(col_path,'PartField_to_Map.csv'))
     
     for col in df.columns:
         
@@ -112,8 +139,7 @@ def uploadCSV(data, filepath,table,FOLDER,dsn):
             cols_map = df_cols[df_cols['Table']=='ZPARTSTOCK']
             if col in ['LABST','KBETR','TOTPC']:
                 print(col)
-                df[col] = df[col].fillna(0)
-                df[col] = df[col].astype(str)
+                df[col] = df[col].fillna(0).astype(str)
                 df[col] = df[col].str.replace(',','')
                 df.loc[df[col].str.contains('-'), 'Sign'] = '-'
                 df.loc[df[col].str.contains('-') == False, 'Sign'] = ''
@@ -154,7 +180,7 @@ def uploadCSV(data, filepath,table,FOLDER,dsn):
         elif table in ['PART_SERVICE','retail_service']:
             df = df.rename(columns={col:df_cols.loc[(df_cols['Table'].eq('PART_SERVICE'))&(df_cols['FTP FILE'].eq(col)), 'FIELD NAME'].item()})
     df.drop(columns=['Sign'],inplace=True) 
-    
+
     if table == 'PART_STOCK' and filepath != 'dummystock':
         df.columns = ['KADS Code','AD Name','Branch Code','Branch Name','Material No','Material Desc','Division Code','Division Name','Quantity','Unit',
                       'List Price','Currency','Total Price','Plant Code','Plant Name','Storage Location']
@@ -250,15 +276,20 @@ def uploadCSV(data, filepath,table,FOLDER,dsn):
         df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
         
     print('Finish Upload ',filepath)
-    
     if filepath != 'dummystock':
-        df.to_csv(os.path.join(FOLDER,'his',filepath[:-4]+'.csv'),index=False)
+        BLOBNAME = filepath[:-4]+'.csv'
     else:
-        df.to_csv(os.path.join(FOLDER,'his','ZPARTSTOCK'+datetime.strftime(stamp,'%Y%m%d%H%M%S')+'.csv'),index=False)
+        BLOBNAME = 'ZPARTSTOCK'+datetime.strftime(stamp,'%Y%m%d%H%M%S')+'.csv'
+    temp_path = os.path.join(tempfile.gettempdir(),'tempfile.csv')
+    df.to_csv(temp_path,index=False)
+    sftp.put(temp_path,os.path.join(r'his',BLOBNAME))
 
-def ReadToUpload(FOLDER,file,encode,table,dsn):
+def ReadToUpload(file,encode,table,dsn):
+    with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+        txt_path = os.path.join(tempfile.gettempdir(),file)
+        sftp.get(os.path.join(r'download',file),txt_path)
     
-    txt = open(os.path.join(FOLDER,'downloads',file), "r",encoding=encode, errors='replace')
+    txt = open(txt_path, "r",encoding=encode, errors='replace')
     file_string = txt.read() #.encode('utf-8')
             
     file_list = file_string.split('\n')
@@ -292,27 +323,30 @@ def ReadToUpload(FOLDER,file,encode,table,dsn):
 
     final_file.columns = final_rows[0]
     
-    final_file.to_csv(os.path.join(FOLDER,'downloads',file[:-4]+'.csv'),index=False)
+    with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+        final_path = os.path.join(tempfile.gettempdir(),file[:-4]+'.csv')
+        final_file.to_csv(final_path,index=False)
+        sftp.put(final_path,os.path.join(r'downloads',file[:-4]+'.csv'))
 
     if len(final_file) >= 1:
-        uploadCSV(final_file,file, table,FOLDER,dsn)
+        uploadCSV(final_file,file, table,dsn)
         if table == 'PART_SALES':
             database = 'Parts'
             table = 'retail_sales'
             new_dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
-            uploadCSV(final_file,file, table,FOLDER,new_dsn)
+            uploadCSV(final_file,file, table,new_dsn)
         elif table == 'PART_SERVICE':
             database = 'Parts'
             table = 'retail_service'
             new_dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
-            uploadCSV(final_file,file, table,FOLDER,new_dsn)
+            uploadCSV(final_file,file, table,new_dsn)
             
         txt.close()
 
 def dummystock(dsn,refdate,noti_str):
     refdate = datetime.strptime(refdate,'%Y%m%d').date()
     ref_date = datetime.strftime(refdate-dt.timedelta(days=1),'%Y%m%d')
-    his_fold = r'E:\DWHScripts\DART\his'
+    his_fold = r'his'
     datediff = []
     filename = []
     with os.scandir(os.path.join(his_fold)) as i:
@@ -336,7 +370,7 @@ def dummystock(dsn,refdate,noti_str):
     print('Finish Select')
     if len(prv_date) > 0:
         prv_date['Query_datetime'] = refdate
-        uploadCSV(prv_date, 'dummystock','PART_STOCK',r'E:\DWHScripts\DART',dsn)
+        uploadCSV(prv_date, 'dummystock','PART_STOCK',dsn)
         noti_str = noti_str+'\nPART_STOCK- dummy with '+thatfile
     return noti_str
 
@@ -345,13 +379,10 @@ def main(ref_date,path,noti_str):
     ftp.login('kadsftp_prd','bqMVwn')
     ftp.cwd(path)
     all_files= ftp.nlst()
-    #print(all_files)
     
     file_names = ('ZPARTSERV'+ref_date,'ZPARTSTOCK'+ref_date,'ZPARTSALES'+ref_date) #
-    #print(file_names)
 
     hail_files = [i for i in all_files if i.startswith(file_names)]
-    #print(hail_files)
     new_reps = []
     ftp.close()
     if len(hail_files) > 0:
@@ -367,8 +398,11 @@ def main(ref_date,path,noti_str):
                  continue
             
             print("Downloading " + filename, end=" | ")
-            with open(os.path.join(FOLDER,'downloads',filename), "wb") as file_handle:
+            file_path = os.path.join(tempfile.gettempdir(),filename)
+            with open(file_path, "wb") as file_handle:
                 ftp.retrbinary("RETR " + filename, file_handle.write)
+                with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+                    sftp.put(file_path,os.path.join(r'downloads',filename))
                 print(" finished")
                 file = filename
             
@@ -383,17 +417,18 @@ def main(ref_date,path,noti_str):
                 table = 'PART_STOCK' 
             
             try:
-                ReadToUpload(FOLDER,file,encode,table,dsn)
-                os.remove(os.path.join(FOLDER,'downloads',file[:-4]+'.csv'))
-                #os.remove(os.path.join(FOLDER,'downloads',filename))
+                ReadToUpload(file,encode,table,dsn)
+                #os.remove(os.path.join(r'downloads',file[:-4]+'.csv'))
+                with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
+                    sftp.remove(os.path.join(r'downloads',file[:-4]+'.csv'))
+                    sftp.remove(os.path.join(r'downloads',filename))
+                #os.remove(os.path.join(r'downloads',filename))
                 noti_str += '\n'+table+'- uploaded'
                 stamp_log(table,'Success')
-                print('update log file')
                 if table == 'PART_SALES':
                     stamp_log('retail_sales','Success')
                 elif table == 'PART_SERVICE':
                     stamp_log('retail_service','Success')
-
             except Exception as e:
                 noti_str += '\n'+table+'- failed'
                 print(traceback.print_exc())
@@ -417,20 +452,18 @@ def main(ref_date,path,noti_str):
                 print("-moved-")
     return noti_str
  
-FOLDER = r'D:\DWH\DART'
 path = "DMP/900/KADSI187/ARCHIVE"
 outpath = "DMP/900/KADSI187/OUT"
 arc_noti = ''
-today = datetime.today() #-timedelta(days=3) #datetime.strptime('20220406','%Y%m%d') #
+today = datetime.today() #-timedelta(days=1) #datetime.strptime('20220406','%Y%m%d') #
 try:
-    if today <= datetime.today():
-        ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  #'20220524'# 
+    while today <= datetime.today():
+        ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  
         out_date = datetime.strftime(today.date(),'%Y%m%d')
-        print(out_date)
+        print(ref_date)
         out_noti = main(out_date,outpath,'DART OUT:\n')
         
         out_Resp = func_LineNotify(out_noti)
-        '''arc_noti = main(ref_date,outpath,'DART Rerun:\n')
         
         if 'STOCK' not in out_noti:
             try:
@@ -440,10 +473,7 @@ try:
         
         print('end:',today)
         today += timedelta(days=1)
-        print(arc_noti)
-        print(out_noti)
-        arc_Resp = func_LineNotify(arc_noti)
-        '''
+
 except Exception as errors:
     print(traceback.print_exc())
     out_Resp = func_LineNotify(errors)
