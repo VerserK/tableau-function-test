@@ -451,30 +451,30 @@ def main(ref_date,path,noti_str):
                 ftpReply = ftp.close()
                 print("-moved-")
     return noti_str
- 
-path = "DMP/900/KADSI187/ARCHIVE"
-outpath = "DMP/900/KADSI187/ARCHIVE"
-arc_noti = ''
-today = datetime.today() #-timedelta(days=1) #datetime.strptime('20220406','%Y%m%d') #
-try:
-    while today <= datetime.today():
-        ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  
-        out_date = datetime.strftime(today.date(),'%Y%m%d')
-        print(ref_date)
-        out_noti = main(out_date,outpath,'DART OUT:\n')
-        
-        out_Resp = func_LineNotify(out_noti)
-        
-        if 'STOCK' not in out_noti:
-            try:
-                dummystock(dsn,ref_date,arc_noti)
-            except:
-                out_noti += '\nPART_STOCK- dummy failed'
-        
-        print('end:',today)
-        today += timedelta(days=1)
+def run():
+    path = "DMP/900/KADSI187/ARCHIVE"
+    outpath = "DMP/900/KADSI187/ARCHIVE"
+    arc_noti = ''
+    today = datetime.today() #-timedelta(days=1) #datetime.strptime('20220406','%Y%m%d') #
+    try:
+        while today <= datetime.today():
+            ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  
+            out_date = datetime.strftime(today.date(),'%Y%m%d')
+            print(ref_date)
+            out_noti = main(out_date,outpath,'DART OUT:\n')
+            
+            out_Resp = func_LineNotify(out_noti)
+            
+            if 'STOCK' not in out_noti:
+                try:
+                    dummystock(dsn,ref_date,arc_noti)
+                except:
+                    out_noti += '\nPART_STOCK- dummy failed'
+            
+            print('end:',today)
+            today += timedelta(days=1)
 
-except Exception as errors:
-    print(traceback.print_exc())
-    out_Resp = func_LineNotify(errors)
+    except Exception as errors:
+        print(traceback.print_exc())
+        out_Resp = func_LineNotify(errors)
 
