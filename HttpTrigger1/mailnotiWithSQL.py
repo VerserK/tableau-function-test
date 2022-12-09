@@ -51,7 +51,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
            "X-Tableau-Auth": token}
     txt=[]
     if fValue == '' and fName == '':
-      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high'
+      url = server +  '/sites/'+site_id+'/views/'+view_id+'/crosstab/excel?maxAge=1&'
     else:
       fName = fName.split(',')
       fValue = fValue.split('(filter)')
@@ -60,7 +60,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
           avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
           txt.insert(i,avg)
       urlfname = (''.join(txt))
-      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
+      url = server +  '/sites/'+site_id+'/views/'+view_id+'/crosstab/excel?maxAge=1&{0}'.format(urlfname)
     #res = requests.get(url, headers=headers, json = {})
     res = requests.get(url, headers=headers, allow_redirects=True)
     filename = dbName+'-'+fValue+'.xlsx'
