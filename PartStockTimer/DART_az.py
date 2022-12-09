@@ -264,16 +264,16 @@ def uploadCSV(data, filepath,table,dsn):
     def receive_before_cursor_execute(conn, cursor, statement, params, context, executemany):
         if executemany:
             cursor.fast_executemany = True
-    if len(df.index) >= cycle:
-        for i in range(0,len(df.index)//cycle):
-            print('chunk: ' + str(i))
-            dftemp = df[i*cycle:(i*cycle) + cycle]
-            dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
-        dftemp = df[cycle*(len(df.index)//cycle):]
-        dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    # if len(df.index) >= cycle:
+    #     for i in range(0,len(df.index)//cycle):
+    #         print('chunk: ' + str(i))
+    #         dftemp = df[i*cycle:(i*cycle) + cycle]
+    #         dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    #     dftemp = df[cycle*(len(df.index)//cycle):]
+    #     dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
 
-    else:
-        df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    # else:
+    #     df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
         
     print('Finish Upload ',filepath)
     if filepath != 'dummystock':
@@ -282,12 +282,14 @@ def uploadCSV(data, filepath,table,dsn):
         BLOBNAME = 'ZPARTSTOCK'+datetime.strftime(stamp,'%Y%m%d%H%M%S')+'.csv'
     temp_path = os.path.join(tempfile.gettempdir(),'tempfile.csv')
     df.to_csv(temp_path,index=False)
-    sftp.put(temp_path,os.path.join(r'his',BLOBNAME))
+    sftp.cwd('/his/')
+    sftp.put(temp_path,BLOBNAME)
 
 def ReadToUpload(file,encode,table,dsn):
     with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
         txt_path = os.path.join(tempfile.gettempdir(),file)
-        sftp.get(os.path.join(r'download',file),txt_path)
+        sftp.cwd('/download/')
+        sftp.get(file,txt_path)
     
     txt = open(txt_path, "r",encoding=encode, errors='replace')
     file_string = txt.read() #.encode('utf-8')
@@ -326,7 +328,9 @@ def ReadToUpload(file,encode,table,dsn):
     with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
         final_path = os.path.join(tempfile.gettempdir(),file[:-4]+'.csv')
         final_file.to_csv(final_path,index=False)
-        sftp.put(final_path,os.path.join(r'downloads',file[:-4]+'.csv'))
+        sftp.cwd('/download/')
+        sftp.put(final_path,file[:-4]+'.csv')
+        # sftp.put(final_path,os.path.join(r'/downloads',file[:-4]+'.csv'))
 
     if len(final_file) >= 1:
         uploadCSV(final_file,file, table,dsn)
@@ -343,36 +347,36 @@ def ReadToUpload(file,encode,table,dsn):
             
         txt.close()
 
-def dummystock(dsn,refdate,noti_str):
-    refdate = datetime.strptime(refdate,'%Y%m%d').date()
-    ref_date = datetime.strftime(refdate-dt.timedelta(days=1),'%Y%m%d')
-    his_fold = r'his'
-    datediff = []
-    filename = []
-    with os.scandir(os.path.join(his_fold)) as i:
-        for entry in i:
-            if entry.is_file() and entry.name.startswith('ZPARTSTOCK'+ref_date):
-                prv_date = pd.read_csv(os.path.join(his_fold,entry.name))
-                print('D-1 File')
-                thatfile = entry.name
-                datediff = []
-                break
-            elif entry.is_file() and entry.name.startswith('ZPARTSTOCK'):
-                if (refdate-datetime.strptime(entry.name,'ZPARTSTOCK%Y%m%d%H%M%S.csv').date()).days > 0:
-                    filename += [entry.name]
-                    datediff += [(refdate-datetime.strptime(entry.name,'ZPARTSTOCK%Y%m%d%H%M%S.csv').date()).days]
+# def dummystock(dsn,refdate,noti_str):
+#     refdate = datetime.strptime(refdate,'%Y%m%d').date()
+#     ref_date = datetime.strftime(refdate-dt.timedelta(days=1),'%Y%m%d')
+#     his_fold = r'his'
+#     datediff = []
+#     filename = []
+#     with os.scandir(os.path.join(his_fold)) as i:
+#         for entry in i:
+#             if entry.is_file() and entry.name.startswith('ZPARTSTOCK'+ref_date):
+#                 prv_date = pd.read_csv(os.path.join(his_fold,entry.name))
+#                 print('D-1 File')
+#                 thatfile = entry.name
+#                 datediff = []
+#                 break
+#             elif entry.is_file() and entry.name.startswith('ZPARTSTOCK'):
+#                 if (refdate-datetime.strptime(entry.name,'ZPARTSTOCK%Y%m%d%H%M%S.csv').date()).days > 0:
+#                     filename += [entry.name]
+#                     datediff += [(refdate-datetime.strptime(entry.name,'ZPARTSTOCK%Y%m%d%H%M%S.csv').date()).days]
                 
-    if len(datediff) > 0:
-        thatfile = filename[datediff.index(min(datediff))]
-        print('D->1 File: ',filename[datediff.index(min(datediff))])
-        prv_date = pd.read_csv(os.path.join(his_fold,filename[datediff.index(min(datediff))]))
+#     if len(datediff) > 0:
+#         thatfile = filename[datediff.index(min(datediff))]
+#         print('D->1 File: ',filename[datediff.index(min(datediff))])
+#         prv_date = pd.read_csv(os.path.join(his_fold,filename[datediff.index(min(datediff))]))
     
-    print('Finish Select')
-    if len(prv_date) > 0:
-        prv_date['Query_datetime'] = refdate
-        uploadCSV(prv_date, 'dummystock','PART_STOCK',dsn)
-        noti_str = noti_str+'\nPART_STOCK- dummy with '+thatfile
-    return noti_str
+#     print('Finish Select')
+#     if len(prv_date) > 0:
+#         prv_date['Query_datetime'] = refdate
+#         uploadCSV(prv_date, 'dummystock','PART_STOCK',dsn)
+#         noti_str = noti_str+'\nPART_STOCK- dummy with '+thatfile
+#     return noti_str
 
 def main(ref_date,path,noti_str):
     ftp = FTP('172.31.1.119')
@@ -401,8 +405,9 @@ def main(ref_date,path,noti_str):
             file_path = os.path.join(tempfile.gettempdir(),filename)
             with open(file_path, "wb") as file_handle:
                 ftp.retrbinary("RETR " + filename, file_handle.write)
-                with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
-                    sftp.put(file_path,os.path.join(r'downloads',filename))
+                with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp:
+                    sftp.cwd('/download/') 
+                    sftp.put(file_path,filename)
                 print(" finished")
                 file = filename
             
@@ -465,11 +470,11 @@ def run():
             
             out_Resp = func_LineNotify(out_noti)
             
-            if 'STOCK' not in out_noti:
-                try:
-                    dummystock(dsn,ref_date,arc_noti)
-                except:
-                    out_noti += '\nPART_STOCK- dummy failed'
+            # if 'STOCK' not in out_noti:
+            #     try:
+            #         dummystock(dsn,ref_date,arc_noti)
+            #     except:
+            #         out_noti += '\nPART_STOCK- dummy failed'
             
             print('end:',today)
             today += timedelta(days=1)
@@ -477,4 +482,4 @@ def run():
     except Exception as errors:
         print(traceback.print_exc())
         out_Resp = func_LineNotify(errors)
-
+run()
