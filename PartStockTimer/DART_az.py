@@ -447,13 +447,13 @@ def main(ref_date,path,noti_str):
                 files = ftp.dir()
 
                 ftp.cwd(path)
-                ftp.rename(os.path.join('/DMP/900/KADSI187/OUT',filename), os.path.join('/DMP/900/KADSI187/ARCHIVE',filename))
+                # ftp.rename(os.path.join('/DMP/900/KADSI187/OUT',filename), os.path.join('/DMP/900/KADSI187/ARCHIVE',filename))
                 ftpReply = ftp.close()
                 print("-moved-")
     return noti_str
  
 path = "DMP/900/KADSI187/ARCHIVE"
-outpath = "DMP/900/KADSI187/OUT"
+outpath = "DMP/900/KADSI187/ARCHIVE"
 arc_noti = ''
 today = datetime.today() #-timedelta(days=1) #datetime.strptime('20220406','%Y%m%d') #
 try:
