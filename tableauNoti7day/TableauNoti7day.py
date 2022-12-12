@@ -192,7 +192,7 @@ def run():
     ### Select User overs 87 days ###
     a = df[df['lastLogin'] < diff83]
     a = a.query('email.str.contains("@kubota.com")', engine='python')
-    a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and eid.str.len() != 4 ")
+    a = a.query("position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'Ass_Mgr' and position_ID != 'SEVP' and eid.str.len() != 4 ")
     a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
     a['UpdateTime'] = pd.to_datetime(a['UpdateTime']).dt.date
     b1 = pd.read_sql("SELECT * FROM tableau_83_sendmail", conn1)
