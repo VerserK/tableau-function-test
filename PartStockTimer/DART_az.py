@@ -264,16 +264,16 @@ def uploadCSV(data, filepath,table,dsn):
     def receive_before_cursor_execute(conn, cursor, statement, params, context, executemany):
         if executemany:
             cursor.fast_executemany = True
-    # if len(df.index) >= cycle:
-    #     for i in range(0,len(df.index)//cycle):
-    #         print('chunk: ' + str(i))
-    #         dftemp = df[i*cycle:(i*cycle) + cycle]
-    #         dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
-    #     dftemp = df[cycle*(len(df.index)//cycle):]
-    #     dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    if len(df.index) >= cycle:
+        for i in range(0,len(df.index)//cycle):
+            print('chunk: ' + str(i))
+            dftemp = df[i*cycle:(i*cycle) + cycle]
+            dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+        dftemp = df[cycle*(len(df.index)//cycle):]
+        dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
 
-    # else:
-    #     df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    else:
+        df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
         
     print('Finish Upload ',filepath)
     if filepath != 'dummystock':
@@ -425,8 +425,9 @@ def main(ref_date,path,noti_str):
                 ReadToUpload(file,encode,table,dsn)
                 #os.remove(os.path.join(r'downloads',file[:-4]+'.csv'))
                 with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
-                    sftp.remove(os.path.join(r'downloads',file[:-4]+'.csv'))
-                    sftp.remove(os.path.join(r'downloads',filename))
+                    sftp.cwd('/download/')
+                    sftp.remove(file[:-4]+'.csv')
+                    sftp.remove(filename)
                 #os.remove(os.path.join(r'downloads',filename))
                 noti_str += '\n'+table+'- uploaded'
                 stamp_log(table,'Success')
@@ -460,7 +461,7 @@ def run():
     path = "DMP/900/KADSI187/ARCHIVE"
     outpath = "DMP/900/KADSI187/ARCHIVE"
     arc_noti = ''
-    today = datetime.today() #-timedelta(days=1) #datetime.strptime('20220406','%Y%m%d') #
+    today = datetime.today() -timedelta(days=3) #datetime.strptime('20220406','%Y%m%d') #
     try:
         while today <= datetime.today():
             ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  
