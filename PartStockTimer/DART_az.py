@@ -53,8 +53,11 @@ def stamp_log(table,status):
     with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
         cred_path = os.path.join(tempfile.gettempdir(), 'google_authorized_user.json')
         sftp.get('google_authorized_user.json',cred_path)
-        token_path =  os.path.join(tempfile.gettempdir(), 'token.json')
-        sftp.get('token.json',token_path)
+        try:
+            token_path =  os.path.join(tempfile.gettempdir(), 'token.json')
+            sftp.get('token.json',token_path)
+        except:
+            os.remove(token_path)
     
         if os.path.exists(token_path):
             creds = Credentials.from_authorized_user_file(token_path, SCOPES)
@@ -97,6 +100,7 @@ def func_LineNotify(Message,LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF
     LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
     session  = requests.Session()
     response =session.post(url, headers=LINE_HEADERS, data=msn)
+    # response = Message
     return response 
 
 def uploadCSV(data, filepath,table,dsn):
@@ -459,7 +463,7 @@ def main(ref_date,path,noti_str):
     return noti_str
 def run():
     path = "DMP/900/KADSI187/ARCHIVE"
-    outpath = "DMP/900/KADSI187/ARCHIVE"
+    outpath = "DMP/900/KADSI187/OUT"
     arc_noti = ''
     today = datetime.today() -timedelta(days=3) #datetime.strptime('20220406','%Y%m%d') #
     try:
