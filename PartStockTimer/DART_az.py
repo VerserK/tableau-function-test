@@ -466,9 +466,9 @@ def run():
     path = "DMP/900/KADSI187/ARCHIVE"
     outpath = "DMP/900/KADSI187/OUT"
     arc_noti = ''
-    today = datetime.today() #-timedelta(days=3) #datetime.strptime('20220406','%Y%m%d') #
+    today = datetime.today() -timedelta(days=3) #datetime.strptime('20220406','%Y%m%d') #
     try:
-        while today <= datetime.today():
+        if today <= datetime.today():
             ref_date = datetime.strftime((today-timedelta(days=1)).date(),'%Y%m%d')  
             out_date = datetime.strftime(today.date(),'%Y%m%d')
             print(ref_date)
