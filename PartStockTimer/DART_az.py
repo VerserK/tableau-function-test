@@ -488,5 +488,3 @@ def run():
     except Exception as errors:
         print(traceback.print_exc())
         out_Resp = func_LineNotify(errors)
-
-run()
