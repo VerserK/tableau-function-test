@@ -47,47 +47,49 @@ def run():
         time.sleep(10)
 
         print('/archivefile/VCCReport'+today+'.xlsx')
-        with sftp.open('/archivefile/VCCReport'+today+'.xlsx', 'r', bufsize=32768) as f:
-            raw_df = pd.read_excel(f,header=None)
+        with pysftp.Connection(host = Hostname, username = Username, password = Password,cnopts=cnopts) as sftp:
+            with sftp.open('/archivefile/VCCReport'+today+'.xlsx', 'r', bufsize=32768) as f:
+                raw_df = pd.read_excel(f,header=None)
 
-            col_name = ['Agent','Date','Time','Logon duration','Total pause duration (any)',
-            'Break','Callout','Follow Up Case','Lunch','Meeting','Ronar','Toilet','Wrapup duration',
-            'Ring duration total','Ring duration avg','Ring duration min','Ring duration max',
-            'Idle duration total' , 'CCIN Ext','CCOUT Ext','Calls Total','Calls Serviced','Conversation duration sum',
-            'Conversation duration avr']
+                col_name = ['Agent','Date','Time','Logon duration','Total pause duration (any)',
+                'Break','Callout','Follow Up Case','Lunch','Meeting','Ronar','Toilet','Wrapup duration',
+                'Ring duration total','Ring duration avg','Ring duration min','Ring duration max',
+                'Idle duration total' , 'CCIN Ext','CCOUT Ext','Calls Total','Calls Serviced','Conversation duration sum',
+                'Conversation duration avr']
 
-            df_list = np.split(raw_df, raw_df[raw_df.isnull().all(1)].index)
+                df_list = np.split(raw_df, raw_df[raw_df.isnull().all(1)].index)
 
-            count = 1
-            df = df_list[1]
-            df = df[4:]
-            df = df.reset_index(drop=True)
-            df = df.dropna(how='all',axis=1)
-            df.columns = col_name
+                count = 1
+                df = df_list[1]
+                df = df[4:]
+                df = df.reset_index(drop=True)
+                df = df.dropna(how='all',axis=1)
+                df.columns = col_name
 
-            df['Datetime'] = df['Date'].astype(str).str.slice(0,10)+' '+df['Time'].astype(str)
-            df.drop(columns=['Date','Time'],inplace=True)
+                df['Datetime'] = df['Date'].astype(str).str.slice(0,10)+' '+df['Time'].astype(str)
+                df.drop(columns=['Date','Time'],inplace=True)
 
-            for c in df.columns:
-                if c == 'Agent':
-                    continue
-                elif c == 'Datetime':
-                    df[c] = pd.to_datetime(df[c].astype(str))
-                elif c in ['CCIN Ext','CCOUT Ext','Calls Total','Calls Serviced']:
-                    df[c] = pd.to_numeric(df[c].astype(str))
-                else:
-                    df[c] = pd.to_timedelta(df[c].astype(str))
-                    df[c] = df[c]/ np.timedelta64(1, 'h')
-                    
-            df = df[['Agent', 'Datetime', 'Logon duration', 'Total pause duration (any)', 'Break',
-                'Callout', 'Follow Up Case', 'Lunch', 'Meeting', 'Ronar', 'Toilet',
-                'Wrapup duration', 'Ring duration total', 'Ring duration avg',
-                'Ring duration min', 'Ring duration max', 'Idle duration total',
-                'Calls Total', 'Calls Serviced','Conversation duration sum', 'Conversation duration avr']]
+                for c in df.columns:
+                    if c == 'Agent':
+                        continue
+                    elif c == 'Datetime':
+                        df[c] = pd.to_datetime(df[c].astype(str))
+                    elif c in ['CCIN Ext','CCOUT Ext','Calls Total','Calls Serviced']:
+                        df[c] = pd.to_numeric(df[c].astype(str))
+                    else:
+                        df[c] = pd.to_timedelta(df[c].astype(str))
+                        df[c] = df[c]/ np.timedelta64(1, 'h')
+                        
+                df = df[['Agent', 'Datetime', 'Logon duration', 'Total pause duration (any)', 'Break',
+                    'Callout', 'Follow Up Case', 'Lunch', 'Meeting', 'Ronar', 'Toilet',
+                    'Wrapup duration', 'Ring duration total', 'Ring duration avg',
+                    'Ring duration min', 'Ring duration max', 'Idle duration total',
+                    'Calls Total', 'Calls Serviced','Conversation duration sum', 'Conversation duration avr']]
 
             #### optional ####
-        with sftp.open('/transform/transform'+today+'.csv', 'w') as f:
-            df.to_csv(f,index=False)
+        with pysftp.Connection(host = Hostname, username = Username, password = Password,cnopts=cnopts) as sftp:    
+            with sftp.open('/transform/transform'+today+'.csv', 'w') as f:
+                df.to_csv(f,index=False)
 
         server = r'SKCDWH01' #172.31.8.25    
         database = 'Voxtron_Callcenter' 
