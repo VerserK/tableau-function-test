@@ -44,10 +44,10 @@ def run():
                 print(file)
                 sftp.rename(dnscallcenter + file, archive_dir + fname)
 
-        time.sleep(10)
-
         print('/archivefile/VCCReport'+today+'.xlsx')
-        with sftp.open('/archivefile/VCCReport'+today+'.xlsx', 'r') as f:
+        with sftp.cd(archive_dir):
+        # with sftp.open('/archivefile/VCCReport'+today+'.xlsx', 'r') as f:
+            f = sftp.open('/archivefile/VCCReport'+today+'.xlsx', 'r')
             raw_df = pd.read_excel(f,header=None)
 
             col_name = ['Agent','Date','Time','Logon duration','Total pause duration (any)',
