@@ -95,12 +95,12 @@ def stamp_log(table,status):
     return response_update
 
 def func_LineNotify(Message,LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'):
-    # url  = "https://notify-api.line.me/api/notify"
-    # msn = {'message':Message}
-    # LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
-    # session  = requests.Session()
-    # response =session.post(url, headers=LINE_HEADERS, data=msn)
-    response = Message
+    url  = "https://notify-api.line.me/api/notify"
+    msn = {'message':Message}
+    LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
+    session  = requests.Session()
+    response =session.post(url, headers=LINE_HEADERS, data=msn)
+    # response = Message
     return response 
 
 def uploadCSV(data, filepath,table,dsn):
