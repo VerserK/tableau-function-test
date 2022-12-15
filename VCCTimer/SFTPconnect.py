@@ -26,6 +26,7 @@ def run():
         # sftp.cwd('/dnscallcenter/')
         dnscallcenter = '/dnscallcenter/'
         archive_dir = '/archivefile/'
+        transform_dir = '/transform/'
         today = datetime.date.today()
         today = str(today)
         # print(today)
@@ -87,7 +88,7 @@ def run():
 
             #### optional ####
         with sftp.open('/transform/transform'+today+'.csv', 'w') as f:
-            df.to_csv(f,index=False)
+            f.write(df.to_csv(index=False))
 
         server = r'SKCDWH01' #172.31.8.25    
         database = 'Voxtron_Callcenter' 
