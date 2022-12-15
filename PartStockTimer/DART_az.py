@@ -70,7 +70,7 @@ def stamp_log(table,status):
                 creds = flow.run_local_server(port=0)
             with open(token_path, 'w') as token:
                 token.write(creds.to_json())
-                sftp.put(token_path,'token.json')
+            sftp.put(token_path,'token.json')
 
     service = build('sheets', 'v4', credentials=creds)
 
@@ -95,12 +95,12 @@ def stamp_log(table,status):
     return response_update
 
 def func_LineNotify(Message,LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'):
-    url  = "https://notify-api.line.me/api/notify"
-    msn = {'message':Message}
-    LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
-    session  = requests.Session()
-    response =session.post(url, headers=LINE_HEADERS, data=msn)
-    # response = Message
+    # url  = "https://notify-api.line.me/api/notify"
+    # msn = {'message':Message}
+    # LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
+    # session  = requests.Session()
+    # response =session.post(url, headers=LINE_HEADERS, data=msn)
+    response = Message
     return response 
 
 def uploadCSV(data, filepath,table,dsn):
@@ -115,7 +115,7 @@ def uploadCSV(data, filepath,table,dsn):
         col_path = os.path.join(tempfile.gettempdir(), r'PartField_to_Map.csv')
         sftp.get(r'PartField_to_Map.csv',col_path)
     
-    df_cols = pd.read_csv(os.path.join(col_path,'PartField_to_Map.csv'))
+    df_cols = pd.read_csv(col_path)
     
     for col in df.columns:
         
@@ -286,8 +286,9 @@ def uploadCSV(data, filepath,table,dsn):
         BLOBNAME = 'ZPARTSTOCK'+datetime.strftime(stamp,'%Y%m%d%H%M%S')+'.csv'
     temp_path = os.path.join(tempfile.gettempdir(),'tempfile.csv')
     df.to_csv(temp_path,index=False)
-    sftp.cwd('/his/')
-    sftp.put(temp_path,BLOBNAME)
+    with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp:
+        sftp.cwd('/his/')
+        sftp.put(temp_path,BLOBNAME)
 
 def ReadToUpload(file,encode,table,dsn):
     with pysftp.Connection(host=HOSTNAME, username=USERNAME, password=PASSWORD) as sftp: 
@@ -487,3 +488,5 @@ def run():
     except Exception as errors:
         print(traceback.print_exc())
         out_Resp = func_LineNotify(errors)
+
+run()
