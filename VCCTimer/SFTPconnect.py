@@ -16,7 +16,8 @@ keydata = b"""AAAAB3NzaC1yc2EAAAADAQABAAABAQDWPK6PAGMTdzNkwKZt+A3Dhbnete6jyLLboO
 key = paramiko.RSAKey(data=decodebytes(keydata))
 
 cnopts =  pysftp.CnOpts()
-cnopts.hostkeys.add('aes128-gcm@openssh.com', 'rsa-sha2-256', key)
+# cnopts.hostkeys.add('aes128-gcm@openssh.com', 'rsa-sha2-256', key)
+cnopts.hostkeys = None
 def run():
     with pysftp.Connection(host = Hostname, username = Username, password = Password,cnopts=cnopts) as sftp:
         print("Connection successfully established ... ")
