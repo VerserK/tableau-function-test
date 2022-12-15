@@ -5,7 +5,6 @@ import urllib
 import sqlalchemy as sa
 import pysftp
 import datetime
-import time
 
 Hostname = "p701sasi09kbtcom.blob.core.windows.net"
 Username = "p701sasi09kbtcom.sftpuser03"
@@ -43,8 +42,6 @@ def run():
                 print(fname)
                 print(file)
                 sftp.rename(dnscallcenter + file, archive_dir + fname)
-
-        time.sleep(10)
 
         print('/archivefile/VCCReport'+today+'.xlsx')
         with pysftp.Connection(host = Hostname, username = Username, password = Password,cnopts=cnopts) as sftp:
