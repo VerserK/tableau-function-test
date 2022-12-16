@@ -6,7 +6,7 @@ def test():
                         'Trusted_Connection=yes;')
 
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM table_name')
+    cursor.execute('SELECT * FROM VCC_logs')
 
     for i in cursor:
         print(i)
