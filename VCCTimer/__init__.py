@@ -3,6 +3,7 @@ import logging
 
 import azure.functions as func
 from . import SFTPconnect
+from . import connectDWH
 
 def main(mytimer: func.TimerRequest) -> None:
     utc_timestamp = datetime.datetime.utcnow().replace(
@@ -12,4 +13,5 @@ def main(mytimer: func.TimerRequest) -> None:
         logging.info('The timer is past due!')
 
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
-    SFTPconnect.run()
+    # SFTPconnect.run()
+    connectDWH.test()
