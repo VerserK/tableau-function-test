@@ -86,7 +86,7 @@ def run():
         with sftp.open('/transform/transform'+today+'.csv', 'w') as f:
             df.to_csv(f,index=False)
 
-        server = r'172.31.8.25' #172.31.8.25    
+        server = '172.31.8.25' #172.31.8.25    
         database = 'Voxtron_Callcenter' 
         username = 'boon'
         password = 'Boon@DA123'
