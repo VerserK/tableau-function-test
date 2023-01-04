@@ -8,7 +8,7 @@ from datetime import datetime,timedelta
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     
-    # Enable = req.params.get('Enable')
+    Enable = req.params.get('Enable')
     MailGroup = req.params.get('MailGroup')
     type = req.params.get('type')
     ID_Json = req.params.get('ID')
@@ -25,10 +25,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     Content = req.params.get('Content')
     filterName_list =[]
     filterValue_list=[]
-    # if Enable is None:
-    #     Enable_list = ''
-    # else:
-    #     Enable_list = Enable.split(",")
+    if Enable is None:
+        Enable_list = ''
+    else:
+        Enable_list = Enable.split(",")
 
     if MailGroup is None:
         MailGroup_list = ''
@@ -87,7 +87,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     #Convert to Pandas Dataframe
     df = pd.DataFrame({
-    # 'Enable' : Enable_list,
+    'Enable' : Enable_list,
     'MailGroup' : MailGroup_list,
     'type' : type_list,
     'ID' : ID_Json_list,
@@ -103,8 +103,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Subject' : Subject,
     'Content' : Content
     })
-    # df.drop(df[df.Enable != 'x'].index, inplace=True)
-    # print(df)
+    df.drop(df[df.Enable != 'x'].index, inplace=True)
+    print(df)
     groups = df.groupby('MailGroup')
     for name, group in groups:
         to = ''
