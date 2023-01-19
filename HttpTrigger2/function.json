@@ -13,8 +13,8 @@
     },
     {
       "name": "msg",
-      "direction": "in",
-      "type": "queueTrigger",
+      "direction": "out",
+      "type": "queue",
       "queueName": "httpline",
       "connection": "DefaultEndpointsProtocol=https;AccountName=dfdwhtest02;AccountKey=SWsWgVXDYatnsYuC+9gy5PHokkhCg/6xzxCIrmkrOyiUs7BARHDODbd5SOqiWUsozcpFbBzvzg8/+AStOn8ihw==;EndpointSuffix=core.windows.net"
     },
