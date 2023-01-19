@@ -12,6 +12,13 @@
       ]
     },
     {
+      "name": "msg",
+      "direction": "out",
+      "type": "queue",
+      "queueName": "httpline",
+      "connection": "AzureWebJobsStorage"
+    },
+    {
       "type": "http",
       "direction": "out",
       "name": "$return"
