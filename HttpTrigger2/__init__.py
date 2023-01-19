@@ -13,7 +13,7 @@ import os
 import tempfile
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, __version__
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
+def main(req: func.HttpRequest, msg: func.Out[func.QueueMessage]) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     DashboardName = req.params.get('DashboardName')
@@ -48,6 +48,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if DashboardName:
         # return func.HttpResponse(f"Hello, {DashboardName}. {ViewId} {Token} {FilterName} {FilterValue} {Time} {Message}")
         # return func.HttpResponse[{DashboardName}]
+        message = req.params.get('body')
+        msg.set(message)
         return func.HttpResponse("<script>alert('Sent Line Successfully !');</script>")
+        return message
     else:
         return func.HttpResponse("<script>alert('Sent Line Unsuccessful !');</script>")
