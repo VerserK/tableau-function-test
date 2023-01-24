@@ -23,7 +23,7 @@ dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='
 table = 'idviewer'
 
 def tableau_get_view_id(df,page):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.13/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
@@ -86,3 +86,5 @@ def run():
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+
+run()
