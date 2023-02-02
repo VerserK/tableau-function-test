@@ -30,7 +30,7 @@ from azure.storage.blob import BlobServiceClient, __version__
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}

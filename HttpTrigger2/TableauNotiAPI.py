@@ -8,7 +8,7 @@ from datetime import datetime,timedelta
 import ast
 
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}

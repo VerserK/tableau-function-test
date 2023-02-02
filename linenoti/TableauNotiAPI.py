@@ -8,7 +8,7 @@ from datetime import datetime,timedelta
 import ast
 
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
@@ -72,7 +72,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                 txt=[]
                 filterName = filterName.split(',')
                 filterValue = filterValue.split('(filter)')
-                filterValue.pop(0)
+                filterValue.pop(0) 
                 for i in range(0, len(filterName)):
                     avg = ('vf_'+ filterName[i] + '=' + filterValue[i] + '&')
                     txt.insert(i,avg)
