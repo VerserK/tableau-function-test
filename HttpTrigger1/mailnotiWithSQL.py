@@ -73,7 +73,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
 
 ### DOWNLOAD DASHBOARD IMAGE ###
 def tableau_get_img(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.14/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
