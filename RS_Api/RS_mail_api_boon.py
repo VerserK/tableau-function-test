@@ -71,11 +71,10 @@ def run():
             break
     Data = Data[['workbook', 'owner', 'project', 'tags', 'location', 'id', 'name',
     'contentUrl', 'createdAt', 'updatedAt', 'viewUrlName']]
+    
+    # print(Data)
 
-    # params = urllib.parse.quote_plus(dsn)
-    # engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     conn = engine.connect()
-    #Import
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
     LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
