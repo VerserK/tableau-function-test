@@ -59,6 +59,7 @@ def run():
     Data = pd.DataFrame()
     resp = list(resp['views'].values())[0]
 
+
     n=0
     while True:
         Data = Data.append(pd.DataFrame(resp))
@@ -71,9 +72,11 @@ def run():
             break
     Data = Data[['workbook', 'owner', 'project', 'tags', 'location', 'id', 'name',
     'contentUrl', 'createdAt', 'updatedAt', 'viewUrlName']]
-    
-    # print(Data)
 
+    for index, row in Data.iterrows():
+        row['owner'] = list(row['owner'].values())
+        row['owner'] = ' '.join(row['owner'])
+    
     conn = engine.connect()
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
