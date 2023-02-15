@@ -14,7 +14,8 @@ def cellLoc(VIN):
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
     driver = '{ODBC Driver 17 for SQL Server}'
-    dsn = 'DRIVER='+driver+';SERVER='+server+';UID='+username+';PWD='+ password
+    database =  'KIS Data'
+    dsn = 'DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     conn = engine.connect()
@@ -55,7 +56,8 @@ def main():
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
     driver = '{ODBC Driver 17 for SQL Server}'
-    dsn = 'DRIVER='+driver+';SERVER='+server+';UID='+username+';PWD='+ password
+    database =  'KIS Data'
+    dsn = 'DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     conn = engine.connect()
