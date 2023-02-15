@@ -11,10 +11,10 @@ def cellLoc(VIN):
 
     ### Connect DB ####
     server = 'skcdwhprdmi.siamkubota.co.th'
+    database =  'master'
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
     driver = '{ODBC Driver 17 for SQL Server}'
-    database =  'KIS Data'
     dsn = 'DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
@@ -53,10 +53,10 @@ def main():
 
     ### Connect DB ####
     server = 'skcdwhprdmi.siamkubota.co.th'
+    database =  'master'
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
     driver = '{ODBC Driver 17 for SQL Server}'
-    database =  'KIS Data'
     dsn = 'DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
