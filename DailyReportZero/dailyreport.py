@@ -10,7 +10,7 @@ def cellLoc(VIN):
     datequeryStr = datetime_obj.strftime("%Y-%m-%d")
 
     ### Connect DB ####
-    server = 'skcdwhprdmi.bf8966ba22c0.database.windows.net,1443'
+    server = 'skcdwhprdmi.siamkubota.co.th'
     database =  'master'
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
@@ -52,7 +52,7 @@ def main():
     datequeryStr = datetime_obj.strftime("%Y-%m-%d")
 
     ### Connect DB ####
-    server = 'skcdwhprdmi.bf8966ba22c0.database.windows.net,1443'
+    server = 'skcdwhprdmi.siamkubota.co.th'
     database =  'master'
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
@@ -225,5 +225,3 @@ def main():
         ]
         }
         r = requests.post(url, headers=headers, json=body)
-
-main()
