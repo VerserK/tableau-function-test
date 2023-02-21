@@ -19,6 +19,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, _
 import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
 import urllib
+import logging
 
 #configure sql server
 server = 'tableauauto.database.windows.net'
@@ -94,5 +95,6 @@ def run():
     today = datetime.now() + timedelta(hours = 7) + timedelta(minutes=-10)
     base = datetime(today.year , today.month , today.day , today.hour , today.minute , 0 , 0)
     for index, row in df.iterrows():
-        if croniter.match(row['CRON'], base):
+        if row['DashboardName'] != '' and croniter.match(row['CRON'], base):
+            logging.info(row['DashboardName'])
             tbn.GetImage(row['DashboardName'],row['ViewId'],row['FilterName'],row['FilterValue'],row['Token'],row['Message'])
