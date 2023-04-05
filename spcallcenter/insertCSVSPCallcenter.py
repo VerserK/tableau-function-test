@@ -18,7 +18,7 @@ def func_LineNotify(Message,LineToken ='XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQY
 
 def run():
     #Connect DWH MI
-    server = 'skcdwhprdmi.siamkubota.co.th'
+    server = 'skcdwhprdmi.public.bf8966ba22c0.database.windows.net,3342'
     database = 'Parts'
     username = 'skcadminuser'
     password = 'DEE@skcdwhtocloud2022prd'
