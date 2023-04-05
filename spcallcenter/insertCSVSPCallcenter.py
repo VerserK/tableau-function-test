@@ -47,11 +47,6 @@ def run():
             file.close()
             aa = pd.read_csv('SP Call center.csv')
             print(aa) # Drop Column Details
-    ###### Line Noti Message #####
-    LineUrl = 'https://notify-api.line.me/api/notify'
-    LineToken = 'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e'
-    LineHeaders = {'Authorization':'Bearer '+ LineToken}
-    payload=[]
     try:
         aa.to_sql(table,con=conn, if_exists = 'append', index=False, schema="dbo", chunksize=100)
     except Exception as e:
