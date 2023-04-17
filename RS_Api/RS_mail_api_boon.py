@@ -22,7 +22,7 @@ driver = '{ODBC Driver 17 for SQL Server}'
 dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
 table = 'idviewer'
 
-def tableau_get_view_id(df,page):
+def tableau_get_view_id(page):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
@@ -50,28 +50,29 @@ def tableau_get_view_id(df,page):
 def run():
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-    engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
+    # engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
     df = pd.DataFrame()
-    res = tableau_get_view_id(df,1)
+    res = tableau_get_view_id(1)
     resp =  res.json()
 
-    Data = pd.DataFrame()
+
     resp = list(resp['views'].values())[0]
-
-
+    Data = pd.DataFrame()
+    tmp = []
     n=0
     while True:
-        Data = Data.append(pd.DataFrame(resp))
+        # Data = Data.append(pd.DataFrame(resp))
+        tmp.append(pd.DataFrame(resp))
         n+=1
-        res = tableau_get_view_id(df,n)
+        res = tableau_get_view_id(n)
         resp =  res.json()
         try:
             resp = list(resp['views'].values())[0]
         except:
             break
-    Data = Data[['workbook', 'owner', 'project', 'tags', 'location', 'id', 'name',
-    'contentUrl', 'createdAt', 'updatedAt', 'viewUrlName']]
+        print(n)
+    df = pd.concat(tmp)
 
     for index, row in Data.iterrows():
         row['owner'] = list(row['owner'].values())
@@ -84,7 +85,9 @@ def run():
     LineHeaders = {'Authorization':'Bearer '+ LineToken}
     #Import
     try:
-        Data.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
+        df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+
+run()
