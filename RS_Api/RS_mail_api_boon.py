@@ -50,7 +50,7 @@ def tableau_get_view_id(page):
 def run():
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-    # engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
+    engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
     df = pd.DataFrame()
     res = tableau_get_view_id(1)
