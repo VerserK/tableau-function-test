@@ -83,7 +83,7 @@ def run():
         df = pd.concat(tmp)
         for index,row in df.iterrows():
             row['owner'] = list(row['owner'].values())
-            row['owner'] = ' '.join(row['owner'])
+            # row['owner'] = ' '.join(row['owner'])
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
