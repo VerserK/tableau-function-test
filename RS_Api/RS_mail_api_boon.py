@@ -50,7 +50,7 @@ def tableau_get_view_id(page):
 def run():
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-    engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
+    # engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
     df = pd.DataFrame()
     res = tableau_get_view_id(1)
@@ -72,11 +72,6 @@ def run():
         except:
             break
         print(n)
-    df = pd.concat(tmp)
-
-    for index,row in df.iterrows():
-        row['owner'] = list(row['owner'].values())
-        row['owner'] = ' '.join(row['owner'])
     
     conn = engine.connect()
     ###### Line Noti Message #####
@@ -85,6 +80,10 @@ def run():
     LineHeaders = {'Authorization':'Bearer '+ LineToken}
     #Import
     try:
+        df = pd.concat(tmp)
+        for index,row in df.iterrows():
+            row['owner'] = list(row['owner'].values())
+            row['owner'] = ' '.join(row['owner'])
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
