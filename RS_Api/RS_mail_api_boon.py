@@ -74,7 +74,7 @@ def run():
         print(n)
     df = pd.concat(tmp)
 
-    for index, row in Data.iterrows():
+    for index, row in df.iterrows():
         row['owner'] = list(row['owner'].values())
         row['owner'] = ' '.join(row['owner'])
     
@@ -89,3 +89,5 @@ def run():
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+
+run()
