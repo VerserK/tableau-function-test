@@ -74,7 +74,7 @@ def run():
         print(n)
     df = pd.concat(tmp)
 
-    for index, row in df.iterrows():
+    for row in df.iterrows():
         row['owner'] = list(row['owner'].values())
         row['owner'] = ' '.join(row['owner'])
     
