@@ -89,5 +89,3 @@ def run():
     except Exception as e:
         payload = {'message':'RS API Uploading Fails!!'}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
-
-run()
