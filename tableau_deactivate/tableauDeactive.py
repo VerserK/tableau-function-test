@@ -110,7 +110,7 @@ def updateSite(uid,new_site):
     config = {'tableau_online':{'server':'https://prod-apnortheast-a.online.tableau.com/',
                                 'api_version':'3.17',
                                 'personal_access_token_name':"TestToken",
-                                "personal_access_token_secret": "5830C81FQmyACKTsgeyGjQ==:w3WLdOoielNFNbsYkcUO5ejkZruZq9x0",
+                                "personal_access_token_secret": "b4BQsYXjQpKr9/beZNA5XQ==:mUxmPB9adXqlsCzW3yl5VtMFSvh5cvTk",
                                 "site_name":"skctableau",
                                 "site_url":"skctableau"
             		}}
