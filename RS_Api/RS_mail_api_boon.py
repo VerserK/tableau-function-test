@@ -54,10 +54,7 @@ def run():
 
     res = tableau_get_view_id(1)
     resp =  res.json()
-
-
     resp = list(resp['views'].values())[0]
-    Data = pd.DataFrame()
     tmp = []
     n=0
     while True:
@@ -80,9 +77,10 @@ def run():
     #Import
     try:
         df = pd.concat(tmp)
-        for index,row in df.iterrows():
-            row['owner'] = list(row['owner'].values())
-            row['owner'] = ' '.join(row['owner'])
+        df['owner'] = df.owner.dropna().apply(pd.Series)
+        # for index,row in df.iterrows():
+        #     row['owner'] = list(row['owner'].values())
+        #     row['owner'] = ' '.join(row['owner'])
         print(df)
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
