@@ -169,8 +169,8 @@ def run():
             'my_env': {
                     'server': 'https://prod-apnortheast-a.online.tableau.com',
                     'api_version': '3.19',
-                    'personal_access_token_name': 'TestToken',
-                    'personal_access_token_secret': 'b4BQsYXjQpKr9/beZNA5XQ==:mUxmPB9adXqlsCzW3yl5VtMFSvh5cvTk',
+                    'personal_access_token_name': 'NewToken',
+                    'personal_access_token_secret': 'OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT',
                     'site_name': 'skctableau',
                     'site_url': 'skctableau'
             }

@@ -108,9 +108,9 @@ def gmail_send_message(emailViewtoUnlicense):
 ### Update Status
 def updateSite(uid,new_site):
     config = {'tableau_online':{'server':'https://prod-apnortheast-a.online.tableau.com/',
-                                'api_version':'3.17',
-                                'personal_access_token_name':"TestToken",
-                                "personal_access_token_secret": "b4BQsYXjQpKr9/beZNA5XQ==:mUxmPB9adXqlsCzW3yl5VtMFSvh5cvTk",
+                                'api_version':'3.19',
+                                'personal_access_token_name':"NewToken",
+                                "personal_access_token_secret": "OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT",
                                 "site_name":"skctableau",
                                 "site_url":"skctableau"
             		}}
@@ -152,9 +152,9 @@ def run():
     tableau_server_config = {
             'my_env': {
                     'server': 'https://prod-apnortheast-a.online.tableau.com',
-                    'api_version': '3.18',
-                    'personal_access_token_name': 'TestToken',
-                    'personal_access_token_secret': '5830C81FQmyACKTsgeyGjQ==:w3WLdOoielNFNbsYkcUO5ejkZruZq9x0',
+                    'api_version': '3.19',
+                    'personal_access_token_name': 'NewToken',
+                    'personal_access_token_secret': 'OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT',
                     'site_name': 'skctableau',
                     'site_url': 'skctableau'
             }
