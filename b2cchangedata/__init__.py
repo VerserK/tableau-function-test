@@ -95,12 +95,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     fullname = req.params.get('fullname')
     status = req.params.get('status')
 
+    return func.HttpResponse(gmail_send_message())
 
-    if fullname:
-        gmail_send_message()
-        return func.HttpResponse(f"Hello, {fullname}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+    # if fullname:
+    #     gmail_send_message()
+    #     return func.HttpResponse(f"Hello, {fullname}. This HTTP triggered function executed successfully.")
+    # else:
+    #     return func.HttpResponse(
+    #          "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+    #          status_code=200
+    #     )
