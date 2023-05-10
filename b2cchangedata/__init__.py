@@ -8,13 +8,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     fullname = req.params.get('fullname')
     status = req.params.get('status')
 
-    # if not fullname:
-    #     try:
-    #         req_body = req.get_json()
-    #     except ValueError:
-    #         pass
-    #     else:
-    #         fullname = req_body.get('fullname')
+    if not fullname:
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            pass
+        else:
+            fullname = req_body.get('fullname')
 
     if fullname:
         sendmail.gmail_send_message()
