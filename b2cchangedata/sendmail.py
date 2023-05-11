@@ -8,7 +8,7 @@ import os,tempfile,base64
 from email.message import EmailMessage
 
 
-def gmail_send_message():
+def gmail_send_message(userid,fullname,status):
     #html contact
     html = """<!DOCTYPE html>
     <head>
@@ -24,6 +24,10 @@ def gmail_send_message():
     </head>
     <body>
     <p>งานเข้าแล้วป่าน รีบไปปรับให้ลูกค้าด่วนๆๆ</p>
+    <p>ผู้มีอุปการะคุณท่านนี้มีนามว่า : """ + fullname + """
+    <p>Status งาน : """ + status + """ </p>
+    <p>โปรดไปดูที่ลิ้งด้านล่าง</p>
+    <a href="https://www.test.com/""" + userid + """ ">โปรดดำเนินการอย่างเร่งด่วนเดี่ยวงานเข้า</a>
     <p>จึงเรียนมาเพื่อทราบและดำเนินการโดยเร่งด่วน</p>
     </body>
     </html>

@@ -17,7 +17,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             fullname = req_body.get('fullname')
 
     if fullname:
-        sendmail.gmail_send_message()
+        sendmail.gmail_send_message(userid,fullname,status)
         return func.HttpResponse(f"Hello, {fullname}. This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
