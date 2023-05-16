@@ -7,6 +7,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     userid = req.params.get('userid')
     fullname = req.params.get('fullname')
     status = req.params.get('status')
+    oldnumber = req.params.get('oldnumber')
+    newnumber = req.params.get('newnumber')
+    email = req.params.get('email')
 
     if not fullname:
         try:
@@ -17,7 +20,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             fullname = req_body.get('fullname')
 
     if fullname:
-        sendmail.gmail_send_message(userid,fullname,status)
+        sendmail.gmail_send_message(userid,fullname,status,oldnumber,newnumber,email)
         return func.HttpResponse(f"Hello, {fullname}. This HTTP triggered function executed successfully.")
     else:
         return func.HttpResponse(
