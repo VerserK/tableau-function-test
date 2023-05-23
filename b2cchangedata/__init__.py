@@ -21,9 +21,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     if fullname:
         sendmail.gmail_send_message(userid,fullname,status,oldnumber,newnumber,email)
-        return func.HttpResponse(f"Hello, {fullname}. This HTTP triggered function executed successfully.")
+        return func.HttpResponse(f"Hello, {fullname}. successfully.", status_code = 200)
     else:
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
+             "Fail not pass parameter fullname in url",
+             status_code=400
         )
