@@ -118,9 +118,9 @@ def tableau_get_img(view_id,fName,fValue,dbName):
     else:
       fName = fName.split(',')
       fValue = fValue.split('(filter)')
-      # today = datetime.today()
-      # todayStr = today.strftime("%m")
-      # fValue = list(map(lambda x: x.replace('(month)', todayStr), fValue))
+      today = datetime.today()
+      todayStr = today.strftime("%m")
+      fValue = list(map(lambda x: x.replace('(month)', todayStr), fValue))
       fValue.pop(0)
       for i in range(0, len(fName)):
           avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
