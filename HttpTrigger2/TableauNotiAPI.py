@@ -74,7 +74,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
                 filterValue = filterValue.split('(filter)')
                 today = datetime.today()
                 todayStr = today.strftime("%m")
-                filterValue = list(map(lambda x: x.replace('(month)', todayStr), filterValue))
+                filterValue = list(map(lambda x: x.replace('(month),', todayStr), filterValue))
                 filterValue.pop(0)
                 for i in range(0, len(filterName)):
                     avg = ('vf_'+ filterName[i] + '=' + filterValue[i] + '&')
