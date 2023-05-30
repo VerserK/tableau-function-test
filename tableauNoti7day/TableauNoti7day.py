@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import pickle
 from time import sleep
-import pandas as pd
 import os.path
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -205,7 +204,7 @@ def run():
     b2row = b2[~b2['email'].isin(b1['email'])]
     b2row.astype(str).to_sql('tableau_83_sendmail', con=conn1, if_exists = 'append', index=False, schema="dbo")
     print(b2row)
-    b3 = b2row.append(b2)
+    b3 = pd.concat([b2row,b2])
     print(b3)
 
     em=[]
@@ -215,7 +214,7 @@ def run():
     print(x)
     if x != 0:
         gmail_send_message(em)
-
+        
 # print(em)
 # if __name__ == '__main__':
 #     gmail_send_message(em)
