@@ -96,7 +96,7 @@ def gmail_send_message(userid,fullname,status,oldnumber,newnumber,email):
         # message['To'] = ['skc_m.supportdms@pjt.kubota.com']
         message['To'] = ['areerat.s@kubota.com']
         # message['cc'] = ['skcn_g.supportdms@kubota.com','Natchaporn.kh@kubota.com','pongpreeda.k@kubota.com','areerat.s@kubota.com']
-        message['cc'] = ['Natchaporn.kh@kubota.com','pongpreeda.k@kubota.com','akarawat.p@kubota.com']
+        message['cc'] = ['Natchaporn.kh@kubota.com','pongpreeda.k@kubota.com','akarawat.p@kubota.com','thanakorn.wongbunyawet@nttdata.com']
         message['From'] = '"SKC, AD B2C Mail Notify"<skc_g.dashboard@kubota.com>'
         if status == 'Delete':
             message['Subject'] = '[B2C Delete Account] User B2C : '
