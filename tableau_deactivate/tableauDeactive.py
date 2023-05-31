@@ -196,7 +196,7 @@ def run():
     ### Change Creator to Viewer
     for index, row in a.iterrows():
         if row['siteRole'] == "Creator":
-            row['siteRole'] = "Unlicensed"
+            row['siteRole'] = "Viewer"
             print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
             emailCreatortoUnlicens.append(row['email'])
             updateSite(row['id'],row['siteRole'])
@@ -205,37 +205,37 @@ def run():
         gmail_send_message(emailCreatortoUnlicens)
 
     ### Select Creator to Viewer ###
-    # b = a.copy()
-    # b = b[b['siteRole'] == "Creator"]
-    # b['siteRole'] = "Viewer"
-    # b1 = pd.read_sql("SELECT * FROM tableau_creator_toviewer", conn1)
-    # b2row = b[~b['email'].isin(b1['email'])]
-    # b2row.astype(str).to_sql('tableau_creator_toviewer', con=conn1, if_exists = 'append', index=False, schema="dbo")
+    b = a.copy()
+    b = b[b['siteRole'] == "Creator"]
+    b['siteRole'] = "Viewer"
+    b1 = pd.read_sql("SELECT * FROM tableau_creator_toviewer", conn1)
+    b2row = b[~b['email'].isin(b1['email'])]
+    b2row.astype(str).to_sql('tableau_creator_toviewer', con=conn1, if_exists = 'append', index=False, schema="dbo")
 
     ### Select Viewer before Creator to Unlicensed and Check Update viewer to creator ###
-    # VC = b1.copy()
-    # VCC = b1.copy()
-    # VCC = a[a['email'].isin(b1['email'])]
-    # VCC = VCC[VCC['siteRole'] != "Viewer"]
-    # for index, row in VCC.iterrows():
-    #     print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
-    #     t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
-    #     engine1.execute(t, userid=row['id'])
-    # VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"]).dt.strftime('%Y-%m-%d')
-    # VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"], format='%Y-%m-%d')
-    # VC = VC[VC['UpdateTime'] < diff90]
-    # emailCratortoViewertoUnlicensed = []
-    # for index, row in VC.iterrows():
-    #     if row['siteRole'] == "Viewer":
-    #         row['siteRole'] = "Unlicensed"
-    #         print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
-    #         t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
-    #         emailCratortoViewertoUnlicensed.append(row['email'])
-    #         updateSite(row['id'],row['siteRole'])
-    #         engine1.execute(t, userid=row['id'])
-    # x = len(emailCratortoViewertoUnlicensed)
-    # if x != 0:
-    #     gmail_send_message(emailCratortoViewertoUnlicensed)
+    VC = b1.copy()
+    VCC = b1.copy()
+    VCC = a[a['email'].isin(b1['email'])]
+    VCC = VCC[VCC['siteRole'] != "Viewer"]
+    for index, row in VCC.iterrows():
+        print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
+        t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
+        engine1.execute(t, userid=row['id'])
+    VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"]).dt.strftime('%Y-%m-%d')
+    VC["UpdateTime"] = pd.to_datetime(VC["UpdateTime"], format='%Y-%m-%d')
+    VC = VC[VC['UpdateTime'] < diff90]
+    emailCratortoViewertoUnlicensed = []
+    for index, row in VC.iterrows():
+        if row['siteRole'] == "Viewer":
+            row['siteRole'] = "Unlicensed"
+            print(row['id'],row['email'],row['siteRole'],row['position_ID'],row['lastLogin'])
+            t = sa_text("DELETE FROM tableau_creator_toviewer WHERE [id]=:userid")
+            emailCratortoViewertoUnlicensed.append(row['email'])
+            updateSite(row['id'],row['siteRole'])
+            engine1.execute(t, userid=row['id'])
+    x = len(emailCratortoViewertoUnlicensed)
+    if x != 0:
+        gmail_send_message(emailCratortoViewertoUnlicensed)
 
     ### Select Viewer Logs to Unlicensed ###
     C1rows = a.copy()
