@@ -4,19 +4,19 @@ from . import sendmail
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    data = req.get_json()
+    # data = req.get_json()
 
-    if not fullname:
+    if not data:
         try:
             req_body = req.get_json()
         except ValueError:
             pass
         else:
-            fullname = req_body.get('fullname')
+            data = req_body.get('data')
 
-    if fullname:
+    if data:
         # sendmail.gmail_send_message(userid,fullname,status,oldnumber,newnumber,email)
-        return func.HttpResponse(f"Hello, {data}. successfully.", status_code = 200)
+        return func.HttpResponse(f"Hello, {req_body}. successfully.", status_code = 200)
     else:
         return func.HttpResponse(
              "Fail not pass parameter fullname in url",
