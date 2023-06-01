@@ -4,7 +4,7 @@ from . import sendmail
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    # data = req.get_json()
+    data = req.get_json()
 
     if not data:
         try:
