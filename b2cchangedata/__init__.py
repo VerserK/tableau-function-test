@@ -4,12 +4,12 @@ from . import sendmail
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    userid = req.params.get('userid')
-    fullname = req.params.get('fullname')
-    status = req.params.get('status')
-    oldnumber = req.params.get('oldnumber')
-    newnumber = req.params.get('newnumber')
-    email = req.params.get('email')
+    userid = req.get_body('userid')
+    fullname = req.get_body('fullname')
+    status = req.get_body('status')
+    oldnumber = req.get_body('oldnumber')
+    newnumber = req.get_body('newnumber')
+    email = req.get_body('email')
 
     if not fullname:
         try:
