@@ -36,7 +36,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
                "Accept":"application/json"}
     payload = { "credentials": {
         		"personalAccessTokenName": "MailNotifyTrigger",
-        		"personalAccessTokenSecret": "dEBb+e4NShKWGN/8cofArQ==:EzfsMQOsMGZbjv1oe0VmgCjpl7WfcLZN",
+        		"personalAccessTokenSecret": "0nPcsBcjQeeSUycXEQY8QA==:jr1njN5CgdYjR3kdQoTRYCroGCwLEHaz",
         		"site": {
         			"contentUrl": "skctableau"
         		}
