@@ -104,12 +104,16 @@ def run():
         # print(to_matrix(list,9))
         data = pd.DataFrame(to_matrix(list,9), columns=['SalesOrgCode','Period','ACTNO','ActName','ActCode','ActCodeTxt','StartDate','EndDate','ActSts'])
         data['LastUpdate'] = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
+        n=4
+        # [data['Period'][i:i+n] for i in range(0, len(data['Period']),n)]
+        data['exp_date'] = [data['Period'][i:i+n] for i in range(0, len(data['Period']),n)]
+        print(data['exp_date'])
         dfAct = pd.DataFrame(ResultSetAct)
         data = data.reset_index(drop=True)
         dfAct = dfAct.reset_index(drop=True)
         if dfAct.empty:
             print('DataFrame is empty!')
-            data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
+            # data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
         else: 
             newData = data[~data['ACTNO'].isin(dfAct['ACTNO'])]
             dfAct = dfAct.drop(columns=['LastUpdate'],axis=1)
@@ -126,6 +130,8 @@ def run():
                 mask = (data[~data['ACTNO'].isin(dfAct['ACTNO'])])
                 mask['LastUpdate'] = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
                 print(mask)
-                mask.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
+                # mask.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
             elif len(dfAct.index)==0 or len(newData.index)>0:
-                data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
+                # data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
+                print(data)
+run()

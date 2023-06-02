@@ -13,6 +13,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     newnumber = req.params.get('newnumber')
     email = req.params.get('email')
     
+    if not fullname:
+        fullname = ''
+    if not oldnumber:
+        oldnumber = ''
+    if not newnumber:
+        newnumber = ''
+    if not email:
+        email = ''
     # data = req.get_json()
 
     # if not data:
@@ -29,6 +37,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # oldnumber = data['oldnumber']
     # newnumber = data['newnumber']
     # email = data['email']
+
     data = json.dumps(parse_qs("userid="+userid+"&fullname="+fullname+"&status="+status+"&oldnumber="+oldnumber+"&newnumber="+newnumber+"&email="+email))
     if data:
         sendmail.gmail_send_message(userid,fullname,status,oldnumber,newnumber,email)
