@@ -107,15 +107,14 @@ def run():
         # print(to_matrix(list,9))
         data = pd.DataFrame(to_matrix(list,9), columns=['SalesOrgCode','Period','ACTNO','ActName','ActCode','ActCodeTxt','StartDate','EndDate','ActSts'])
         data['LastUpdate'] = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
-        year = data['Period'].str.slice(start=0,stop=4)
-        month = data['Period'].str.slice(start=4,stop=6)
-        data['exp_date'] = pd.to_datetime((year+"-"+month), format='%Y-%m') + MonthEnd(1) + timedelta(days=7)
-        print(data['exp_date'])
         dfAct = pd.DataFrame(ResultSetAct)
         data = data.reset_index(drop=True)
         dfAct = dfAct.reset_index(drop=True)
         if dfAct.empty:
             print('DataFrame is empty!')
+            year = data['Period'].str.slice(start=0,stop=4)
+            month = data['Period'].str.slice(start=4,stop=6)
+            data['exp_date'] = pd.to_datetime((year+"-"+month), format='%Y-%m') + MonthEnd(1) + timedelta(days=7)
             data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
         else: 
             newData = data[~data['ACTNO'].isin(dfAct['ACTNO'])]
@@ -131,6 +130,9 @@ def run():
                     updateAct = sa_text("UPDATE ActFromKADS SET [ActSts]=:actSts , [LastUpdate]=:lastupdate WHERE [ACTNO]=:actNo")
                     engineAct.execute(updateAct, actNo=row['ACTNO'], actSts=row['ActSts'], lastupdate=(datetime.now()).strftime("%Y-%m-%d %H:%M:%S"))
                 mask = (data[~data['ACTNO'].isin(dfAct['ACTNO'])])
+                year = mask['Period'].str.slice(start=0,stop=4)
+                month = mask['Period'].str.slice(start=4,stop=6)
+                mask['exp_date'] = pd.to_datetime((year+"-"+month), format='%Y-%m') + MonthEnd(1) + timedelta(days=7)
                 mask['LastUpdate'] = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
                 print(mask)
                 mask.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
