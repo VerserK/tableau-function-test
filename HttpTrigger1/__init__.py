@@ -53,13 +53,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if filterName is None:
         filterName_list=''
     else:
-        for row in filterName_list:
+        for row in MailGroup_list:
             filterName_list.append(filterName)
 
     if filterValue is None:
         filterValue_list = ''
     else:
-        for row in filterValue_list:
+        for row in MailGroup_list:
             filterValue_list.append(filterValue)
 
     if imageName is None:
