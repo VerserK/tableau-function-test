@@ -148,6 +148,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     file = mailnotiWithSQL.gfileGET(row['ID'])
                 if row['type'] == 'dashboard':
                     if row['imageName'] == '':
+                        logging.info(row['filterName'])
+                        logging.info(row['filterValue'])
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
