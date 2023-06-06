@@ -53,13 +53,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if filterName is None:
         filterName_list=''
     else:
-        # for row in MailGroup_list:
+        for row in MailGroup_list:
             filterName_list.append(filterName)
 
     if filterValue is None:
         filterValue_list = ''
     else:
-        # for row in MailGroup_list:
+        for row in MailGroup_list:
             filterValue_list.append(filterValue)
 
     if imageName is None:
@@ -104,7 +104,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Content' : Content
     })
     df.drop(df[df.Enable != 'x'].index, inplace=True)
-    print(df)
+    logging.info(df)
     groups = df.groupby('MailGroup')
     for name, group in groups:
         to = ''
