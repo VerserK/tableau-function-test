@@ -55,14 +55,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     else:
         for row in MailGroup_list:
             filterName_list.append(filterName)
-        logging.info(filterName_list)
 
     if filterValue is None:
         filterValue_list = ''
     else:
         for row in MailGroup_list:
             filterValue_list.append(filterValue)
-        logging.info(filterValue)
 
     if imageName is None:
         imageName_list = ''
@@ -106,8 +104,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Content' : Content
     })
     df.drop(df[df.Enable != 'x'].index, inplace=True)
-    logging.info(df['filterName'])
-    logging.info(df['filterValue'])
     groups = df.groupby('MailGroup')
     for name, group in groups:
         to = ''
@@ -148,13 +144,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     file = mailnotiWithSQL.gfileGET(row['ID'])
                 if row['type'] == 'dashboard':
                     if row['imageName'] == '':
-                        logging.info(row['filterName'])
-                        logging.info(row['filterValue'])
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        logging.info(row['filterName'])
-                        logging.info(row['filterValue'])
-                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'][index],row['filterValue'],row['imageName'])
+                        logging.info(file)
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
