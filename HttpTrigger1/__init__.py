@@ -156,8 +156,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                         filterValue_Row = filterValueStr.split(',')
                         logging.info(filterValue_Row)
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],filterName_Row[number],filterValue_Row[number],row['imageName'])
-                        logging.info(number)
-                        number =+ 1
+                        number += 1
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
