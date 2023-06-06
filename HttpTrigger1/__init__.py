@@ -106,6 +106,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     'Content' : Content
     })
     df.drop(df[df.Enable != 'x'].index, inplace=True)
+    logging.info(df['filterName'])
+    logging.info(df['filterValue'])
     groups = df.groupby('MailGroup')
     for name, group in groups:
         to = ''
