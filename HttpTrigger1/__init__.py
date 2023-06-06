@@ -105,6 +105,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     })
     df.drop(df[df.Enable != 'x'].index, inplace=True)
     groups = df.groupby('MailGroup')
+    number = 0
     for name, group in groups:
         to = ''
         cc = ''
@@ -116,6 +117,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         file_list = list()
         valid = False
         for index, row in group.iterrows():
+            number =+ 1
             print(index)
             valid = True
             to = row['to']
@@ -146,8 +148,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'][index],row['filterValue'],row['imageName'])
-                        logging.info(file)
+                        logging.info(row['filterName'][number])
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'][number],row['filterValue'],row['imageName'])
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
