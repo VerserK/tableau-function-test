@@ -106,6 +106,7 @@ def tableau_get_img(view_id,fName,fValue,dbName):
           avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
           txt.insert(i,avg)
       urlfname = (''.join(txt))
+      logging.info(urlfname)
       url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
       logging.info(url)
     res = requests.get(url, headers=headers, json = {})
