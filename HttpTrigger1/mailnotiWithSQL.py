@@ -10,7 +10,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 from datetime import datetime,timedelta
-
+import logging
 import base64, requests
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
@@ -107,6 +107,7 @@ def tableau_get_img(view_id,fName,fValue,dbName):
           txt.insert(i,avg)
       urlfname = (''.join(txt))
       url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
+      logging.info(url)
     res = requests.get(url, headers=headers, json = {})
     filename = dbName+'.jpeg'
     creds_path = os.path.join(tempfile.gettempdir(), filename)
