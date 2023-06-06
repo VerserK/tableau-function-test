@@ -147,21 +147,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        logging.info(row['ID'])
-                        idStr = str(row['ID'])
-                        idStr_Row = idStr.split(',')
-                        logging.info(idStr_Row)
-                        if len(idStr_Row) != len(set(idStr_Row)):
-                            filterNameStr = str(row['filterName'])
-                            filterName_Row = filterNameStr.split(',')
-                            logging.info(filterName_Row)
-                            filterValueStr = str(row['filterValue'])
-                            filterValue_Row = filterValueStr.split(',')
-                            logging.info(filterValue_Row)
-                            file = mailnotiWithSQL.tableau_get_img(row['ID'],filterName_Row[number],filterValue_Row[number],row['imageName'])
-                            number += 1
-                        else:
-                            file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
+                        # filterNameStr = str(row['filterName'])
+                        # filterName_Row = filterNameStr.split(',')
+                        # logging.info(filterName_Row)
+                        # filterValueStr = str(row['filterValue'])
+                        # filterValue_Row = filterValueStr.split(',')
+                        # logging.info(filterValue_Row)
+                        # file = mailnotiWithSQL.tableau_get_img(row['ID'],filterName_Row[number],filterValue_Row[number],row['imageName'])
+                        # number += 1
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
