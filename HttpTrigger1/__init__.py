@@ -117,7 +117,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         file_list = list()
         valid = False
         for index, row in group.iterrows():
-            number =+ 1
             print(index)
             valid = True
             to = row['to']
@@ -149,7 +148,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
                         logging.info(row['filterName'])
-                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
+                        filterNameStr = str(row['filterName'])
+                        filterName_Row = filterNameStr.split(',')
+                        filterValueStr = str(row['filterValue'])
+                        filterValue_Row = filterValueStr.split(',')
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],filterName_Row[number],filterValue_Row[number],row['imageName'])
+                        number =+ 1
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
