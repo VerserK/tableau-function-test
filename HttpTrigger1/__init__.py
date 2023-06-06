@@ -147,8 +147,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
+                        logging.info(row['ID'])
                         idStr = str(row['ID'])
                         idStr_Row = idStr.split(',')
+                        logging.info(idStr_Row)
                         if len(idStr_Row) != len(set(idStr_Row)):
                             filterNameStr = str(row['filterName'])
                             filterName_Row = filterNameStr.split(',')
