@@ -148,8 +148,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
                     else:
-                        logging.info(row['filterName'][number])
-                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'][number],row['filterValue'],row['imageName'])
+                        logging.info(row['filterName'])
+                        file = mailnotiWithSQL.tableau_get_img(row['ID'],row['filterName'],row['filterValue'],row['imageName'])
                 if row['type'] == 'excel':
                     if row['imageName'] == '':
                         file = mailnotiWithSQL.tableau_get_xls(row['ID'],row['filterName'],row['filterValue'],'temp-'+str(index))
