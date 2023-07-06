@@ -117,7 +117,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # 'Subject' : Subject,
     # 'Content' : Content
     # })
-    qry = 'SELECT * FROM [dbo].[mailnoti] WHERE MailGroup = "' + MailGroup_list + '"'
+    qry = 'SELECT * FROM [dbo].[mailnoti] WHERE MailGroup = "' + MailGroup + '"'
     df = pd.read_sql_query(qry, con=engine)
     df.drop(df[df.Enable != 'x'].index, inplace=True)
     groups = df.groupby('MailGroup')
