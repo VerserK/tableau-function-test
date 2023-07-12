@@ -362,52 +362,52 @@ def send_message(user_id, message):
 
 ## MAIN LOOP (READ LIST FROM GG SHEET AND PROCESS) ###
 def run():
-# If modifying these scopes, delete the file token.pickle.
-  SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+# # If modifying these scopes, delete the file token.pickle.
+#   SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-  # The ID and range of a sample spreadsheet.
-  SPREADSHEET_ID = '1RrGmqSDmJSlhy3wTCvUeY0gtTfQsdMe7BDgChmXDzj0'
+#   # The ID and range of a sample spreadsheet.
+#   SPREADSHEET_ID = '1RrGmqSDmJSlhy3wTCvUeY0gtTfQsdMe7BDgChmXDzj0'
 
-  creds = None
+#   creds = None
   
-  # Create the BlobServiceClient object which will be used to create a container client
-  blob_service_client = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=d710rgsi01diag;AccountKey=nr/2Yn9nN9bWr0GNNSiNvBbN91MfYpkcIK0+9xcrYMdrFttcEAqV4kBBGGd8ehk+BRZ0gfe0iOTeoYVlRNbXOw==;EndpointSuffix=core.windows.net')
+#   # Create the BlobServiceClient object which will be used to create a container client
+#   blob_service_client = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=d710rgsi01diag;AccountKey=nr/2Yn9nN9bWr0GNNSiNvBbN91MfYpkcIK0+9xcrYMdrFttcEAqV4kBBGGd8ehk+BRZ0gfe0iOTeoYVlRNbXOw==;EndpointSuffix=core.windows.net')
 
-  # Create a unique name for the container
-  container_name = 'methee-google-file'
+#   # Create a unique name for the container
+#   container_name = 'methee-google-file'
 
-  # Create a blob client using the local file name as the name for the blob
-  blob_client = blob_service_client.get_blob_client(container=container_name, blob='sheet-token.pickle')
-  creds_path = os.path.join(tempfile.gettempdir(), 'sheet-token.pickle')
+#   # Create a blob client using the local file name as the name for the blob
+#   blob_client = blob_service_client.get_blob_client(container=container_name, blob='sheet-token.pickle')
+#   creds_path = os.path.join(tempfile.gettempdir(), 'sheet-token.pickle')
 
-  with open(creds_path, "wb") as download_file:
-    download_file.write(blob_client.download_blob().readall())
+#   with open(creds_path, "wb") as download_file:
+#     download_file.write(blob_client.download_blob().readall())
 
-  with open(creds_path, "rb") as token:
-    creds = pickle.load(token)
+#   with open(creds_path, "rb") as token:
+#     creds = pickle.load(token)
 
-  # If there are no (valid) credentials available, let the user log in.
-  if not creds or not creds.valid:
-    if creds and creds.expired and creds.refresh_token:
-      creds.refresh(Request())
-    else:
-      exit
-    # Save the credentials for the next run
-    with open(creds_path, 'wb') as token:
-      pickle.dump(creds, token)
-    with open(creds_path, "rb") as data:
-      blob_client.upload_blob(data,overwrite=True)
-  #socket.setdefaulttimeout(300)
-  service = build('sheets', 'v4', credentials=creds)
+#   # If there are no (valid) credentials available, let the user log in.
+#   if not creds or not creds.valid:
+#     if creds and creds.expired and creds.refresh_token:
+#       creds.refresh(Request())
+#     else:
+#       exit
+#     # Save the credentials for the next run
+#     with open(creds_path, 'wb') as token:
+#       pickle.dump(creds, token)
+#     with open(creds_path, "rb") as data:
+#       blob_client.upload_blob(data,overwrite=True)
+#   #socket.setdefaulttimeout(300)
+#   service = build('sheets', 'v4', credentials=creds)
 
-  RANGE_NAME = 'Mail!A:O'
+#   RANGE_NAME = 'Mail!A:O'
 
-  # Call the Sheets API
+#   # Call the Sheets API
   today = datetime.now() + timedelta(hours = 7) + timedelta(minutes=-15)
   base = datetime(today.year , today.month , today.day , today.hour , today.minute , 0 , 0)
-  sheet = service.spreadsheets()
-  result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
-  values = result.get('values', [])
+#   sheet = service.spreadsheets()
+#   result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,range=RANGE_NAME).execute()
+#   values = result.get('values', [])
   df = pd.DataFrame(ResultSet)
   print(df)
   df.drop(df[df.Enable != 'x'].index, inplace=True)
