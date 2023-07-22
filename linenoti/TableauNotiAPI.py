@@ -6,9 +6,10 @@ Created on Tue Jan 12 13:52:56 2021
 import requests
 from datetime import datetime,timedelta
 import ast
+import logging
 
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.20/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
@@ -60,7 +61,7 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
         payload = ast.literal_eval(payload)
         print(payload)
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
-        print(resp)
+        logging.info(resp)
     else:
         view_id,site_id,headers,server = GetViewId(dashboard)
         if Id != '':
@@ -106,4 +107,4 @@ def GetImage(dashboard,Id,filterName,filterValue,LineToken,message):
             file = {'imageFile':res.content}
             print(payload)
             resp = requests.post(LineUrl, headers=LineHeaders , data = payload , files = file)
-            print(resp)
+            logging.info(resp)
