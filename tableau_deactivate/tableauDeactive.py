@@ -31,7 +31,7 @@ def gmail_send_message(emailViewtoUnlicense):
     <body>
     <p>เรียน ผู้ใช้งาน Tableau</p>
 
-    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 60 วัน</p>
+    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 45 วัน</p>
 
     <p style="margin-left:40px;color:#e74c3c">ระบบจึงทำการตัดสิทธิ์การใช้งาน (Unlicense) ของท่าน</p>
 
@@ -163,7 +163,7 @@ def run():
     conn = TableauServerConnection(tableau_server_config, env='my_env')
     conn.sign_in()
 
-    diff90 = datetime.now() - timedelta(days=61)
+    diff90 = datetime.now() - timedelta(days=46)
     datetoday = datetime.now()
 
     ### Select User On Site to SQL ###
