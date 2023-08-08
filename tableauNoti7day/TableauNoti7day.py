@@ -50,7 +50,7 @@ def gmail_send_message(em):
     <body>
     <p>เรียน ผู้ใช้งาน Tableau</p>
 
-    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 83 วัน*</p>
+    <p style="margin-left:40px">เนื่องจากระบบพบว่าท่านไม่มีการเข้าใช้งาน Tableau เป็นเวลา 53 วัน*</p>
 
     <p style="margin-left:40px">ระบบจะทำการ Unlicense ของท่าน <span style="color:#e74c3c">ภายใน 7 วัน</span></p>
 
@@ -64,7 +64,7 @@ def gmail_send_message(em):
 
     <p>&nbsp;</p>
 
-    <p style="font-weight: bold; color:#e74c3c">*เงื่อนไขการตัดสิทธิ์ใช้งาน ไม่เข้าใช้งานเป็นเวลา 90 วัน</p>
+    <p style="font-weight: bold; color:#e74c3c">*เงื่อนไขการตัดสิทธิ์ใช้งาน ไม่เข้าใช้งานเป็นเวลา 60 วัน</p>
 
     <p>จึงเรียนมาเพื่อทราบ</p>
     </body>
@@ -160,7 +160,7 @@ def run():
     engine1 = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params1)
     conn1 = engine1.connect()
 
-    diff83 = datetime.now() - timedelta(days=83)
+    diff83 = datetime.now() - timedelta(days=53)
     diff30 = datetime.now() - timedelta(days=30)
     datetoday = datetime.now()
 
