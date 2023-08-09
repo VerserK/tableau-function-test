@@ -47,7 +47,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if MailGroup is None:
         MailGroup_list = ''
     else:
-        MailGroup_list = MailGroup.split(",")
+        MailGroup_list = MailGroup
 
     if type is None:
         type_list = ''
