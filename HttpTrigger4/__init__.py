@@ -24,6 +24,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     
     Enable = req.params.get('Enable')
     MailGroup = req.params.get('MailGroup')
+    logging.info(MailGroup)
     type = req.params.get('type')
     ID_Json = req.params.get('ID')
     ImageWidth = req.params.get('ImageWidth')
@@ -39,57 +40,57 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     Content = req.params.get('Content')
     filterName_list =[]
     filterValue_list=[]
-    if Enable is None:
-        Enable_list = ''
-    else:
-        Enable_list = Enable.split(",")
+    # if Enable is None:
+    #     Enable_list = ''
+    # else:
+    #     Enable_list = Enable.split(",")
 
-    if MailGroup is None:
-        MailGroup_list = ''
-    else:
-        MailGroup_list = MailGroup
+    # if MailGroup is None:
+    #     MailGroup_list = ''
+    # else:
+    #     MailGroup_list = MailGroup
 
-    if type is None:
-        type_list = ''
-    else:
-        type_list = type.split(",")
+    # if type is None:
+    #     type_list = ''
+    # else:
+    #     type_list = type.split(",")
 
-    if ID_Json is None:
-        ID_Json_list = ''
-    else:
-        ID_Json_list = ID_Json.split(",")
+    # if ID_Json is None:
+    #     ID_Json_list = ''
+    # else:
+    #     ID_Json_list = ID_Json.split(",")
 
-    if ImageWidth is None: 
-        ImageWidth_list = ''
-    else:
-        ImageWidth_list = ImageWidth.split(",")
+    # if ImageWidth is None: 
+    #     ImageWidth_list = ''
+    # else:
+    #     ImageWidth_list = ImageWidth.split(",")
 
-    if filterName is None:
-        filterName_list=''
-    else:
-        for row in MailGroup_list:
-            filterName_list.append(filterName)
+    # if filterName is None:
+    #     filterName_list=''
+    # else:
+    #     for row in MailGroup_list:
+    #         filterName_list.append(filterName)
 
-    if filterValue is None:
-        filterValue_list = ''
-    else:
-        for row in MailGroup_list:
-            filterValue_list.append(filterValue)
+    # if filterValue is None:
+    #     filterValue_list = ''
+    # else:
+    #     for row in MailGroup_list:
+    #         filterValue_list.append(filterValue)
 
-    if imageName is None:
-        imageName_list = ''
-    else:
-        imageName_list = imageName.split(",")
+    # if imageName is None:
+    #     imageName_list = ''
+    # else:
+    #     imageName_list = imageName.split(",")
 
-    if CRON_Json is None:
-        CRON_Json_list = ''
-    else:
-        CRON_Json_list = CRON_Json.split(",")
+    # if CRON_Json is None:
+    #     CRON_Json_list = ''
+    # else:
+    #     CRON_Json_list = CRON_Json.split(",")
     
-    if from_value is None:
-        from_value_list = ''
-    else:
-        from_value_list = from_value
+    # if from_value is None:
+    #     from_value_list = ''
+    # else:
+    #     from_value_list = from_value
 
     if not Enable:
         try:
