@@ -14,7 +14,7 @@ def GetViewId(dashboard):
                "Accept":"application/json"}
     payload = { "credentials": {
                         		"personalAccessTokenName": "LineNotifyTrigger",
-                        		"personalAccessTokenSecret": "2MHvUT9qTbiGgrwUBKC39g==:AaTcZx5EQDcbEKEllR3HxaUl5hO1sJPM",
+                        		"personalAccessTokenSecret": "ug4di0PuT3eSGAqY7Q8xqQ==:EF8GM4nmFEmT8txMVN5w6LWjdo5KxW5Q",
                         		"site": {
                         			"contentUrl": "skctableau"
                         		}
