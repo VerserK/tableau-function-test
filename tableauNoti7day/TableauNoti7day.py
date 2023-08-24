@@ -60,11 +60,11 @@ def gmail_send_message(em):
 
     <p style="margin-left:40px"><span style="color:#e74c3c">กรุณาเปิด Request ผ่านระบบ </span><a href="https://workflow.siamkubota.co.th/">Workflow Management System</a><span style="color:#e74c3c"> &gt; แบบฟอร์มเปิด/ปิด/แก้ไขบัญชีผู้ใช้งาน (IT0004) &gt; Tableau &gt; Tableau Creator / Tableau Viewer</span></p>
 
-    <img src="https://dwhwebstorage.blob.core.windows.net/test/Tableau%20Online%20(2).png" alt="tableau" class="responsive">
+    <img src="https://dwhwebstorage.blob.core.windows.net/test/Tableau%20Online%20New.png" alt="tableau" class="responsive">
 
     <p>&nbsp;</p>
 
-    <p style="font-weight: bold; color:#e74c3c">*เงื่อนไขการตัดสิทธิ์ใช้งาน ไม่เข้าใช้งานเป็นเวลา 60 วัน</p>
+    <p style="font-weight: bold; color:#e74c3c">*เงื่อนไขการตัดสิทธิ์ใช้งาน ไม่เข้าใช้งานเป็นเวลา 45 วัน</p>
 
     <p>จึงเรียนมาเพื่อทราบ</p>
     </body>
