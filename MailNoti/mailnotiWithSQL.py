@@ -30,6 +30,7 @@ from azure.storage.blob import BlobServiceClient, __version__
 import sqlalchemy as sa
 from sqlalchemy import create_engine, MetaData, select,Table
 import urllib
+import logging
 
 #configure sql server
 server = 'tableauauto.database.windows.net'
@@ -410,6 +411,7 @@ def run():
 #   values = result.get('values', [])
   df = pd.DataFrame(ResultSet)
   print(df)
+  logging.info(df)
   df.drop(df[df.Enable != 'x'].index, inplace=True)
   groups = df.groupby('MailGroup')
   for name, group in groups:
@@ -425,6 +427,7 @@ def run():
     for index, row in group.iterrows():
       if croniter.match(row['CRON'], base):
         print(index)
+        logging.info(row['imageName'])
         valid = True
         to = row['to']
         cc = row['cc']
