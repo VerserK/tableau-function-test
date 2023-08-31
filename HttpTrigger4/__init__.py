@@ -1,8 +1,9 @@
 import logging
-import pandas as pd
+
 import azure.functions as func
 from . import mailnotiWithSQL
 from datetime import datetime,timedelta
+import pandas as pd
 import sqlalchemy as sa
 import urllib
 
@@ -119,7 +120,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # 'Content' : Content
     # })
     qry = "SELECT * FROM [tableauauto_db].[dbo].[mailnoti] WHERE [MailGroup] = '" + MailGroup + "'"
-    df = pd.read_sql_query(qry, con=connection)
+    df = pd.read_sql(qry, con=connection)
     df.drop(df[df.Enable != 'x'].index, inplace=True)
     groups = df.groupby('MailGroup')
     number = 0
