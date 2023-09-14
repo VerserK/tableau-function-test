@@ -57,11 +57,11 @@ def run():
 
     #call Loop Dealer Code
     for index,row in df2.iterrows():
-        url1 = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '202301'"
+        url1 = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '202204'"
         # url1 = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0120' and Period eq '202301'"
         print(url1)
         r1 = requests.get(url1, cookies=cookieDict)
-
+        print(r1)
         bs_data = BeautifulSoup(r1.text, 'xml')
         bs_name = bs_data.find_all('content', {'type':'application/xml'})
 
