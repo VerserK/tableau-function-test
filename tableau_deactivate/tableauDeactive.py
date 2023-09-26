@@ -128,7 +128,7 @@ def run():
     username = 'boon'
     password = 'DEE@DA123'
     driver = '{ODBC Driver 17 for SQL Server}'
-    dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+    dsn = 'DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password
     table = 'allemployee'
 
     ### Dev01 Connection ###
@@ -137,7 +137,7 @@ def run():
     username1 = 'boon'
     password1 = 'DEE@DA123'
     driver1 = '{ODBC Driver 17 for SQL Server}'
-    dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';PORT=1433;DATABASE='+database1+';UID='+username1+';PWD='+ password1
+    dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';DATABASE='+database1+';UID='+username1+';PWD='+ password1
 
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
