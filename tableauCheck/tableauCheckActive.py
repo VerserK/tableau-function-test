@@ -12,7 +12,7 @@ def run():
         username1 = 'boon'
         password1 = 'DEE@DA123'
         driver1 = '{ODBC Driver 17 for SQL Server}'
-        dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';PORT=1433;DATABASE='+database1+';UID='+username1+';PWD='+ password1
+        dsn1 = 'DRIVER='+driver1+';SERVER='+server1+';DATABASE='+database1+';UID='+username1+';PWD='+ password1
 
         params1 = urllib.parse.quote_plus(dsn1)
         engine1 = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params1)
@@ -21,7 +21,7 @@ def run():
         tableau_server_config = {
                 'my_env': {
                         'server': 'https://prod-apnortheast-a.online.tableau.com',
-                        'api_version': '3.19',
+                        'api_version': '3.20',
                         'personal_access_token_name': 'NewToken',
                         'personal_access_token_secret': 'OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT',
                         'site_name': 'skctableau',
@@ -61,4 +61,3 @@ def run():
                 print(payload)
                 resp = requests.post(LineUrl, headers=LineHeaders , data = {'message' : msgrow+converted_num})
                 print(resp.text)
-                
