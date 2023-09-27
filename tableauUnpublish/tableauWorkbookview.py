@@ -3,6 +3,8 @@ import pandas as pd
 import sqlalchemy as sa
 from sqlalchemy.sql import text as sa_text
 import urllib
+from datetime import datetime, timezone, timedelta
+import json
 
 #### Connect DWH ####
 server = 'tableauauto.database.windows.net'
@@ -114,6 +116,38 @@ def run():
     df = df[['workbook', 'owner','usage', 'id', 'name',
     'contentUrl', 'createdAt', 'updatedAt', 'viewUrlName']]
 
+    ### Create Date ###
+    url = "https://workflow.siamkubota.co.th/api/v3/reports/5704/execute"
+    headers ={"authtoken":"F621C5D5-344D-4AE8-A38B-E62A3DBFDC72"}
+    response = requests.get(url,headers=headers,verify=False)
+    resp = json.loads(response.text)
+    df_workflow = pd.DataFrame(resp['execute']['data'])
+    df_workflow['Created Time'] = df_workflow.apply(lambda row : None if pd.isnull(row['Created Time']) else datetime.fromtimestamp(row['Created Time']/1000,timezone(timedelta(hours=7))).strftime('%Y-%m-%d %H:%M:%S'), axis = 1)
+    df_workflow.columns = ['Group','Requester','Category','Technician','Request ID','fullName','SubCategory','Subject','Created Time']
+    df_workflow = df_workflow.query("Category == 'Tableau' & SubCategory == 'Tableau Creator' | SubCategory == 'Tableau Viewer'")
+    df_workflow = df_workflow.drop_duplicates(subset=['fullName'], keep='last')
+    df_workflow = df_workflow.drop(['Group','Requester','Category','Technician','Request ID','SubCategory','Subject'], axis=1)
+
+    ### Connect AD ###
+    url = "https://p701apsi01-la01skc.azurewebsites.net/skcapi/token"
+    data = {'UserName': 'admin_skc', 'Password': 'Admin2020api*'}
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    prog_dict = json.loads(r.text)
+    auth_token=prog_dict["accessToken"]
+    # print(prog_dict["accessToken"])
+    hed = {'Authorization': 'Bearer ' + auth_token}
+    url = 'https://p701apsi01-la01skc.azurewebsites.net/skcapi/empdate/allemployee'
+    response = requests.get(url, headers=hed)
+    df1 = pd.DataFrame.from_dict(response.json())
+    df1 = df1[["nameEN","lastnameEN","email"]]
+    df1 = df1.replace(' ','',regex=True)
+    df1['fullName'] = df1['nameEN'] + ' ' + df1['lastnameEN']
+    df1 = df1.drop(['nameEN','lastnameEN'], axis=1)
+
+    df_workflow = df_workflow.merge(df1, on=['fullName'],how='left')
+    df_workflow = df_workflow.drop(['fullName'], axis=1)
+    print(df_workflow)
     conn = engine.connect()
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
@@ -122,9 +156,10 @@ def run():
 
     try:
         dfMain = df.merge(Data, on=['owner'], how='right')
+        dfMain = dfMain.merge(df_workflow, on=['email'], how='left')
         dfMain.columns = ['workbook','owner','total_view','id','name_dashboard','contentUrl', 'createdAt', 'updatedAt', 'viewUrlName'
                         ,'domain', 'authSetting', 'email', 'externalAuthUserId', 'fullName', 'lastLogin','name', 'siteRole'
-                        , 'locale', 'language']
+                        , 'locale', 'language','create_date']
         dfMain = dfMain.query("workbook.isnull()")
         print(dfMain)
         dfMain.to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
@@ -132,4 +167,3 @@ def run():
         payload = {'message': e }
         print(payload)
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
-run()
