@@ -11,9 +11,9 @@ from dateutil.relativedelta import *
 
 def run():
     #config api
-    url = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/SAP/ZDP_GWSRV017_SRV/$metadata"
-    username = 'D0390-OW'
-    password = 'kubota1'
+    url = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/SAP/ZDP_GWSRV017_SRV/$metadata"
+    username = 'areerat'
+    password = 'Kads@002'
     r = requests.get(url, auth=(username, password))
     cookieDict = r.cookies.get_dict()
     r = requests.get(url, auth=(username, password))
@@ -57,8 +57,8 @@ def run():
 
     #call Loop Dealer Code
     for index,row in df2.iterrows():
-        url1 = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '202204'"
-        # url1 = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0120' and Period eq '202301'"
+        url1 = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '" + todatStr + "'"
+        # url1 = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0120' and Period eq '202204'"
         print(url1)
         r1 = requests.get(url1, cookies=cookieDict)
         print(r1)
