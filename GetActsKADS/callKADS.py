@@ -58,7 +58,7 @@ def run():
     #call Loop Dealer Code
     for index,row in df2.iterrows():
         url1 = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '" + todatStr + "'"
-        # url1 = "https://kads-mobi-test.siamkubotadealer.com:44330/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0120' and Period eq '202204'"
+        # url1 = "https://kads2-dev.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0120' and Period eq '" + todatStr + "'"
         print(url1)
         r1 = requests.get(url1, cookies=cookieDict)
         print(r1)
@@ -67,35 +67,38 @@ def run():
 
         l = []
         for content in bs_name:
-            SalesOrgCode = content.find('d:SalesOrgCode')
-            row = [content.text for content in SalesOrgCode]
-            l.append(row)
-            Period = content.find('d:Period')
-            row = [content.text for content in Period]
-            l.append(row)
-            ACTNO = content.find('d:ACTNO')
-            row = [content.text for content in ACTNO]
-            l.append(row)
-            ActName = content.find('d:ActName')
-            if not ActName:
-                ActName = ''
-            row = [content.text for content in ActName]
-            l.append(row)
-            ActCode = content.find('d:ActCode')
-            row = [content.text for content in ActCode]
-            l.append(row)
-            ActCodeTxt = content.find('d:ActCodeTxt')
-            row = [content.text for content in ActCodeTxt]
-            l.append(row)
-            StartDate = content.find('d:StartDate')
-            row = [content.text for content in StartDate]
-            l.append(row)
-            EndDate = content.find('d:EndDate')
-            row = [content.text for content in EndDate]
-            l.append(row)
-            ActSts = content.find('d:ActSts')
-            row = [content.text for content in ActSts]
-            l.append(row)
+            ACTNOif = content.find('d:ACTNO')
+            rowCheck = [content.text for content in ACTNOif]
+            if rowCheck != []:
+                SalesOrgCode = content.find('d:SalesOrgCode')
+                row = [content.text for content in SalesOrgCode]
+                l.append(row)
+                Period = content.find('d:Period')
+                row = [content.text for content in Period]
+                l.append(row)
+                ACTNO = content.find('d:ACTNO')
+                row = [content.text for content in ACTNO]
+                l.append(row)
+                ActName = content.find('d:ActName')
+                if not ActName:
+                    ActName = ''
+                row = [content.text for content in ActName]
+                l.append(row)
+                ActCode = content.find('d:ActCode')
+                row = [content.text for content in ActCode]
+                l.append(row)
+                ActCodeTxt = content.find('d:ActCodeTxt')
+                row = [content.text for content in ActCodeTxt]
+                l.append(row)
+                StartDate = content.find('d:StartDate')
+                row = [content.text for content in StartDate]
+                l.append(row)
+                EndDate = content.find('d:EndDate')
+                row = [content.text for content in EndDate]
+                l.append(row)
+                ActSts = content.find('d:ActSts')
+                row = [content.text for content in ActSts]
+                l.append(row)
         list=[]
         for i in l:
             for n in i:
@@ -121,10 +124,12 @@ def run():
             dfAct = dfAct.drop(columns=['LastUpdate'],axis=1)
             data = data.drop(columns=['LastUpdate'],axis=1)
             dataMask = data.merge(dfAct, how='outer', indicator=True)
+            
             dataMask_diff = dataMask.loc[lambda x : x['_merge'] != 'both']
             dataMask_diff_left = dataMask_diff.loc[lambda x : x['_merge'] != 'right_only']
             #Check ActSts with ActNO
             if len(dataMask_diff_left.index)>0:
+                print("Check 1")
                 for index , row in dataMask_diff_left.iterrows():
                     print(row['ACTNO'],row['ActSts'])
                     updateAct = sa_text("UPDATE ActFromKADS SET [ActSts]=:actSts , [LastUpdate]=:lastupdate WHERE [ACTNO]=:actNo")
@@ -137,5 +142,6 @@ def run():
                 print(mask)
                 mask.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
             elif len(dfAct.index)==0 or len(newData.index)>0:
+                print("Check 2")
                 data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
                 print(data)
