@@ -108,7 +108,7 @@ def gmail_send_message(emailViewtoUnlicense):
 ### Update Status
 def updateSite(uid,new_site):
     config = {'tableau_online':{'server':'https://prod-apnortheast-a.online.tableau.com/',
-                                'api_version':'3.19',
+                                'api_version':'3.21',
                                 'personal_access_token_name':"NewToken",
                                 "personal_access_token_secret": "OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT",
                                 "site_name":"skctableau",
@@ -152,7 +152,7 @@ def run():
     tableau_server_config = {
             'my_env': {
                     'server': 'https://prod-apnortheast-a.online.tableau.com',
-                    'api_version': '3.19',
+                    'api_version': '3.21',
                     'personal_access_token_name': 'NewToken',
                     'personal_access_token_secret': 'OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT',
                     'site_name': 'skctableau',
@@ -181,7 +181,7 @@ def run():
     ### Select User overs 90 days ###
     a = df[df['lastLogin'] < diff90].copy()
     a = a.query('email.str.contains("@kubota.com")', engine='python')
-    a = a.query('''position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'SEVP' and position_ID != 'VP_Dep'and eid.str.len() != 4 ''')
+    a = a.query('''position_ID.notnull() and siteRole != 'Unlicensed' and position_ID != 'Div_Mgr' and position_ID != 'Dep_Mgr' and position_ID != 'VP_GM' and position_ID != 'President' and position_ID != 'SEVP' and position_ID != 'VP_Dep' ''')
     a['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
     a['UpdateTime'] = pd.to_datetime(a['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
     print(a)
