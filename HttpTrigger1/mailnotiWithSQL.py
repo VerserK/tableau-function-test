@@ -97,7 +97,7 @@ def tableau_get_img(view_id,fName,fValue,dbName):
            "X-Tableau-Auth": token}
     txt=[]
     if fValue == '' and fName == '':
-      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high'
+      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=60&resolution=high'
     else:
       fName = fName.split(',')
       fValue = fValue.split('(filter)')
@@ -106,7 +106,7 @@ def tableau_get_img(view_id,fName,fValue,dbName):
           avg = ('vf_'+ fName[i] + '=' + fValue[i] + '&')
           txt.insert(i,avg)
       urlfname = (''.join(txt))
-      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=1&resolution=high&{0}'.format(urlfname)
+      url = server +  '/sites/'+site_id+'/views/'+view_id+'/image?maxAge=60&resolution=high&{0}'.format(urlfname)
       logging.info(url)
     res = requests.get(url, headers=headers, json = {})
     filename = dbName+'.jpeg'
