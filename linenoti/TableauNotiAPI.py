@@ -10,7 +10,7 @@ import logging
 import time
 
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.20/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
