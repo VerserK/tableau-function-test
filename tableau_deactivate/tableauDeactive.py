@@ -110,7 +110,7 @@ def updateSite(uid,new_site):
     config = {'tableau_online':{'server':'https://prod-apnortheast-a.online.tableau.com/',
                                 'api_version':'3.21',
                                 'personal_access_token_name':"NewToken",
-                                "personal_access_token_secret": "OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT",
+                                "personal_access_token_secret": "ZCV9LtJiSj6HUWyTFQHi3Q==:81Nfr0XBRU3YKW9PoUn1UvDSZgXo3Qwr",
                                 "site_name":"skctableau",
                                 "site_url":"skctableau"
             		}}
@@ -154,7 +154,7 @@ def run():
                     'server': 'https://prod-apnortheast-a.online.tableau.com',
                     'api_version': '3.21',
                     'personal_access_token_name': 'NewToken',
-                    'personal_access_token_secret': 'OMvKWBx0Qsmfajsq1p1uIw==:0azGqpvojkkrBlnkz0UnbSiv6TK7wnXT',
+                    'personal_access_token_secret': 'ZCV9LtJiSj6HUWyTFQHi3Q==:81Nfr0XBRU3YKW9PoUn1UvDSZgXo3Qwr',
                     'site_name': 'skctableau',
                     'site_url': 'skctableau'
             }
