@@ -8,6 +8,7 @@ from sqlalchemy.sql import text as sa_text
 import urllib
 from datetime import datetime,timedelta
 from dateutil.relativedelta import *
+import numpy as np
 
 def run():
     #config api
@@ -61,7 +62,6 @@ def run():
         # url1 = "https://kads2-qas.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0390' and Period eq '" + todatStr + "'"
         print(url1)
         r1 = requests.get(url1, cookies=cookieDict)
-        print(r1)
         bs_data = BeautifulSoup(r1.text, 'xml')
         bs_name = bs_data.find_all('content', {'type':'application/xml'})
 
@@ -80,14 +80,18 @@ def run():
                 row = [content.text for content in ACTNO]
                 l.append(row)
                 ActName = content.find('d:ActName')
-                if not ActName:
-                    ActName = ''
+                if ActName.text == '':
+                    ActName.append('')
                 row = [content.text for content in ActName]
                 l.append(row)
                 ActCode = content.find('d:ActCode')
+                if ActCode.text == '':
+                    ActCode.append('')
                 row = [content.text for content in ActCode]
                 l.append(row)
                 ActCodeTxt = content.find('d:ActCodeTxt')
+                if ActCodeTxt.text == '':
+                    ActCodeTxt.append('')
                 row = [content.text for content in ActCodeTxt]
                 l.append(row)
                 StartDate = content.find('d:StartDate')
@@ -107,9 +111,9 @@ def run():
         def to_matrix(list, n):
             return [list[i:i+n] for i in range(0, len(list), n)]
 
-        # print(to_matrix(list,9))
+        print(to_matrix(list,9))
         data = pd.DataFrame(to_matrix(list,9), columns=['SalesOrgCode','Period','ACTNO','ActName','ActCode','ActCodeTxt','StartDate','EndDate','ActSts'])
-
+        print(data)
         data['LastUpdate'] = (datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
         dfAct = pd.DataFrame(ResultSetAct)
         data = data.reset_index(drop=True)
@@ -133,8 +137,8 @@ def run():
                 print("Check 1")
                 for index , row in dataMask_diff_left.iterrows():
                     print(row['ACTNO'],row['ActSts'])
-                    updateAct = sa_text("UPDATE ActFromKADS SET [ActSts]=:actSts , [LastUpdate]=:lastupdate WHERE [ACTNO]=:actNo")
-                    engineAct.execute(updateAct, actNo=row['ACTNO'], actSts=row['ActSts'], lastupdate=(datetime.now()).strftime("%Y-%m-%d %H:%M:%S"))
+                    updateAct = sa_text("UPDATE ActFromKADS SET [ActName]=:actName, [ActCode]=:actCode, [ActCodeTxt]=:actCodeTxt, [StartDate]=:startDate, [EndDate]=:endDate, [ActSts]=:actSts , [LastUpdate]=:lastupdate WHERE [ACTNO]=:actNo")
+                    engineAct.execute(updateAct,actName=row['ActName'], actCode=row['ActCode'], actCodeTxt=row['ActCodeTxt'], startDate=row['StartDate'], endDate=row['EndDate'], actNo=row['ACTNO'], actSts=row['ActSts'], lastupdate=(datetime.now()).strftime("%Y-%m-%d %H:%M:%S"))
                 mask = (data[~data['ACTNO'].isin(dfAct['ACTNO'])])
                 year = mask['Period'].str.slice(start=0,stop=4)
                 month = mask['Period'].str.slice(start=4,stop=6)
@@ -146,3 +150,4 @@ def run():
                 print("Check 2")
                 data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
                 print(data)
+                
