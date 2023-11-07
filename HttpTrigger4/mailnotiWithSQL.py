@@ -35,8 +35,8 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotifyTrigger",
-        		"personalAccessTokenSecret": "0vwETMRqQ+uuDYkflHKNag==:qQUdMpeQNCfcm6OrZLUxMesoke6AzCjG",
+        		"personalAccessTokenName": "MailNotifyGroupTrigger",
+        		"personalAccessTokenSecret": "9LAR/Jd7Sxa1KICbao+Rog==:AkxigHgZnblShBxJSsNgb9MjiTf1Um9d",
         		"site": {
         			"contentUrl": "skctableau"
         		}
@@ -81,8 +81,8 @@ def tableau_get_img(view_id,fName,fValue,dbName):
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotifyTrigger",
-        		"personalAccessTokenSecret": "0vwETMRqQ+uuDYkflHKNag==:qQUdMpeQNCfcm6OrZLUxMesoke6AzCjG",
+        		"personalAccessTokenName": "MailNotifyGroupTrigger",
+        		"personalAccessTokenSecret": "9LAR/Jd7Sxa1KICbao+Rog==:AkxigHgZnblShBxJSsNgb9MjiTf1Um9d",
         		"site": {
         			"contentUrl": "skctableau"
         		}
