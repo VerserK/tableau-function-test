@@ -67,7 +67,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
       url = server +  '/sites/'+site_id+'/views/'+view_id+'/crosstab/excel?maxAge=1&{0}'.format(urlfname)
     #res = requests.get(url, headers=headers, json = {})
     res = requests.get(url, headers=headers, allow_redirects=True)
-    filename = dbName+'-'+fValue+'.xlsx'
+    filename = dbName+'.xlsx'
     creds_path = os.path.join(tempfile.gettempdir(), filename)
     file = open(creds_path, "wb")
     file.write(res.content)
