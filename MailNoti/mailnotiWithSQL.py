@@ -85,7 +85,7 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
       url = server +  '/sites/'+site_id+'/views/'+view_id+'/crosstab/excel?maxAge=1&{0}'.format(urlfname)
     #res = requests.get(url, headers=headers, json = {})
     res = requests.get(url, headers=headers, allow_redirects=True)
-    filename = dbName+'-'+fValue+'.xlsx'
+    filename = dbName+'.xlsx'
     creds_path = os.path.join(tempfile.gettempdir(), filename)
     file = open(creds_path, "wb")
     file.write(res.content)
@@ -144,7 +144,7 @@ def gfileGETfolder(folderid):
   blob_service_client = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=d710rgsi01diag;AccountKey=nr/2Yn9nN9bWr0GNNSiNvBbN91MfYpkcIK0+9xcrYMdrFttcEAqV4kBBGGd8ehk+BRZ0gfe0iOTeoYVlRNbXOw==;EndpointSuffix=core.windows.net')
 
   # Create a unique name for the container
-  container_name = 'methee-google-file'
+  container_name = 'google-file'
 
   # Create a blob client using the local file name as the name for the blob
   blob_client = blob_service_client.get_blob_client(container=container_name, blob='drive-token.pickle')
@@ -207,7 +207,7 @@ def gfileGET(fileid):
   blob_service_client = BlobServiceClient.from_connection_string('DefaultEndpointsProtocol=https;AccountName=d710rgsi01diag;AccountKey=nr/2Yn9nN9bWr0GNNSiNvBbN91MfYpkcIK0+9xcrYMdrFttcEAqV4kBBGGd8ehk+BRZ0gfe0iOTeoYVlRNbXOw==;EndpointSuffix=core.windows.net')
 
   # Create a unique name for the container
-  container_name = 'methee-google-file'
+  container_name = 'google-file'
 
   # Create a blob client using the local file name as the name for the blob
   blob_client = blob_service_client.get_blob_client(container=container_name, blob='drive-token.pickle')
