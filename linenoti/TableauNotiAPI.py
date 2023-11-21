@@ -9,14 +9,18 @@ import ast
 import logging
 import time
 
+version = '3.21'
+personalAccessTokenName = 'LineNotify'
+personalAccessTokenSecret = 'iNeiMSKoS6GMU4JCf2r9DQ==:Uwf191rPYWOhNLzohNLNPYpJdmn5g9K3'
+
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-                        		"personalAccessTokenName": "LineNotify",
-                        		"personalAccessTokenSecret": "iNeiMSKoS6GMU4JCf2r9DQ==:Uwf191rPYWOhNLzohNLNPYpJdmn5g9K3",
+                        		"personalAccessTokenName": personalAccessTokenName,
+                        		"personalAccessTokenSecret": personalAccessTokenSecret,
                         		"site": {
                         			"contentUrl": "skctableau"
                         		}

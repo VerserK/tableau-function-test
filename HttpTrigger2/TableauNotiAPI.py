@@ -7,14 +7,18 @@ import requests
 from datetime import datetime,timedelta
 import ast
 
+version = '3.21'
+personalAccessTokenName = 'LineNotifyTrigger'
+personalAccessTokenSecret = 'ug4di0PuT3eSGAqY7Q8xqQ==:EF8GM4nmFEmT8txMVN5w6LWjdo5KxW5Q'
+
 def GetViewId(dashboard):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-                        		"personalAccessTokenName": "LineNotifyTrigger",
-                        		"personalAccessTokenSecret": "ug4di0PuT3eSGAqY7Q8xqQ==:EF8GM4nmFEmT8txMVN5w6LWjdo5KxW5Q",
+                        		"personalAccessTokenName": personalAccessTokenName,
+                        		"personalAccessTokenSecret": personalAccessTokenSecret,
                         		"site": {
                         			"contentUrl": "skctableau"
                         		}

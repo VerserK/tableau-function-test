@@ -28,15 +28,19 @@ from requests.exceptions import ReadTimeout
 import os
 from azure.storage.blob import BlobServiceClient, __version__
 
+version = '3.21'
+personalAccessTokenName = 'MailNotifyGroupTrigger'
+personalAccessTokenSecret = '9LAR/Jd7Sxa1KICbao+Rog==:AkxigHgZnblShBxJSsNgb9MjiTf1Um9d'
+
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotifyGroupTrigger",
-        		"personalAccessTokenSecret": "9LAR/Jd7Sxa1KICbao+Rog==:AkxigHgZnblShBxJSsNgb9MjiTf1Um9d",
+        		"personalAccessTokenName": personalAccessTokenName,
+        		"personalAccessTokenSecret": personalAccessTokenSecret,
         		"site": {
         			"contentUrl": "skctableau"
         		}
@@ -76,13 +80,13 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
 
 ### DOWNLOAD DASHBOARD IMAGE ###
 def tableau_get_img(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotifyGroupTrigger",
-        		"personalAccessTokenSecret": "9LAR/Jd7Sxa1KICbao+Rog==:AkxigHgZnblShBxJSsNgb9MjiTf1Um9d",
+        		"personalAccessTokenName": personalAccessTokenName,
+        		"personalAccessTokenSecret": personalAccessTokenSecret,
         		"site": {
         			"contentUrl": "skctableau"
         		}

@@ -39,6 +39,9 @@ username = 'boon'
 password = 'DEE@DA123'
 driver = '{ODBC Driver 17 for SQL Server}'
 dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+version = '3.21'
+personalAccessTokenName = 'MailNotify'
+personalAccessTokenSecret = 'p9XJKpxcQhOlILWW8C4lxA==:MIElpUuHIeWp93ZR5pXrbL6jZKSTUcY0'
 
 params = urllib.parse.quote_plus(dsn)
 engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
@@ -52,13 +55,13 @@ ResultSet = ResultProxy.fetchall()
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotify",
-        		"personalAccessTokenSecret": "qsFrxcwFQYeDs7K0zNv0kw==:3KmnOldJBo5rBWvlJC82Y5PcTZbwThzR",
+        		"personalAccessTokenName": personalAccessTokenName,
+        		"personalAccessTokenSecret": personalAccessTokenSecret,
         		"site": {
         			"contentUrl": "skctableau"
         		}
@@ -94,13 +97,13 @@ def tableau_get_xls(view_id,fName,fValue,dbName):
 
 ### DOWNLOAD DASHBOARD IMAGE ###
 def tableau_get_img(view_id,fName,fValue,dbName):
-    server = 'https://prod-apnortheast-a.online.tableau.com/api/3.21/'
+    server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
     urlHis = server + "auth/signin"
     headers = {"Content-Type": "application/json",
                "Accept":"application/json"}
     payload = { "credentials": {
-        		"personalAccessTokenName": "MailNotify",
-        		"personalAccessTokenSecret": "qsFrxcwFQYeDs7K0zNv0kw==:3KmnOldJBo5rBWvlJC82Y5PcTZbwThzR",
+        		"personalAccessTokenName": personalAccessTokenName,
+        		"personalAccessTokenSecret": personalAccessTokenSecret,
         		"site": {
         			"contentUrl": "skctableau"
         		}
