@@ -13,6 +13,11 @@ from googleapiclient.errors import HttpError
 from email.message import EmailMessage
 from azure.storage.blob import BlobServiceClient, __version__
 import os,tempfile, base64
+
+api_version = '3.21'
+personal_access_token_name = 'NewToken'
+personal_access_token_secret = 'jGkCb+1zSI2gd57CYMxtBg==:Td2CcXkoiTX5bqxk83PuJZm6cNZnH178'
+
 ###Send Email
 def gmail_send_message(emailViewtoUnlicense):
     #html contact
@@ -108,9 +113,9 @@ def gmail_send_message(emailViewtoUnlicense):
 ### Update Status
 def updateSite(uid,new_site):
     config = {'tableau_online':{'server':'https://prod-apnortheast-a.online.tableau.com/',
-                                'api_version':'3.21',
-                                'personal_access_token_name':"NewToken",
-                                "personal_access_token_secret": "ZCV9LtJiSj6HUWyTFQHi3Q==:81Nfr0XBRU3YKW9PoUn1UvDSZgXo3Qwr",
+                                'api_version': api_version,
+                                'personal_access_token_name': personal_access_token_name,
+                                'personal_access_token_secret': personal_access_token_secret,
                                 "site_name":"skctableau",
                                 "site_url":"skctableau"
             		}}
@@ -152,9 +157,9 @@ def run():
     tableau_server_config = {
             'my_env': {
                     'server': 'https://prod-apnortheast-a.online.tableau.com',
-                    'api_version': '3.21',
-                    'personal_access_token_name': 'NewToken',
-                    'personal_access_token_secret': 'ZCV9LtJiSj6HUWyTFQHi3Q==:81Nfr0XBRU3YKW9PoUn1UvDSZgXo3Qwr',
+                    'api_version': api_version,
+                    'personal_access_token_name': personal_access_token_name,
+                    'personal_access_token_secret': personal_access_token_secret,
                     'site_name': 'skctableau',
                     'site_url': 'skctableau'
             }
@@ -175,6 +180,7 @@ def run():
     df = df.drop_duplicates(subset=['email'])
     df['UpdateTime'] = pd.to_datetime(datetoday, format='%Y-%m-%d')
     df['UpdateTime'] = pd.to_datetime(df['UpdateTime'], format='%Y-%m-%d').dt.strftime('%Y-%m-%d')
+    print(df)
     engine1.execute(sa_text('''TRUNCATE TABLE tableau_alluser''').execution_options(autocommit=True))
     df.astype(str).to_sql('tableau_alluser', con=conn1, if_exists = 'append', index=False, schema="dbo")
 
