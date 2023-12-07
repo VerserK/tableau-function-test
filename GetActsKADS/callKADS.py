@@ -12,9 +12,9 @@ import numpy as np
 
 def run():
     #config api
-    url = "https://kads2-qas.siamkubotadealer.com/sap/opu/odata/SAP/ZDP_GWSRV017_SRV/$metadata"
-    username = 'SKC_IT_SALES'
-    password = 'Kubota@12345'
+    url = "https://kads2.siamkubotadealer.com/sap/opu/odata/SAP/ZDP_GWSRV017_SRV/$metadata"
+    username = 'KCONRFC'
+    password = 'Kubota@1'
     r = requests.get(url, auth=(username, password))
     cookieDict = r.cookies.get_dict()
     r = requests.get(url, auth=(username, password))
@@ -22,7 +22,7 @@ def run():
     print(cookieDict)
     #configure sql server
     server = 'consentdb.database.windows.net'
-    database =  'consents_QA'
+    database =  'consents'
     username = 'consent-user'
     password = 'P@ssc0de123'
     driver = '{ODBC Driver 17 for SQL Server}'
@@ -55,11 +55,11 @@ def run():
     #Set time -1
     today = datetime.today() - timedelta(days=1)
     todatStr = today.strftime("%Y%m")
-
+    # todatStr = '202312'
     #call Loop Dealer Code
     for index,row in df2.iterrows():
-        url1 = "https://kads2-qas.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '" + todatStr + "'"
-        # url1 = "https://kads2-qas.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0390' and Period eq '" + todatStr + "'"
+        url1 = "https://kads2.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '" + todatStr + "'"
+        # url1 = "https://kads2.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '0390' and Period eq '" + todatStr + "'"
         print(url1)
         r1 = requests.get(url1, cookies=cookieDict)
         bs_data = BeautifulSoup(r1.text, 'xml')
@@ -150,4 +150,3 @@ def run():
                 print("Check 2")
                 data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
                 print(data)
-                
