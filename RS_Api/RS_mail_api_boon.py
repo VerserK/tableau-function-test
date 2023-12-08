@@ -29,7 +29,7 @@ def tableau_get_view_id(page):
                "Accept":"application/json"}
     payload = { "credentials": {
         		"personalAccessTokenName": "1hour",
-        		"personalAccessTokenSecret": "RD3bwZWuRwWoVrMLasm+yQ==:X0FUVh13Cr84tcu6PkZ9Tx9qjF4rTkTe",
+        		"personalAccessTokenSecret": "83WIskkETlmCqwnMBHsTPg==:Up2gc3VKAfb19ncBfrKY0AldNM8I1qAE",
         		"site": {
         			"contentUrl": "skctableau"
         		}}}
