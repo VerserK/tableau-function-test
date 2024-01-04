@@ -9,7 +9,7 @@ import ast
 
 version = '3.21'
 personalAccessTokenName = 'LineNotifyTrigger'
-personalAccessTokenSecret = 'ug4di0PuT3eSGAqY7Q8xqQ==:EF8GM4nmFEmT8txMVN5w6LWjdo5KxW5Q'
+personalAccessTokenSecret = 'Yz8LILjxRxq8j7EZ25jBIg==:WH8xF88zs2ugx62HKX75EsZEoS63VXRG'
 
 def GetViewId(dashboard):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/'+version+'/'
