@@ -15,14 +15,6 @@ import pandas as pd
 import urllib
 import logging
 
-server = 'tableauauto.database.windows.net'
-database = 'tableauauto_db'
-username = 'boon'
-password = 'DEE@DA123'
-driver = '{ODBC Driver 17 for SQL Server}'
-dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
-table = 'idviewer'
-
 def tableau_get_view_id(page):
     server = 'https://prod-apnortheast-a.online.tableau.com/api/3.18/'
     urlHis = server + "auth/signin"
@@ -49,6 +41,14 @@ def tableau_get_view_id(page):
     return res
 
 def run():
+    server = 'tableauauto.database.windows.net'
+    database = 'tableauauto_db'
+    username = 'boon'
+    password = 'DEE@DA123'
+    driver = '{ODBC Driver 17 for SQL Server}'
+    dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
+    table = 'idviewer'
+
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
     engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
