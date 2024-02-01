@@ -13,6 +13,7 @@ import sqlalchemy as sa
 from sqlalchemy.sql import text as sa_text
 import pandas as pd
 import urllib
+import logging
 
 server = 'tableauauto.database.windows.net'
 database = 'tableauauto_db'
@@ -84,5 +85,6 @@ def run():
         print(df)
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
+        logging.info(e)
         payload = {'message':'RS API Uploading Fails!!'}
         resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
