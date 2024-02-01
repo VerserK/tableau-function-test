@@ -51,6 +51,7 @@ def run():
 
     params = urllib.parse.quote_plus(dsn)
     engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
+    connection = engine.connect()
     engine.execute(sa_text('''TRUNCATE TABLE idviewer''').execution_options(autocommit=True))
 
     res = tableau_get_view_id(1)
@@ -70,7 +71,7 @@ def run():
             break
         logging.info(n)
     
-    conn = engine.connect()
+    
     ###### Line Noti Message #####
     LineUrl = 'https://notify-api.line.me/api/notify'
     LineToken = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
@@ -83,10 +84,10 @@ def run():
         #     row['owner'] = list(row['owner'].values())
         #     row['owner'] = ' '.join(row['owner'])
         logging.info(df)
-        df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
+        df.astype(str).to_sql(table, con=connection, if_exists = 'append', index=False, schema="dbo")
     finally:
     # Close the connection when done
-        conn.close()
+        connection.close()
     # except Exception as e:
     #     logging.info(e)
     #     payload = {'message':'RS API Uploading Fails!!'}
