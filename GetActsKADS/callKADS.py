@@ -53,7 +53,7 @@ def run():
     df2 = pd.DataFrame(df['saleOrgKADS'])
 
     #Set time -1
-    today = datetime.today() - timedelta(days=1)
+    today = datetime.today() #- timedelta(days=1)
     todatStr = today.strftime("%Y%m")
     # todatStr = '202312'
     #call Loop Dealer Code
