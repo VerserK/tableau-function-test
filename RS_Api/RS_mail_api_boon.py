@@ -84,7 +84,10 @@ def run():
         #     row['owner'] = ' '.join(row['owner'])
         logging.info(df)
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
-    except Exception as e:
-        logging.info(e)
-        payload = {'message':'RS API Uploading Fails!!'}
-        resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
+    finally:
+    # Close the connection when done
+        conn.close()
+    # except Exception as e:
+    #     logging.info(e)
+    #     payload = {'message':'RS API Uploading Fails!!'}
+    #     resp = requests.post(LineUrl, headers=LineHeaders , data = payload)
