@@ -68,7 +68,7 @@ def run():
             resp = list(resp['views'].values())[0]
         except:
             break
-        print(n)
+        logging.info(n)
     
     conn = engine.connect()
     ###### Line Noti Message #####
@@ -82,7 +82,7 @@ def run():
         # for index,row in df.iterrows():
         #     row['owner'] = list(row['owner'].values())
         #     row['owner'] = ' '.join(row['owner'])
-        print(df)
+        logging.info(df)
         df.astype(str).to_sql(table, con=conn, if_exists = 'append', index=False, schema="dbo")
     except Exception as e:
         logging.info(e)
