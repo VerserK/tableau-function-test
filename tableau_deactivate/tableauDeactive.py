@@ -16,7 +16,7 @@ import os,tempfile, base64
 
 api_version = '3.21'
 personal_access_token_name = 'NewToken'
-personal_access_token_secret = 'WfztvpjPQ06zM5WBQ2+7zQ==:LQkEiQDFBq8FWCfgWbry1oKKaHmhXUct'
+personal_access_token_secret = 'fE3Q1ESbSrmlf64N6U1/Bg==:qkRftaxsBTl875EvL6OAsibUoJ1f2mPK'
 
 ###Send Email
 def gmail_send_message(emailViewtoUnlicense):
