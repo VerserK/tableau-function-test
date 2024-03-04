@@ -53,9 +53,9 @@ def run():
     df2 = pd.DataFrame(df['saleOrgKADS'])
 
     #Set time -1
-    today = datetime.today() #- timedelta(days=1)
+    today = datetime.today() + timedelta(hours=7)
     todatStr = today.strftime("%Y%m")
-    # todatStr = '202312'
+    # todatStr = '202402'
     #call Loop Dealer Code
     for index,row in df2.iterrows():
         url1 = "https://kads2.siamkubotadealer.com/sap/opu/odata/sap/ZDP_GWSRV017_SRV/SactHdrSet?$filter=SalesOrgCode eq '"+row['saleOrgKADS']+"' and Period eq '" + todatStr + "'"
@@ -150,3 +150,5 @@ def run():
                 print("Check 2")
                 data.astype(str).to_sql('ActFromKADS', con=connection, if_exists = 'append', index=False, schema="dbo")
                 print(data)
+
+run()
