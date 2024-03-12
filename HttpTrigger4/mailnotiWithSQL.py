@@ -30,7 +30,7 @@ from azure.storage.blob import BlobServiceClient, __version__
 
 version = '3.21'
 personalAccessTokenName = 'MailNotifyGroupTrigger'
-personalAccessTokenSecret = 'B1FaSuOlSE+8VhRexTi71Q==:vZ6Hfdggp2u4DTNIV5zs64lAmv2Uh0LZ'
+personalAccessTokenSecret = '46ldonJTRlmDRX/qSVR4xQ==:kjDaBSBu8Y9z7flvh2QxLT9RMaXos33T'
 
 ### DOWNLOAD DASHBOARD EXCEL ###
 def tableau_get_xls(view_id,fName,fValue,dbName):
